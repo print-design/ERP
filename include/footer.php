@@ -36,4 +36,9 @@
             $(this).removeClass('is-invalid');
         });
     });
+    
+    // Подтверждение удаления
+    $('button.confirmable').click(function(){
+        return confirm('Действительно удалить?');
+    });
 </script>
