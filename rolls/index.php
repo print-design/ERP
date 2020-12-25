@@ -1,21 +1,23 @@
+<?php
+include '../include/topscripts.php';
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php
         include '../include/head.php';
         ?>
-        <style>
-            @media (min-width: 1200px) {
-            .container {
-                max-width: 1800px;
-            }
-        </style>
     </head>
     <body>
         <?php
         include '../include/header.php';
         ?>
-        <div class="container">
+        <div class="container-fluid">
+            <?php
+            if(isset($error_message) && $error_message != '') {
+               echo "<div class='alert alert-danger'>$error_message</div>";
+            }
+            ?>
             <div class="d-flex justify-content-between mb-2">
                 <div class="p-1">
                     <div style="float:left; margin-right: 10px;">

@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <?php
-        include '../include/head.php';
-        
-        // Получение объекта
+<?php
+include '../include/topscripts.php';
+
+// Получение объекта
         $id = '';
         $date = '';
         $supplier_id = '';
@@ -163,23 +160,27 @@
                 
                 $conn->close();
         }
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php
+        include '../include/head.php';
         ?>
     </head>
     <body>
         <?php
         include '../include/header.php';
         ?>
-        <div class="container">
+        <div class="container-fluid">
             <?php
-           if($error_message != '') {
-               echo <<<ERROR
-               <div class="alert alert-danger">$error_message</div>
-               ERROR;
-           }
-           ?>
+            if(isset($error_message) && $error_message != '') {
+               echo "<div class='alert alert-danger'>$error_message</div>";
+            }
+            ?>
             <div class="btn-group">
-               <a href="<?=APPLICATION ?>/rolls/" class="btn btn-outline-dark">&LT; Назад</a>
-           </div>
+                <a href="<?=APPLICATION ?>/rolls/" class="btn btn-outline-dark"><i class="fas fa-undo"></i>&nbsp;Назад</a>
+            </div>
             <?php
             if($_GET['id'] == '') {
                 echo '<h1>Редактирование ролика</h1>';

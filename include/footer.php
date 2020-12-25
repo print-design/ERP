@@ -1,5 +1,5 @@
 <hr />
-<div class="container">
+<div class="container-fluid">
     &COPY;&nbsp;Принт-дизайн
 </div>
 
@@ -7,6 +7,7 @@
 <script src='<?=APPLICATION ?>/js/bootstrap.min.js'></script>
 
 <script>
+    // Фильтрация ввода
     $(document).ready(function(){
         $('.int-only').keypress(function(e) {
             if(/\D/.test(String.fromCharCode(e.charCode))) {
@@ -23,6 +24,7 @@
         });
     });
     
+    // Валидация
     $(document).ready(function(){
         $('input').keypress(function(){
             $(this).removeClass('is-invalid');

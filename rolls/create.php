@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <?php
-        include '../include/head.php';
-        
-        // Валидация формы
+<?php
+include '../include/topscripts.php';
+
+// Валидация формы
         define('ISINVALID', ' is-invalid');
         $form_valid = true;
         $error_message = '';
@@ -91,6 +88,12 @@
                 $conn->close();
             }
         }
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php
+        include '../include/head.php';
         ?>
         <script src='<?=APPLICATION ?>/js/jsQR.js'></script>
         <style>
@@ -99,33 +102,31 @@
             }
         </style>
     </head>
-   <body>
-       <?php
-       include '../include/header.php';
-       ?>
-       <div class="container">
-           <?php
-           if($error_message != '') {
-               echo <<<ERROR
-               <div class="alert alert-danger">$error_message</div>
-               ERROR;
-           }
-           ?>
-           <div class="btn-group">
-               <a href="<?=APPLICATION ?>/rolls/" class="btn btn-outline-dark">&LT; Назад</a>
-           </div>
-           <h1>Новый ролик</h1>
-           <div class="row">
-               <div class="col-12 col-md-6 col-lg-4">
-                   <form method="post">
-                       <div class="form-group">
-                           <label for="supplier_id">Поставщик</label>
-                           <select id="supplier_id" name="supplier_id" class="form-control<?=$supplier_id_valid ?>" required='required'>
-                               <option value="">...</option>
-                               <?php
-                               $conn = new mysqli('localhost', 'root', '', 'erp');
-                               if($conn->connect_error) {
-                                   die('Ошибка соединения: ' . $conn->connect_error);
+    <body>
+        <?php
+        include '../include/header.php';
+        ?>
+        <div class="container-fluid">
+            <?php
+            if(isset($error_message) && $error_message != '') {
+                echo "<div class='alert alert-danger'>$error_message</div>";
+            }
+            ?>
+            <div class="btn-group">
+                <a href="<?=APPLICATION ?>/rolls/" class="btn btn-outline-dark"><i class="fas fa-undo"></i>&nbsp;Назад</a>
+            </div>
+            <h1>Новый ролик</h1>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="supplier_id">Поставщик</label>
+                            <select id="supplier_id" name="supplier_id" class="form-control<?=$supplier_id_valid ?>" required='required'>
+                                <option value="">...</option>
+                                <?php
+                                $conn = new mysqli('localhost', 'root', '', 'erp');
+                                if($conn->connect_error) {
+                                    die('Ошибка соединения: ' . $conn->connect_error);
                                 }
                                 $result = $conn->query('select id, name from roll_supplier order by name');
                                 if ($result->num_rows > 0) {
@@ -136,15 +137,15 @@
                                 }
                                 $conn->close();
                                 ?>
-                           </select>
-                           <div class="invalid-feedback">Поставщик обязательно</div>
-                       </div>
-                       <div class="form-group">
-                           <label for="supplier_qr_code">Штрих-код от поставщика</label>
-                           <input type="text" id="supplier_qr_code" name="supplier_qr_code" class="form-control" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['supplier_qr_code'] : '' ?>" />
-                           <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-                           <canvas id="canvas" hidden></canvas>
-                           <script>
+                            </select>
+                            <div class="invalid-feedback">Поставщик обязательно</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="supplier_qr_code">Штрих-код от поставщика</label>
+                            <input type="text" id="supplier_qr_code" name="supplier_qr_code" class="form-control" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['supplier_qr_code'] : '' ?>" />
+                            <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                            <canvas id="canvas" hidden></canvas>
+                            <script>
                                var video = document.createElement("video");
                                var canvasElement = document.getElementById("canvas");
                                var canvas = canvasElement.getContext("2d");
