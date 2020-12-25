@@ -41,7 +41,7 @@ if($id === null) {
 $username = '';
 $fio = '';
         
-$sql = "select u.username, u.fio, u.quit "
+$sql = "select u.username, u.fio, u.email, u.quit "
         . "from user u where u.id = $id";
 
 $fetcher = new Fetcher($sql);
@@ -49,7 +49,8 @@ $error_message = $fetcher->error;
 
 $row = $fetcher->Fetch();
 $username = $row['username'];
-$fio = $row['fio'];
+$fio = htmlentities($row['fio']);
+$email = $row['email'];
 $quit = $row['quit'];
 
 $roles = (new Grabber("select id, local_name from role where id not in (select role_id from user_role where user_id = $id) order by local_name"))->result;
@@ -82,18 +83,28 @@ $myroles = (new Grabber("select ur.user_id, ur.role_id, r.local_name from role r
                             <div class="btn-group">
                                 <a href="<?=APPLICATION ?>/user/" class="btn btn-outline-dark"><i class="fas fa-undo"></i>&nbsp;К списку</a>
                                 <a href="<?=APPLICATION ?>/user/edit.php?id=<?=$id ?>" class="btn btn-outline-dark"><i class="fas fa-edit"></i>&nbsp;Редактировать</a>
+                                <?php
+                                if(filter_input(INPUT_COOKIE, USERNAME) != $username):
+                                ?>
                                 <a href="<?=APPLICATION ?>/user/delete.php?id=<?=$id ?>" class="btn btn-outline-dark"><i class="fas fa-trash-alt"></i>&nbsp;Удалить</a>
+                                <?php
+                                endif;
+                                ?>
                             </div>
                         </div>
                     </div>
                     <table class="table table-bordered">
                         <tr>
+                            <th>Логин</th>
+                            <td><?=$username ?></td>
+                        </tr>
+                        <tr>
                             <th>ФИО</th>
                             <td><?=$fio ?></td>
                         </tr>
                         <tr>
-                            <th>Логин</th>
-                            <td><?=$username ?></td>
+                            <th>E-Mail</th>
+                            <td><?=$email ?></td>
                         </tr>
                         <tr>
                             <th>Уволился</th>

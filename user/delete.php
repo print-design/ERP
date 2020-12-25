@@ -24,9 +24,10 @@ if($id === null) {
 }
         
 // Получение объекта
-$row = (new Fetcher("select username, fio, quit from user where id=$id"))->Fetch();
+$row = (new Fetcher("select username, fio, email, quit from user where id=$id"))->Fetch();
 $username = $row['username'];
 $fio = $row['fio'];
+$email = $row['email'];
 $quit = $row['quit'];
 ?>
 <!DOCTYPE html>
@@ -59,11 +60,15 @@ $quit = $row['quit'];
                     <table class="table table-bordered">
                         <tr>
                             <th>Логин</th>
-                            <td><?=$username ?></td>
+                            <td><?= htmlentities($username) ?></td>
                         </tr>
                         <tr>
                             <th>ФИО</th>
-                            <td><?=$fio ?></td>
+                            <td><?= htmlentities($fio) ?></td>
+                        </tr>
+                        <tr>
+                            <th>E-Mail</th>
+                            <td><?= htmlentities($email) ?></td>
                         </tr>
                         <tr>
                             <th>Уволился</th>

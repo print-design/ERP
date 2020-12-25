@@ -6,36 +6,44 @@ include '../include/restrict_admin.php';
 define('ISINVALID', ' is-invalid');
 $form_valid = true;
 $error_message = '';
-        
-$fio_valid = '';
+
 $username_valid = '';
+$fio_valid = '';
+$email_valid = '';
         
 // Обработка отправки формы
 $user_edit_submit = filter_input(INPUT_POST, 'user_edit_submit');
 if($user_edit_submit !== null) {
     $id = filter_input(INPUT_POST, 'id');
     $fio = filter_input(INPUT_POST, 'fio');
-    
-    if($fio == '') {
-        $fio_valid = ISINVALID;
-        $form_valid = false;
-    }
+    $email = filter_input(INPUT_POST, 'email');
     
     $username = filter_input(INPUT_POST, 'username');
     if($username == '') {
         $username_valid = ISINVALID;
         $form_valid = false;
     }
+    
+    if($fio == '') {
+        $fio_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if($email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $email_valid = ISINVALID;
+        $form_valid = false;
+    }
 
     if($form_valid) {
-        $fio = addslashes($fio);
         $username = addslashes($username);
+        $fio = addslashes($fio);
+        $email = addslashes($email);
         $quit = filter_input(INPUT_POST, 'quit') == 'on' ? 1 : 0;
-        $sql = "update user set fio='$fio', quit=$quit, username='$username' where id=$id";
+        $sql = "update user set fio='$fio', email='$email', quit=$quit, username='$username' where id=$id";
         
         $password = filter_input(INPUT_POST, 'password');
         if($password !== '') {
-            $sql = "update user set fio='$fio', quit=$quit, username='$username', password=password('$password') where id=$id";
+            $sql = "update user set fio='$fio', email='$email', quit=$quit, username='$username', password=password('$password') where id=$id";
         }
         
         $error_message = (new Executer($sql))->error;
@@ -55,10 +63,11 @@ if ($id === null) {
 $fio = '';
 $username = '';
 
-if ($row = (new Fetcher("select fio, quit, username from user where id=$id"))->Fetch()) {
-    $fio = $row['fio'];
-    $checked = ($row['quit'] == 0 ? "" : " checked='checked'");
+if ($row = (new Fetcher("select fio, email, quit, username from user where id=$id"))->Fetch()) {
     $username = $row['username'];
+    $fio = $row['fio'];
+    $email = $row['email'];
+    $checked = ($row['quit'] == 0 ? "" : " checked='checked'");
 }
 ?>
 <!DOCTYPE html>
@@ -92,11 +101,6 @@ if ($row = (new Fetcher("select fio, quit, username from user where id=$id"))->F
                     <form method="post">
                         <input type="hidden" id="id" name="id" value="<?=$_GET['id'] ?>"/>
                         <div class="form-group">
-                            <label for="name">ФИО</label>
-                            <input type="text" id="fio" name="fio" class="form-control<?=$fio_valid ?>" value="<?=htmlentities($fio) ?>" autocomplete="off" required="required"/>
-                            <div class="invalid-feedback">ФИО обязательно</div>
-                        </div>
-                        <div class="form-group">
                             <label for="username">Логин</label>
                             <input type="text" id="username" name="username" class="form-control<?=$username_valid ?>" value="<?=htmlentities($username) ?>" autocomplete="off" required="required"/>
                             <div class="invalid-feedback">Логин обязательно</div>
@@ -104,6 +108,16 @@ if ($row = (new Fetcher("select fio, quit, username from user where id=$id"))->F
                         <div class="form-group">
                             <label for="password">Пароль <span class="text-danger">(Если оставить поле пустым, пароль останется прежним)</span></label>
                             <input type="password" id="password" name="password" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="name">ФИО</label>
+                            <input type="text" id="fio" name="fio" class="form-control<?=$fio_valid ?>" value="<?=htmlentities($fio) ?>" autocomplete="off" required="required"/>
+                            <div class="invalid-feedback">ФИО обязательно</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">E-Mail</label>
+                            <input type="email" id="email" name="email" class="form-control<?=$email_valid ?>" value="<?=$email ?>" autocomplete="off"/>
+                            <div class="invalid-feedback">Неправильный формат E-Mail</div>
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="quit" name="quit"<?=$checked ?> />
