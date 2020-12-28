@@ -194,20 +194,24 @@ if($security_code_submit !== null) {
         $code = $row['code'];
         
         if(filter_input(INPUT_POST, 'code') == $code) {
-            setcookie(USER_ID, $user_id, 0, "/");
-            setcookie(USERNAME, $username, 0, "/");
-            setcookie(FIO, $fio, 0, "/");
+            $error_message = (new Executer("update user set code=NULL where id=$user_id"))->error;
             
-            $roles = array();
-            $role_i = 0;
-            $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
+            if($error_message == '') {
+                setcookie(USER_ID, $user_id, 0, "/");
+                setcookie(USERNAME, $username, 0, "/");
+                setcookie(FIO, $fio, 0, "/");
             
-            foreach ($roles_result as $role_row) {
-                $roles[$role_i++] = $role_row['name'];
+                $roles = array();
+                $role_i = 0;
+                $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
+            
+                foreach ($roles_result as $role_row) {
+                    $roles[$role_i++] = $role_row['name'];
+                }
+            
+                setcookie(ROLES, serialize($roles), 0, '/');
+                header("Refresh:0");
             }
-            
-            setcookie(ROLES, serialize($roles), 0, '/');
-            header("Refresh:0");
         }
         else {
             define('ISINVALID', ' is-invalid');
