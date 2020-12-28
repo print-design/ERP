@@ -1,6 +1,10 @@
 <?php
 include '../include/topscripts.php';
-include '../include/restrict_logged_in.php';
+
+// Авторизация
+if(!LoggedIn()) {
+    header('Location: '.APPLICATION.'/unauthorized.php');
+}
         
 // Получение личных данных
 $row = (new Fetcher("select fio, username from user where id=".GetUserId()))->Fetch();

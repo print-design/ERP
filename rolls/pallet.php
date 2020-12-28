@@ -1,6 +1,11 @@
 <?php
 include '../include/topscripts.php';
 
+// Авторизация
+if(!LoggedIn()) {
+    header('Location: '.APPLICATION.'/unauthorized.php');
+}
+
         // Валидация формы
         define('ISINVALID', ' is-invalid');
         $form_valid = true;

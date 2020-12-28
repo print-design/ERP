@@ -1,6 +1,11 @@
 <?php
 include '../include/topscripts.php';
 
+// Авторизация
+if(!LoggedIn()) {
+    header('Location: '.APPLICATION.'/unauthorized.php');
+}
+
 // Получение объекта
         $id = '';
         $date = '';

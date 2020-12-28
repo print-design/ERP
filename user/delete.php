@@ -1,6 +1,10 @@
 <?php
 include '../include/topscripts.php';
-include '../include/restrict_admin.php';
+
+// Авторизация
+if(!IsInRole('admin')) {
+    header('Location: '.APPLICATION.'/unauthorized.php');
+}
 
 // Обработка отправки формы
 $delete_user_submit = filter_input(INPUT_POST, 'delete_user_submit');
