@@ -49,7 +49,7 @@
                 <?php
                 echo filter_input(INPUT_COOKIE, FIO);
                 if(IsInRole('cutter')) {
-                    echo ', автовыход через:&nbsp;';
+                    echo ', автовыход через&nbsp;';
                     echo '<div id="autologout">';
                     echo filter_input(INPUT_COOKIE, LOGIN_TIME);
                     echo '</div>';

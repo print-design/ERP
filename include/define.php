@@ -13,4 +13,5 @@ define('ROLES', 'MKJhytf__iuyTREfgyUH__iu76_7765GVFCffd_8u7y');
 define('LOGIN_TIME', '5_kkijUHY_9887yHGj__98u776BHgytd__juHY');
 
 define('SCROLL', 'jIUGGtrJIUUgg---__ijUH67tfRDE8ujjhytRF_kji');
+define('AUTOLOGOUT_MIN', 20);
 ?>
