@@ -41,10 +41,19 @@
         $user_name = filter_input(INPUT_COOKIE, USERNAME);
         if($user_name !== null):
         ?>
+        <?php
+        
+        ?>
         <form class="form-inline" method="post">
             <label>
                 <?php
                 echo filter_input(INPUT_COOKIE, FIO);
+                if(IsInRole('cutter')) {
+                    echo ', автовыход через:&nbsp;';
+                    echo '<div id="autologout">';
+                    echo filter_input(INPUT_COOKIE, LOGIN_TIME);
+                    echo '</div>';
+                }
                 ?>
                 &nbsp;
             </label>

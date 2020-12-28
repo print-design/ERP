@@ -164,6 +164,7 @@ if($login_submit !== null){
             setcookie(USER_ID, $user_id, 0, "/");
             setcookie(USERNAME, $username, 0, "/");
             setcookie(FIO, $fio, 0, "/");
+            setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
             
             $roles = array();
             $role_i = 0;
@@ -200,6 +201,7 @@ if($security_code_submit !== null) {
                 setcookie(USER_ID, $user_id, 0, "/");
                 setcookie(USERNAME, $username, 0, "/");
                 setcookie(FIO, $fio, 0, "/");
+                setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
             
                 $roles = array();
                 $role_i = 0;
@@ -227,6 +229,7 @@ if($logout_submit !== null) {
     setcookie(USER_ID, '', 0, "/");
     setcookie(USERNAME, '', 0, "/");
     setcookie(FIO, '', 0, "/");
+    setcookie(LOGIN_TIME, '', 0, "/");
     setcookie(ROLES, '', 0, "/");
     header("Refresh:0");
     header('Location: '.APPLICATION.'/');
