@@ -133,24 +133,38 @@ if($login_submit !== null){
         $user_id = '';
         $username = '';
         $fio = '';
+        $twofactor = 0;
         
-        $users_result = (new Grabber("select id, username, fio from user where username='$login_username' and password=password('$login_password') and quit = 0"))->result;
+        $sql = "select u.id, u.username, u.fio, u.email, "
+                . "(select count(*) from user_role ur inner join role r on ur.role_id=r.id where ur.user_id=u.id and r.twofactor=true) twofactor "
+                . "from user u where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
+        
+        $users_result = (new Grabber($sql))->result;
         
         foreach ($users_result as $row) {
             $user_id = $row['id'];
-            setcookie(USER_ID, $user_id, 0, "/");
-            
             $username = $row['username'];
-            setcookie(USERNAME, $username, 0, "/");
-            
             $fio = $row['fio'];
-            setcookie(FIO, $fio, 0, "/");
+            $email = $row['email'];
+            $twofactor = $row['twofactor'];
         }
         
         if($user_id == '' || $username == '') {
             $error_message = "Неправильный логин или пароль";
         }
         else {
+            //*******************************
+            // Двухфакторная аутентификация
+            if($twofactor == 1) {
+                $code_valid = '';
+                include 'twofactor_email.php';
+            }
+            // ****************************
+            
+            setcookie(USER_ID, $user_id, 0, "/");
+            setcookie(USERNAME, $username, 0, "/");
+            setcookie(FIO, $fio, 0, "/");
+            
             $roles = array();
             $role_i = 0;
             $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
@@ -165,6 +179,45 @@ if($login_submit !== null){
     }
 }
 
+// Обработка формы отправки кода безопасности
+$security_code_submit = filter_input(INPUT_POST, 'security_code_submit');
+if($security_code_submit !== null) {
+    $id = filter_input(INPUT_POST, 'id');
+    $sql = "select id, username, fio, email, code from user where id=$id";
+    $result = (new Grabber($sql))->result;
+    
+    foreach ($result as $row) {
+        $user_id = $row['id'];
+        $username = $row['username'];
+        $fio = $row['fio'];
+        $email = $row['email'];
+        $code = $row['code'];
+        
+        if(filter_input(INPUT_POST, 'code') == $code) {
+            setcookie(USER_ID, $user_id, 0, "/");
+            setcookie(USERNAME, $username, 0, "/");
+            setcookie(FIO, $fio, 0, "/");
+            
+            $roles = array();
+            $role_i = 0;
+            $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
+            
+            foreach ($roles_result as $role_row) {
+                $roles[$role_i++] = $role_row['name'];
+            }
+            
+            setcookie(ROLES, serialize($roles), 0, '/');
+            header("Refresh:0");
+        }
+        else {
+            define('ISINVALID', ' is-invalid');
+            $code_valid = ISINVALID;
+            include 'twofactor_email.php';
+        }
+    }
+}
+
+// Выход из системы
 $logout_submit = filter_input(INPUT_POST, 'logout_submit');
 if($logout_submit !== null) {
     setcookie(USER_ID, '', 0, "/");

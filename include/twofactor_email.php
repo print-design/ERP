@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <?php
+        include 'head.php';
+        
+        if(!isset($user_id) || $user_id == null || $user_id == '' ||
+                !isset($email) || $email == null || $email == '' ||
+                !isset($fio) || !isset($code_valid)) {
+            header('Location: /');
+        }
+        
+        if($code_valid == '') {
+            $code = random_int(100000, 999999);
+            $error_message = (new Executer("update user set code=$code where id=$user_id"))->error;
+        
+            include __DIR__.'/../PHPMailer/Exception.php';
+            include __DIR__.'/../PHPMailer/PHPMailer.php';
+            include __DIR__.'/../PHPMailer/SMTP.php';
+        
+            $code_mail = new \PHPMailer\PHPMailer\PHPMailer();
+            $code_mail->CharSet = 'UTF-8';
+        
+            // Настройки SMTP
+            $code_mail->isSMTP();
+            $code_mail->SMTPAuth = true;
+            $code_mail->SMTPDebug = 0;
+        
+            $code_mail->Host = 'ssl://smtp.yandex.ru';
+            $code_mail->Port = 465;
+            $code_mail->Username = 'printdiz@yandex.ru';
+            $code_mail->Password = 'vaa238350pmb';
+        
+            // От кого
+            $code_mail->setFrom('printdiz@yandex.ru', 'Принт-Дизайн');
+            
+            // Кому
+            $code_mail->addAddress($email, $fio);
+ 
+            // Тема письма
+            $code_mail->Subject = 'Принт-Дизайн, ERP, код безопасности';
+
+            // Тело письма
+            $code_body = "<p>Принт-Дизайн, ERP, код безопасности</p>";
+            $code_body .= "<p><strong>Пользователь:</strong> $fio</p>";
+            $code_body .= "<p><strong>Код безопасности:</strong> $code</p>";
+            $code_mail->msgHTML($code_body);
+
+            // Приложение
+            //$code_mail->addAttachment(__DIR__ . '/image.jpg');
+ 
+            $code_result = $code_mail->send();
+            if(!$code_result) {
+                $error_message = "Ошибка при отправке E-Mail";
+            }
+        }
+        ?>
+    </head>
+    <body>
+        <?php
+        // put your code here
+        include 'header.php';
+        ?>
+        <div class="container-fluid">
+            <?php
+            if(isset($error_message) && $error_message != '') {
+               echo "<div class='alert alert-danger'>$error_message</div>";
+            }
+            ?>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <h1>Код безопасности</h1>
+                    <p>Введите код, отправленный на Ваш адрес электронной почты.</p>
+                    <form method="post">
+                        <input type="hidden" id="id" name="id" value="<?=$user_id ?>"/>
+                        <input type="hidden" id="code" name="code" value="<?=$code ?>"/>
+                        <div class="form-group">
+                            <input type="text" class="form-control<?=$code_valid ?>" id="code" name="code" autofocus="on" required="on" />
+                            <div class="invalid-feedback">Неправильный код безопасности</div>
+                        </div>
+                        <button type="submit" id="security_code_submit" name="security_code_submit" class="btn btn-outline-dark">OK</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <?php
+        include 'footer.php';
+        ?>
+    </body>
+</html>
+<?php
+die();
+?>
+
