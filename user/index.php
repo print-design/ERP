@@ -24,29 +24,34 @@ if(!IsInRole('admin')) {
             }
             ?>
             <div class="d-flex justify-content-between mb-2">
-                <div class="p-1">
-                    <h1>Пользователи</h1>
+                <div class="p-1 row">
+                    <div class="col-6">
+                        <a href="<?=APPLICATION ?>/user/">Сотрудники</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="<?=APPLICATION ?>/supplier/">Поставщики</a>    
+                    </div>
                 </div>
                 <div class="p-1">
                     <a href="create.php" title="Добавить пользователя" class="btn btn-outline-dark mr-sm-2">
-                        <i class="fas fa-plus"></i>&nbsp;Добавить
+                        <i class="fas fa-plus"></i>&nbsp;Добавить сотрудника
                     </a>
                 </div>
             </div>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Зарегистрирован</th>
-                        <th>Логин</th>
                         <th>ФИО</th>
-                        <th>E-Mail
-                        <th>Роль</th>
-                        <th>Уволился</th>
+                        <th>Должность</th>
+                        <th>Логин</th>
+                        <th>E-Mail</th>
+                        <th>Телефон</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select u.id, date_format(u.date, '%d.%m.%Y') date, u.username, u.fio, u.email, u.quit, r.name role "
+                    $sql = "select u.id, u.fio, r.local_name role, u.username, u.email, u.phone "
                             . "from user u inner join role r on u.role_id = r.id "
                             . "order by u.fio asc";
                     $fetcher = new Fetcher($sql);
@@ -54,12 +59,12 @@ if(!IsInRole('admin')) {
                     
                     while ($row = $fetcher->Fetch()) {
                         echo "<tr>"
-                                . "<td>".$row['date']."</td>"
-                                ."<td><a href='".APPLICATION."/user/details.php?id=".$row['id']."'>".$row['username']."</a></td>"
                                 ."<td>".$row['fio']."</td>"
-                                ."<td>".$row['email']."</td>"
                                 ."<td>".$row['role']."</td>"
-                                ."<td>".($row['quit'] == 0 ? '' : '<i class="fas fa-check"></i>')."</td>"
+                                ."<td>".$row['username']."</td>"
+                                ."<td>".$row['email']."</td>"
+                                ."<td>".$row['phone']."</td>"
+                                ."<td><a href='".APPLICATION."/user/delete.php?id=".$row['id']."'><i class='fas fa-trash'></i></td>"
                                 ."</tr>";
                     }
                     ?>

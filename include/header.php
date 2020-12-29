@@ -41,7 +41,7 @@
             if(IsInRole(array('admin', 'administrator', 'technologist'))):
             ?>
             <li class="nav-item">
-                <a class="nav-link" href="<?=APPLICATION ?>/admin.php">Админка</a>
+                <a class="nav-link" href="<?=APPLICATION ?>/user/">Админка</a>
             </li>
             <?php
             endif;
