@@ -151,9 +151,10 @@ if($login_submit !== null){
         $fio = '';
         $twofactor = 0;
         
-        $sql = "select u.id, u.username, u.fio, u.email, "
-                . "(select count(*) from user_role ur inner join role r on ur.role_id=r.id where ur.user_id=u.id and r.twofactor=true) twofactor "
-                . "from user u where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
+        $sql = "select u.id, u.username, u.fio, u.email, r.twofactor "
+                . "from user u "
+                . "inner join role r on u.role_id=r.id "
+                . "where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
         
         $users_result = (new Grabber($sql))->result;
         
@@ -184,7 +185,7 @@ if($login_submit !== null){
             
             $roles = array();
             $role_i = 0;
-            $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
+            $roles_result = (new Grabber("select r.name from user u inner join role r on u.role_id = r.id where u.id = $user_id"))->result;
             
             foreach ($roles_result as $role_row) {
                 $roles[$role_i++] = $role_row['name'];
@@ -221,7 +222,7 @@ if($security_code_submit !== null) {
             
                 $roles = array();
                 $role_i = 0;
-                $roles_result = (new Grabber("select r.name from user_role ur inner join role r on ur.role_id = r.id where ur.user_id = $user_id"))->result;
+                $roles_result = (new Grabber("select user u inner join role r on u.role_id = r.id where u.id = $user_id"))->result;
             
                 foreach ($roles_result as $role_row) {
                     $roles[$role_i++] = $role_row['name'];

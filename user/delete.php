@@ -10,14 +10,10 @@ if(!IsInRole('admin')) {
 $delete_user_submit = filter_input(INPUT_POST, 'delete_user_submit');
 if($delete_user_submit !== null) {
     $user_id = filter_input(INPUT_POST, 'id');
-    $error_message = (new Executer("delete from user_role where user_id=$user_id"))->error;
+    $error_message = (new Executer("delete from user where id=$user_id"))->error;
     
     if($error_message == '') {
-        $error_message = (new Executer("delete from user where id=$user_id"))->error;
-        
-        if($error_message == '') {
-            header('Location: '.APPLICATION.'/user/');
-        }
+        header('Location: '.APPLICATION.'/user/');
     }
 }
         

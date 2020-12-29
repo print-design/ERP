@@ -40,15 +40,15 @@ if(!IsInRole('admin')) {
                         <th>Логин</th>
                         <th>ФИО</th>
                         <th>E-Mail
-                        <th>Роли</th>
+                        <th>Роль</th>
                         <th>Уволился</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select u.id, date_format(u.date, '%d.%m.%Y') date, u.username, u.fio, u.email, u.quit, "
-                            . "(SELECT GROUP_CONCAT(DISTINCT r.local_name SEPARATOR ', ') FROM role r inner join user_role ur on ur.role_id = r.id where ur.user_id = u.id) roles "
-                            . "from user u order by u.fio asc";
+                    $sql = "select u.id, date_format(u.date, '%d.%m.%Y') date, u.username, u.fio, u.email, u.quit, r.name role "
+                            . "from user u inner join role r on u.role_id = r.id "
+                            . "order by u.fio asc";
                     $fetcher = new Fetcher($sql);
                     $error_message = $fetcher->error;
                     
@@ -58,7 +58,7 @@ if(!IsInRole('admin')) {
                                 ."<td><a href='".APPLICATION."/user/details.php?id=".$row['id']."'>".$row['username']."</a></td>"
                                 ."<td>".$row['fio']."</td>"
                                 ."<td>".$row['email']."</td>"
-                                ."<td>".$row['roles']."</td>"
+                                ."<td>".$row['role']."</td>"
                                 ."<td>".($row['quit'] == 0 ? '' : '<i class="fas fa-check"></i>')."</td>"
                                 ."</tr>";
                     }
