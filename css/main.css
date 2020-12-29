@@ -24,6 +24,14 @@ li#nav-user {
     width: 36px;
     height: 36px;
     text-align: center;
-    padding-top: 9px;
     border-radius: 50%;
+}
+
+#user-dropdown {
+    right: 0;
+    left: auto;
+}
+
+li#nav-user a.dropdown-toggle::after {
+    display: none;
 }

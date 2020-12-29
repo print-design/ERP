@@ -38,26 +38,27 @@
             ?>
         </ul>
         <?php
+        if(IsInRole('cutter')) {
+            echo 'Автовыход через&nbsp;';
+            echo '<div id="autologout">';
+            echo filter_input(INPUT_COOKIE, LOGIN_TIME);
+            echo '</div>';
+            echo '&nbsp;&nbsp;';
+        }
         $user_name = filter_input(INPUT_COOKIE, USERNAME);
         if($user_name !== null):
         ?>
-        <form class="form-inline" method="post">
-            <label>
-                <?php
-                echo filter_input(INPUT_COOKIE, FIO);
-                if(IsInRole('cutter')) {
-                    echo ', автовыход через&nbsp;';
-                    echo '<div id="autologout">';
-                    echo filter_input(INPUT_COOKIE, LOGIN_TIME);
-                    echo '</div>';
-                }
-                ?>
-                &nbsp;
-            </label>
-            <button type="submit" class="btn btn-outline-dark" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
-        </form>
         <ul class="navbar-nav">
-            <li class="nav-item" id="nav-user"><?= Abbreviate(filter_input(INPUT_COOKIE, FIO)) ?></li>
+            <li class="nav-item dropdown" id="nav-user">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Abbreviate(filter_input(INPUT_COOKIE, FIO)) ?></a>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <a class="dropdown-item" href="?logout_submit=1">
+                        <form method="post">
+                            <button type="submit" class="btn btn-link" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
+                        </form>
+                    </a>
+                </div>
+            </li>
         </ul>
         <?php
         else:
