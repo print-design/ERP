@@ -23,10 +23,13 @@ function GetUserId() {
 }
 
 function IsInRole($role) {
-    $roles = filter_input(INPUT_COOKIE, ROLES);
-    if($roles !== null) {
-        $arr_roles = unserialize($roles);
-        return in_array($role, $arr_roles);
+    $cookie = filter_input(INPUT_COOKIE, ROLES);
+    
+    if(is_array($role)) {
+        return in_array($cookie, $role);
+    }
+    else {
+        return $cookie == $role;
     }
     
     return false;
@@ -149,9 +152,10 @@ if($login_submit !== null){
         $user_id = '';
         $username = '';
         $fio = '';
+        $role = '';
         $twofactor = 0;
         
-        $sql = "select u.id, u.username, u.fio, u.email, r.twofactor "
+        $sql = "select u.id, u.username, u.fio, u.email, r.name role, r.twofactor "
                 . "from user u "
                 . "inner join role r on u.role_id=r.id "
                 . "where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
@@ -162,6 +166,7 @@ if($login_submit !== null){
             $user_id = $row['id'];
             $username = $row['username'];
             $fio = $row['fio'];
+            $role = $row['role'];
             $email = $row['email'];
             $twofactor = $row['twofactor'];
         }
@@ -181,17 +186,9 @@ if($login_submit !== null){
             setcookie(USER_ID, $user_id, 0, "/");
             setcookie(USERNAME, $username, 0, "/");
             setcookie(FIO, $fio, 0, "/");
+            setcookie(ROLES, $role, 0, "/");
             setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
-            
-            $roles = array();
-            $role_i = 0;
-            $roles_result = (new Grabber("select r.name from user u inner join role r on u.role_id = r.id where u.id = $user_id"))->result;
-            
-            foreach ($roles_result as $role_row) {
-                $roles[$role_i++] = $role_row['name'];
-            }
-            
-            setcookie(ROLES, serialize($roles), 0, '/');
+
             header("Refresh:0");
         }
     }
@@ -201,13 +198,16 @@ if($login_submit !== null){
 $security_code_submit = filter_input(INPUT_POST, 'security_code_submit');
 if($security_code_submit !== null) {
     $id = filter_input(INPUT_POST, 'id');
-    $sql = "select id, username, fio, email, code from user where id=$id";
+    $sql = "select u.id, u.username, u.fio, u.email, u.code, r.name role "
+            . "from user u inner join role r on u.role_id = r.id "
+            . "where u.id=$id";
     $result = (new Grabber($sql))->result;
     
     foreach ($result as $row) {
         $user_id = $row['id'];
         $username = $row['username'];
         $fio = $row['fio'];
+        $role = $row['role'];
         $email = $row['email'];
         $code = $row['code'];
         
@@ -218,17 +218,9 @@ if($security_code_submit !== null) {
                 setcookie(USER_ID, $user_id, 0, "/");
                 setcookie(USERNAME, $username, 0, "/");
                 setcookie(FIO, $fio, 0, "/");
+                setcookie(ROLES, $role, 0, '/');
                 setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
-            
-                $roles = array();
-                $role_i = 0;
-                $roles_result = (new Grabber("select user u inner join role r on u.role_id = r.id where u.id = $user_id"))->result;
-            
-                foreach ($roles_result as $role_row) {
-                    $roles[$role_i++] = $role_row['name'];
-                }
-            
-                setcookie(ROLES, serialize($roles), 0, '/');
+                
                 header("Refresh:0");
             }
         }

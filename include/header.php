@@ -23,18 +23,6 @@
             </li>
             <?php
             endif;
-            if(IsInRole('admin')):
-            ?>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    Администратор
-                </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item<?=$user_status ?>" href="<?=APPLICATION ?>/user/">Пользователи</a>
-                </div>
-            </li>
-            <?php
-            endif;
             ?>
         </ul>
         <?php
@@ -49,14 +37,24 @@
         if($user_name !== null):
         ?>
         <ul class="navbar-nav">
+            <?php
+            if(IsInRole(array('admin', 'administrator', 'technologist'))):
+            ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?=APPLICATION ?>/admin.php">Админка</a>
+            </li>
+            <?php
+            endif;
+            ?>
+            <li class="nav-item1">
+                <a class="nav-link" href="<?=APPLICATION ?>/search.php"><i class="fas fa-search"></i></a>
+            </li>
             <li class="nav-item dropdown" id="nav-user">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Abbreviate(filter_input(INPUT_COOKIE, FIO)) ?></a>
                 <div class="dropdown-menu" id="user-dropdown">
-                    <a class="dropdown-item" href="?logout_submit=1">
-                        <form method="post">
-                            <button type="submit" class="btn btn-link" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
-                        </form>
-                    </a>
+                    <form method="post">
+                        <button type="submit" class="btn btn-link dropdown-item" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
+                    </form>
                 </div>
             </li>
         </ul>
