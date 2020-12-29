@@ -32,6 +32,22 @@ function IsInRole($role) {
     return false;
 }
 
+function Abbreviate($text) {
+    $substrings = explode(' ', $text);
+    $result = '';
+    
+    $i = 0;
+    foreach ($substrings as $substring) {
+        if(strlen($substring) > 0) {
+            if(++$i < 3) {
+                $result .= mb_substr($substring, 0, 1);
+            }
+        }
+    }
+    
+    return $result;
+}
+
 // Классы
 class Executer {
     public $error = '';

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid header">
     <nav class="navbar navbar-expand-sm">
         <a class="navbar-brand" href="<?=APPLICATION ?>/">
             <i class="fas fa-home"></i>
@@ -41,9 +41,6 @@
         $user_name = filter_input(INPUT_COOKIE, USERNAME);
         if($user_name !== null):
         ?>
-        <?php
-        
-        ?>
         <form class="form-inline" method="post">
             <label>
                 <?php
@@ -59,6 +56,9 @@
             </label>
             <button type="submit" class="btn btn-outline-dark" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
         </form>
+        <ul class="navbar-nav">
+            <li class="nav-item" id="nav-user"><?= Abbreviate(filter_input(INPUT_COOKIE, FIO)) ?></li>
+        </ul>
         <?php
         else:
         ?>
@@ -78,4 +78,4 @@
         ?>
     </nav>
 </div>
-<hr />
+<div id="topmost"></div>
