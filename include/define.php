@@ -15,4 +15,7 @@ define('LOGIN_TIME', '5_kkijUHY_9887yHGj__98u776BHgytd__juHY');
 
 define('SCROLL', 'jIUGGtrJIUUgg---__ijUH67tfRDE8ujjhytRF_kji');
 define('AUTOLOGOUT_MIN', 20);
+
+define('EMAIL_TO', 'printdiz@yandex.ru');
+define('EMAIL_TO_NAME', "Принт-Дизайн");
 ?>
