@@ -5,6 +5,13 @@ include '../include/topscripts.php';
 if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
+
+// Обработка отправки формы
+$delete_user_submit = filter_input(INPUT_POST, 'delete_user_submit');
+if($delete_user_submit !== null) {
+    $id = filter_input(INPUT_POST, 'id');
+    $error_message = (new Executer("delete from user where id=$id"))->error;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -63,9 +70,16 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                                 ."<td>".$row['role']."</td>"
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"
-                                ."<td>".$row['phone']."</td>"
-                                ."<td><a href='".APPLICATION."/user/delete.php?id=".$row['id']."'><i class='fas fa-trash'></i></td>"
-                                ."</tr>";
+                                ."<td>".$row['phone']."</td>";
+                        echo '<td>';
+                        if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
+                            echo "<form method='post'>";
+                            echo "<input type='hidden' id='id' name='id' value='".$row['id']."' />";
+                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_user_submit' name='delete_user_submit'><i class='fas fa-trash'></i></button>";
+                            echo '</form>';
+                        }
+                        echo '</td>';
+                        echo "</tr>";
                     }
                     ?>
                 </tbody>
