@@ -66,7 +66,7 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                         echo "<tr>"
                         . "<td>$name</td>"
                                 . "<td>$first$more</td>"
-                                . "<td><a href=''><i class='fas fa-edit'></i></a></td>"
+                                . "<td><a href='".APPLICATION."/supplier/details.php?id=".$row['id']."'><i class='fas fa-edit'></i></a></td>"
                                 . "</tr>";
                     }
                     ?>

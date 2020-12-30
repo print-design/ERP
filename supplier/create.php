@@ -81,5 +81,8 @@ if($supplier_create_submit !== null || $film_type_create_submit !== null) {
                 </div>
             </div>
         </div>
+        <?php
+        include '../include/footer.php';
+        ?>
     </body>
 </html>
