@@ -5,8 +5,8 @@
         
         if(!isset($user_id) || $user_id == null || $user_id == '' ||
                 !isset($email) || $email == null || $email == '' ||
-                !isset($fio) || !isset($code_valid)) {
-            header('Location: /');
+                !isset($last_name) || !isset($first_name) || !isset($code_valid)) {
+            header('Location: '.APPLICATION);
         }
         
         if($code_valid == '') {
@@ -34,14 +34,14 @@
             $code_mail->setFrom('printdiz@yandex.ru', 'Принт-Дизайн');
             
             // Кому
-            $code_mail->addAddress($email, $fio);
+            $code_mail->addAddress($email, $last_name.' '.$first_name);
  
             // Тема письма
             $code_mail->Subject = 'Принт-Дизайн, ERP, код безопасности';
 
             // Тело письма
             $code_body = "<p>Принт-Дизайн, ERP, код безопасности</p>";
-            $code_body .= "<p><strong>Пользователь:</strong> $fio</p>";
+            $code_body .= "<p><strong>Пользователь:</strong> $last_name $first_name</p>";
             $code_body .= "<p><strong>Код безопасности:</strong> $code</p>";
             $code_mail->msgHTML($code_body);
 

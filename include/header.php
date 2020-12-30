@@ -11,10 +11,6 @@ function Initials() {
         $result .= $last_name;
     }
     
-    if(mb_strlen($last_name) > 0 && mb_strlen($first_name) > 0) {
-        $result .= ' ';
-    }
-    
     if(mb_strlen($first_name) > 1) {
         $result .= mb_substr($first_name, 0, 1);
     }
