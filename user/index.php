@@ -51,7 +51,7 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select u.id, u.fio, r.local_name role, u.username, u.email, u.phone "
+                    $sql = "select u.id, u.first_name, u.last_name, r.local_name role, u.username, u.email, u.phone "
                             . "from user u inner join role r on u.role_id = r.id "
                             . "order by u.fio asc";
                     $fetcher = new Fetcher($sql);
@@ -59,7 +59,7 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                     
                     while ($row = $fetcher->Fetch()) {
                         echo "<tr>"
-                                ."<td>".$row['fio']."</td>"
+                                ."<td>".$row['last_name'].' '.$row['first_name']."</td>"
                                 ."<td>".$row['role']."</td>"
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"

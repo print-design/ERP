@@ -65,7 +65,7 @@ class Executer {
         }
         
         $conn->query('set names utf8');
-        $result = $conn->query($sql);
+        $conn->query($sql);
         $this->error = $conn->error;
         $this->insert_id = $conn->insert_id;
         
@@ -151,11 +151,12 @@ if($login_submit !== null){
     if($login_form_valid) {
         $user_id = '';
         $username = '';
-        $fio = '';
+        $last_name = '';
+        $first_name = '';
         $role = '';
         $twofactor = 0;
         
-        $sql = "select u.id, u.username, u.fio, u.email, r.name role, r.twofactor "
+        $sql = "select u.id, u.username, u.last_name, u.first_name, u.email, r.name role, r.twofactor "
                 . "from user u "
                 . "inner join role r on u.role_id=r.id "
                 . "where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
@@ -165,7 +166,8 @@ if($login_submit !== null){
         foreach ($users_result as $row) {
             $user_id = $row['id'];
             $username = $row['username'];
-            $fio = $row['fio'];
+            $last_name = $row['last_name'];
+            $first_name = $row['first_name'];
             $role = $row['role'];
             $email = $row['email'];
             $twofactor = $row['twofactor'];
@@ -185,10 +187,10 @@ if($login_submit !== null){
             
             setcookie(USER_ID, $user_id, 0, "/");
             setcookie(USERNAME, $username, 0, "/");
-            setcookie(FIO, $fio, 0, "/");
-            setcookie(ROLES, $role, 0, "/");
+            setcookie(LAST_NAME, $last_name, 0, "/");
+            setcookie(FIRST_NAME, $first_name, 0, "/");
+            setcookie(ROLE, $role, 0, "/");
             setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
-
             header("Refresh:0");
         }
     }
@@ -198,7 +200,7 @@ if($login_submit !== null){
 $security_code_submit = filter_input(INPUT_POST, 'security_code_submit');
 if($security_code_submit !== null) {
     $id = filter_input(INPUT_POST, 'id');
-    $sql = "select u.id, u.username, u.fio, u.email, u.code, r.name role "
+    $sql = "select u.id, u.username, u.last_name, u.first_name, u.email, u.code, r.name role "
             . "from user u inner join role r on u.role_id = r.id "
             . "where u.id=$id";
     $result = (new Grabber($sql))->result;
@@ -206,7 +208,8 @@ if($security_code_submit !== null) {
     foreach ($result as $row) {
         $user_id = $row['id'];
         $username = $row['username'];
-        $fio = $row['fio'];
+        $last_name = $row['last_name'];
+        $first_name = $row['first_name'];
         $role = $row['role'];
         $email = $row['email'];
         $code = $row['code'];
@@ -217,10 +220,10 @@ if($security_code_submit !== null) {
             if($error_message == '') {
                 setcookie(USER_ID, $user_id, 0, "/");
                 setcookie(USERNAME, $username, 0, "/");
-                setcookie(FIO, $fio, 0, "/");
-                setcookie(ROLES, $role, 0, '/');
+                setcookie(LAST_NAME, $last_name, 0, "/");
+                setcookie(FIRST_NAME, $first_name, 0, "/");
+                setcookie(ROLE, $role, 0, '/');
                 setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
-                
                 header("Refresh:0");
             }
         }
@@ -237,9 +240,10 @@ $logout_submit = filter_input(INPUT_POST, 'logout_submit');
 if($logout_submit !== null) {
     setcookie(USER_ID, '', 0, "/");
     setcookie(USERNAME, '', 0, "/");
-    setcookie(FIO, '', 0, "/");
+    setcookie(LAST_NAME, '', 0, "/");
+    setcookie(FIRST_NAME, '', 0, "/");
     setcookie(LOGIN_TIME, '', 0, "/");
-    setcookie(ROLES, '', 0, "/");
+    setcookie(ROLE, '', 0, "/");
     header("Refresh:0");
     header('Location: '.APPLICATION.'/');
 }
