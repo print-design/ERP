@@ -53,13 +53,13 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                     <?php
                     $sql = "select u.id, u.first_name, u.last_name, r.local_name role, u.username, u.email, u.phone "
                             . "from user u inner join role r on u.role_id = r.id "
-                            . "order by u.fio asc";
+                            . "order by u.first_name asc";
                     $fetcher = new Fetcher($sql);
                     $error_message = $fetcher->error;
                     
                     while ($row = $fetcher->Fetch()) {
                         echo "<tr>"
-                                ."<td>".$row['last_name'].' '.$row['first_name']."</td>"
+                                ."<td>".$row['first_name'].' '.$row['last_name']."</td>"
                                 ."<td>".$row['role']."</td>"
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"
