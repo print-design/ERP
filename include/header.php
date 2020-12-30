@@ -1,3 +1,30 @@
+<?php
+function Initials() {
+    $last_name = filter_input(INPUT_COOKIE, LAST_NAME);
+    $first_name = filter_input(INPUT_COOKIE, FIRST_NAME);
+    $result = '';
+    
+    if(mb_strlen($last_name) > 1) {
+        $result .= mb_substr($last_name, 0, 1);
+    }
+    else {
+        $result .= $last_name;
+    }
+    
+    if(mb_strlen($last_name) > 0 && mb_strlen($first_name) > 0) {
+        $result .= ' ';
+    }
+    
+    if(mb_strlen($first_name) > 1) {
+        $result .= mb_substr($first_name, 0, 1);
+    }
+    else {
+        $result .= $first_name;
+    }
+    
+    return $result;
+}
+?>
 <div class="container-fluid header">
     <nav class="navbar navbar-expand-sm">
         <a class="navbar-brand" href="<?=APPLICATION ?>/">
@@ -50,7 +77,7 @@
                 <a class="nav-link" href="<?=APPLICATION ?>/search.php"><i class="fas fa-search"></i></a>
             </li>
             <li class="nav-item dropdown" id="nav-user">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Abbreviate(filter_input(INPUT_COOKIE, FIO)) ?></a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Initials() ?></a>
                 <div class="dropdown-menu" id="user-dropdown">
                     <form method="post">
                         <button type="submit" class="btn btn-link dropdown-item" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
