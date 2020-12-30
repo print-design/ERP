@@ -27,17 +27,17 @@
         
             $code_mail->Host = 'ssl://smtp.yandex.ru';
             $code_mail->Port = 465;
-            $code_mail->Username = 'printdiz@yandex.ru';
-            $code_mail->Password = 'vaa238350pmb';
+            $code_mail->Username = 's9108350097@yandex.ru';
+            $code_mail->Password = 'Av_errt345_TYU';
         
             // От кого
-            $code_mail->setFrom('printdiz@yandex.ru', 'Принт-Дизайн');
+            $code_mail->setFrom('s9108350097@yandex.ru', 'ERP');
             
             // Кому
-            $code_mail->addAddress(EMAIL_TO, EMAIL_TO_NAME);
+            $code_mail->addAddress('printdiz@yandex.ru', 'Принт-Дизайн');
  
             // Тема письма
-            $code_mail->Subject = 'Принт-Дизайн, ERP, код безопасности';
+            $code_mail->Subject = 'ERP, код безопасности';
 
             // Тело письма
             $code_body = "<p>Принт-Дизайн, ERP, код безопасности</p>";
