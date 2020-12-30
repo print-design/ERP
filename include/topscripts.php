@@ -23,7 +23,7 @@ function GetUserId() {
 }
 
 function IsInRole($role) {
-    $cookie = filter_input(INPUT_COOKIE, ROLES);
+    $cookie = filter_input(INPUT_COOKIE, ROLE);
     
     if(is_array($role)) {
         return in_array($cookie, $role);
