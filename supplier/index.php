@@ -20,7 +20,7 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
         <div class="container-fluid">
             <?php
             if(isset($error_message) && $error_message != '') {
-               echo "<div class='alert alert-danger'>$error_message</div>";
+                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
             <div class="d-flex justify-content-between mb-2">
@@ -29,43 +29,45 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                         <a href="<?=APPLICATION ?>/user/">Сотрудники</a>
                     </div>
                     <div class="col-6">
-                        <a href="<?=APPLICATION ?>/supplier/">Поставщики</a>    
+                        <a href="<?=APPLICATION ?>/supplier">Поставщики</a>
                     </div>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" title="Добавить пользователя" class="btn btn-outline-dark">
-                        <i class="fas fa-plus"></i>&nbsp;Добавить сотрудника
+                    <a href="create.php" title="Добавить поставщика" class="btn btn-outline-dark">
+                        <i class="fas fa-plus"></i>&nbsp;Добавить поставщика
                     </a>
                 </div>
             </div>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ФИО</th>
-                        <th>Должность</th>
-                        <th>Логин</th>
-                        <th>E-Mail</th>
-                        <th>Телефон</th>
-                        <th></th>
+                        <th>Название поставщика</th>
+                        <th>Типы пленок</th>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select u.id, u.first_name, u.last_name, r.local_name role, u.username, u.email, u.phone "
-                            . "from user u inner join role r on u.role_id = r.id "
-                            . "order by u.first_name asc";
+                    $sql = "select s.id, s.name, "
+                            . "(select count(id) from film_type where supplier_id=s.id) count, "
+                            . "(select name from film_type where supplier_id=s.id limit 1) first "
+                            . "from supplier s order by s.name";
                     $fetcher = new Fetcher($sql);
                     $error_message = $fetcher->error;
                     
                     while ($row = $fetcher->Fetch()) {
+                        $name = htmlentities($row['name']);
+                        $first = htmlentities($row['first']);
+                        $count = intval($row['count']);
+                        $more = '';
+                        if($count > 1) {
+                            $more = ' и еще '.($count - 1);
+                        }
                         echo "<tr>"
-                                ."<td>".$row['first_name'].' '.$row['last_name']."</td>"
-                                ."<td>".$row['role']."</td>"
-                                ."<td>".$row['username']."</td>"
-                                ."<td>".$row['email']."</td>"
-                                ."<td>".$row['phone']."</td>"
-                                ."<td><a href='".APPLICATION."/user/delete.php?id=".$row['id']."'><i class='fas fa-trash'></i></td>"
-                                ."</tr>";
+                        . "<td>$name</td>"
+                                . "<td>$first$more</td>"
+                                . "<td><a href=''><i class='fas fa-edit'></i></a></td>"
+                                . "</tr>";
                     }
                     ?>
                 </tbody>
