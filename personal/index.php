@@ -7,9 +7,12 @@ if(!LoggedIn()) {
 }
         
 // Получение личных данных
-$row = (new Fetcher("select fio, username from user where id=".GetUserId()))->Fetch();
-$fio = $row['fio'];
+$row = (new Fetcher("select username, last_name, first_name, email, phone from user where id=".GetUserId()))->Fetch();
 $username = $row['username'];
+$last_name = $row['last_name'];
+$first_name = $row['first_name'];
+$email = $row['email'];
+$phone = $row['phone'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,7 +30,7 @@ $username = $row['username'];
             if(isset($error_message) && $error_message != '') {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
-               
+            
             $password = filter_input(INPUT_GET, 'password');
             
             if($password == 'true') {
@@ -47,11 +50,22 @@ $username = $row['username'];
                             </div>
                         </div>
                     </div>
-                    <hr/>
                     <table class="table table-bordered">
                         <tr>
-                            <th>ФИО</th>
-                            <td><?=$fio ?></td>
+                            <th>Имя</th>
+                            <td><?=$first_name ?></td>
+                        </tr>
+                        <tr>
+                            <th>Фамилия</th>
+                            <td><?=$last_name ?></td>
+                        </tr>
+                        <tr>
+                            <th>E-Mail</th>
+                            <td><?=$email ?></td>
+                        </tr>
+                        <tr>
+                            <th>Телефон</th>
+                            <td><?=$phone ?></td>
                         </tr>
                         <tr>
                             <th>Логин</th>

@@ -35,3 +35,12 @@ li#nav-user {
 li#nav-user a.dropdown-toggle::after {
     display: none;
 }
+
+/*Второе меню*/
+.nav2 {
+    margin-bottom: 30px!important;
+}
+.nav2 a.active {
+    border-bottom: solid 1px blue;
+    padding-bottom: 10px;
+}

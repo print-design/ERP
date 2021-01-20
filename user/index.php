@@ -30,10 +30,10 @@ if($delete_user_submit !== null) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
-            <div class="d-flex justify-content-between mb-2">
+            <div class="d-flex justify-content-between mb-2 nav2">
                 <div class="p-1 row">
                     <div class="col-6">
-                        <a href="<?=APPLICATION ?>/user/">Сотрудники</a>
+                        <a class="active" href="<?=APPLICATION ?>/user/">Сотрудники</a>
                     </div>
                     <div class="col-6">
                         <a href="<?=APPLICATION ?>/supplier/">Поставщики</a>    

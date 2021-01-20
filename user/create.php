@@ -98,6 +98,17 @@ if($user_create_submit !== null) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
+            <div class="d-flex justify-content-between mb-2 nav2">
+                <div class="p-1 row">
+                    <div class="col-6">
+                        <a class="active" href="<?=APPLICATION ?>/user/">Сотрудники</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="<?=APPLICATION ?>/supplier/">Поставщики</a>    
+                    </div>
+                </div>
+                <div class="p-1"></div>
+            </div>
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-4">
                     <a href="<?=APPLICATION ?>/user/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
@@ -107,7 +118,7 @@ if($user_create_submit !== null) {
                             <select id="role_id" name="role_id" class="form-control" required="required">
                                 <option value="">ВЫБЕРИТЕ ДОЛЖНОСТЬ</option>
                                 <?php
-                                $roles = (new Grabber('select id, local_name from role order by local_name'))->result;
+                                $roles = (new Grabber('select id, local_name from role order by priority'))->result;
                                 foreach ($roles as $role) {
                                     $id = $role['id'];
                                     $local_name = $role['local_name'];
@@ -132,7 +143,7 @@ if($user_create_submit !== null) {
                         </div>
                         <div class="row">
                             <div class="col-6 form-group">
-                                <label for="last_name">e-mail</label>
+                                <label for="last_name">E-Mail</label>
                                 <input type="email" id="email" name="email" class="form-control<?=$email_valid ?>" value="<?= filter_input(INPUT_POST, 'email') ?>"/>
                                 <div class="invalid-feedback">Неправильный формат e-mail</div>
                             </div>

@@ -35,14 +35,14 @@ function Initials() {
             $personal_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/personal/index.php' ? ' disabled' : '';
             if(LoggedIn()):
             ?>
+            <li class="nav-item">
+                <a class="nav-link<?=$pallets_status ?>" href="<?=APPLICATION ?>/pallets/">Паллеты</a>
+            </li>
             <li class='nav-item'>
-                <a class="nav-link<?=$rolls_status ?>" href="<?=APPLICATION ?>/rolls/">Ролики</a>
+                <a class="nav-link<?=$rolls_status ?>" href="<?=APPLICATION ?>/rolls/">Рулоны</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_requests/">Заявки на раскрой</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link<?=$personal_status ?>" href="<?=APPLICATION ?>/personal/">Мои настройки</a>
+                <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_requests/">Заявки</a>
             </li>
             <?php
             endif;
@@ -75,8 +75,9 @@ function Initials() {
             <li class="nav-item dropdown" id="nav-user">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Initials() ?></a>
                 <div class="dropdown-menu" id="user-dropdown">
+                    <a href="<?=APPLICATION ?>/personal/" class="btn btn-link dropdown-item"><i class="fas fa-user"></i>&nbsp;Мои настройки</a>
                     <form method="post">
-                        <button type="submit" class="btn btn-link dropdown-item" id="logout_submit" name="logout_submit">Выход&nbsp;<i class="fas fa-sign-out-alt"></i></button>
+                        <button type="submit" class="btn btn-link dropdown-item" id="logout_submit" name="logout_submit"><i class="fas fa-sign-out-alt"></i>&nbsp;Выход</button>
                     </form>
                 </div>
             </li>
