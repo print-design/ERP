@@ -161,7 +161,7 @@ if($user_create_submit !== null) {
                             </div>
                             <div class="col-6 form-group">
                                 <label for="password">Пароль</label>
-                                <input type="password" id="password" name="password" class="form-control<?=$password_valid ?>" value="<?= filter_input(INPUT_POST, 'password') ?>" required="required"/>
+                                <input type="password" id="password" name="password" class="form-control<?=$password_valid ?>" value="" required="required"/>
                                 <div class="invalid-feedback">Пароль обязательно</div>
                             </div>
                         </div>

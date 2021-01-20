@@ -54,6 +54,7 @@ if($delete_user_submit !== null) {
                         <th>E-Mail</th>
                         <th>Телефон</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,11 @@ if($delete_user_submit !== null) {
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"
                                 ."<td>".$row['phone']."</td>";
+                        echo '<td>';
+                        if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
+                            echo "<a href='".APPLICATION."/user/edit.php?id=".$row['id']."'><i class='fas fa-edit'></i></a>";
+                        }
+                        echo '</td>';
                         echo '<td>';
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<form method='post'>";
