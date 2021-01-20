@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
+if(!IsInRole(array('admin', 'dev', 'technologist'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -71,7 +71,7 @@ if($user_create_submit !== null) {
         $phone = addslashes($phone);
         $username = addslashes($username);
         
-        $executer = new Executer("insert into user (username, password, first_name, last_name, role_id, email, phone, quit) values ('$username', password('$password'), '$first_name', '$last_name', $role_id, '$email', '$phone', 0)");
+        $executer = new Executer("insert into user (username, password, first_name, last_name, role_id, email, phone) values ('$username', password('$password'), '$first_name', '$last_name', $role_id, '$email', '$phone')");
         $error_message = $executer->error;
         $id = $executer->insert_id;
         

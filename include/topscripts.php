@@ -143,7 +143,7 @@ if($login_submit !== null){
         $sql = "select u.id, u.username, u.last_name, u.first_name, u.email, r.name role, r.twofactor "
                 . "from user u "
                 . "inner join role r on u.role_id=r.id "
-                . "where u.username='$login_username' and u.password=password('$login_password') and u.quit = 0";
+                . "where u.username='$login_username' and u.password=password('$login_password')";
         
         $users_result = (new Grabber($sql))->result;
         

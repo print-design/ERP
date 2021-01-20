@@ -61,7 +61,7 @@ function Initials() {
         ?>
         <ul class="navbar-nav">
             <?php
-            if(IsInRole(array('admin', 'administrator', 'technologist'))):
+            if(IsInRole(array('admin', 'dev', 'technologist'))):
             ?>
             <li class="nav-item">
                 <a class="nav-link" href="<?=APPLICATION ?>/user/">Админка</a>
