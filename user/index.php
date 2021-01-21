@@ -72,12 +72,12 @@ if($delete_user_submit !== null) {
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"
                                 ."<td>".$row['phone']."</td>";
-                        echo '<td>';
+                        echo "<td class='text-right'>";
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<a href='".APPLICATION."/user/edit.php?id=".$row['id']."'><i class='fas fa-pencil-alt'></i></a>";
                         }
                         echo '</td>';
-                        echo '<td>';
+                        echo "<td class='text-right'>";
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<form method='post'>";
                             echo "<input type='hidden' id='id' name='id' value='".$row['id']."' />";

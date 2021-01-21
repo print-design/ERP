@@ -5,6 +5,13 @@ include '../include/topscripts.php';
 if(!IsInRole(array('admin', 'dev', 'technologist'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
+
+// Обработка отправки формы
+$delete_supplier_submit = filter_input(INPUT_POST, 'delete_supplier_submit');
+if($delete_supplier_submit !== null) {
+    $id = filter_input(INPUT_POST, 'id');
+    $error_message = (new Executer("delete from supplier where id=$id"))->error;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,6 +51,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                         <th>Название поставщика</th>
                         <th>Типы пленок</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,8 +79,16 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                         echo "<tr>"
                         . "<td><a href='".APPLICATION."/supplier/details.php?id=$id'>$name</a></td>"
                                 . "<td>$products</td>"
-                                . "<td><a href='".APPLICATION."/supplier/edit.php?id=$id'><i class='fas fa-pencil-alt'></i></a></td>"
-                                . "</tr>";
+                                . "<td class='text-right'><a href='".APPLICATION."/supplier/edit.php?id=$id'><i class='fas fa-pencil-alt'></i></a></td>";
+                        echo "<td class='text-right'>";
+                        if($first == null) {
+                            echo "<form method='post'>";
+                            echo "<input type='hidden' id='id' name='id' value='$id' />";
+                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_supplier_submit' name='delete_supplier_submit'><i class='fas fa-trash-alt'></i></button>";
+                            echo '</form>';
+                        }
+                        echo '</td>';
+                        echo "</tr>";
                     }
                     ?>
                 </tbody>
