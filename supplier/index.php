@@ -48,16 +48,29 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select s.id, s.name from supplier s order by s.name";
+                    $sql = "select s.id, s.name, "
+                            . "(select count(id) from film_brand where supplier_id=s.id) count, "
+                            . "(select name from film_brand where supplier_id=s.id limit 1) first "
+                            . "from supplier s order by s.name";
                     $fetcher = new Fetcher($sql);
                     $error_message = $fetcher->error;
                     
                     while ($row = $fetcher->Fetch()) {
                         $id = $row['id'];
                         $name = htmlentities($row['name']);
+                        $count = $row['count'];
+                        $first = $row['first'];
+                        $products = '';
+                        if($first != null) {
+                            $products = htmlentities($first);
+                            
+                            if($count > 1) {
+                                $products .= " и еще ".(intval($count) - 1);
+                            }
+                        }
                         echo "<tr>"
                         . "<td><a href='".APPLICATION."/supplier/details.php?id=$id'>$name</a></td>"
-                                . "<td>!</td>"
+                                . "<td>$products</td>"
                                 . "<td><a href='".APPLICATION."/supplier/edit.php?id=$id'><i class='fas fa-pencil-alt'></i></a></td>"
                                 . "</tr>";
                     }

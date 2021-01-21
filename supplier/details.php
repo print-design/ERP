@@ -76,12 +76,16 @@ $name = htmlentities($row['name']);
                     <h1><?=$name ?></h1>
                     <h2>Пленки</h2>
                     <?php
-                    $sql = "select name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id');
-                    $fetcher = new Fetcher($sql);
-                    
-                    while ($row = $fetcher->Fetch()) {
-                        $name = $row['name'];
-                        echo "<p>$name</p>";
+                    $film_brands = (new Grabber("select name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')))->result;
+                    $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')))->result;
+                    foreach ($film_brands as $film_brand) {
+                        echo "<p>".$film_brand['name']."</p>";
+                        
+                        foreach ($film_brand_variations as $film_brand_variation) {
+                            echo '<ul>';
+                            echo "<li>".$film_brand_variation['width']." ".$film_brand_variation['weight']."</li>";
+                            echo '</ul>';
+                        }
                     }
                     ?>
                     <form method="post" class="form-inline" id="add-brand-form">
