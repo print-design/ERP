@@ -57,7 +57,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                         echo "<tr>"
                         . "<td>$name</td>"
                                 . "<td>!</td>"
-                                . "<td><a href='".APPLICATION."/supplier/details.php?id=".$row['id']."'><i class='fas fa-edit'></i></a></td>"
+                                . "<td><a href='".APPLICATION."/supplier/edit.php?id=".$row['id']."'><i class='fas fa-edit'></i></a></td>"
                                 . "</tr>";
                     }
                     ?>
