@@ -114,6 +114,7 @@ $name = htmlentities($row['name']);
                     
                     foreach ($film_brands as $film_brand):
                     ?>
+                    <div id="film_brand_<?=$film_brand['id'] ?>" style="transform: translateY(-70px);"></div>
                     <table class="table film-table">
                         <?php
                         $current_film_brand_variations = array_filter($film_brand_variations, function($param) use($film_brand) { return $param['film_brand_id'] == $film_brand['id']; });
