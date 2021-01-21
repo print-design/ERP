@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
+if(!IsInRole(array('admin', 'dev', 'technologist'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 ?>
@@ -23,13 +23,13 @@ if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
-            <div class="d-flex justify-content-between mb-2">
+            <div class="d-flex justify-content-between mb-2 nav2">
                 <div class="p-1 row">
                     <div class="col-6">
                         <a href="<?=APPLICATION ?>/user/">Сотрудники</a>
                     </div>
                     <div class="col-6">
-                        <a href="<?=APPLICATION ?>/supplier">Поставщики</a>
+                        <a class="active" href="<?=APPLICATION ?>/supplier">Поставщики</a>
                     </div>
                 </div>
                 <div class="p-1">
