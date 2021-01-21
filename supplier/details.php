@@ -71,6 +71,26 @@ if($film_brand_variation_create_submit !== null) {
     }
 }
 
+// Обработка отправки формы удаления марки
+$delete_brand_submit = filter_input(INPUT_POST, 'delete_brand_submit');
+if($delete_brand_submit !== null) {
+    $id = filter_input(INPUT_POST, 'id');
+    $error_message = (new Executer("delete from film_brand where id=$id"))->error;
+}
+
+// Обработка отправки формы удаления вариации
+$delete_variation_submit = filter_input(INPUT_POST, 'delete_variation_submit');
+if($delete_variation_submit !== null) {
+    $id = filter_input(INPUT_POST, 'id');
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    $error_message = (new Executer("delete from film_brand_variation where id=$id"))->error;
+    
+    if($error_message == '') {
+        header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id#film_brand_$film_brand_id");
+    }
+}
+
 // Получение объекта
 $row = (new Fetcher("select name from supplier where id=". filter_input(INPUT_GET, 'id')))->Fetch();
 $name = htmlentities($row['name']);
@@ -110,7 +130,7 @@ $name = htmlentities($row['name']);
                     <h2>Пленки</h2>
                     <?php
                     $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
-                    $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
+                    $film_brand_variations = (new Grabber("select v.id, v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
                     
                     foreach ($film_brands as $film_brand):
                     ?>
@@ -125,7 +145,10 @@ $name = htmlentities($row['name']);
                             <td></td>
                             <td></td>
                             <td class="text-right">
-                                <i class="fas fa-trash-alt"></i>
+                                <form method="post">
+                                    <input type="hidden" id="id" name="id" value="<?=$film_brand['id'] ?>"/>
+                                    <button type="submit" class="btn btn-link confirmable" id="delete_brand_submit" name="delete_brand_submit"><i class="fas fa-trash-alt"></i></button>
+                                </form>
                             </td>
                         </tr>
                         <?php
@@ -135,10 +158,15 @@ $name = htmlentities($row['name']);
                             ?>
                         <tr>
                             <td><?=($first ? $film_brand['name'] : '') ?></td>
-                            <td><?=$current_film_brand_variation['width'] ?></td>
-                            <td><?=$current_film_brand_variation['weight'] ?></td>
-                            <td class="text-right">
-                                <i class="fas fa-trash-alt"></i>
+                            <td style="width:70px;"><?=$current_film_brand_variation['width'] ?></td>
+                            <td style="width:70px;"><?=$current_film_brand_variation['weight'] ?></td>
+                            <td class="text-right" style="width:50px;">
+                                <form method="post">
+                                    <input type="hidden" id="id" name="id" value="<?=$current_film_brand_variation['id'] ?>"/>
+                                    <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
+                                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                                    <button type="submit" class="btn btn-link confirmable" id="delete_variation_submit" name="delete_variation_submit"><i class="fas fa-trash-alt"></i></button>
+                                </form>                                
                             </td>
                         </tr>
                         <?php

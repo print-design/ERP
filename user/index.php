@@ -81,7 +81,7 @@ if($delete_user_submit !== null) {
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<form method='post'>";
                             echo "<input type='hidden' id='id' name='id' value='".$row['id']."' />";
-                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_user_submit' name='delete_user_submit'><i class='fas fa-trash'></i></button>";
+                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_user_submit' name='delete_user_submit'><i class='fas fa-trash-alt'></i></button>";
                             echo '</form>';
                         }
                         echo '</td>';
