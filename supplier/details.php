@@ -112,14 +112,12 @@ $name = htmlentities($row['name']);
                     $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
                     $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
                     foreach ($film_brands as $film_brand):
-
                         echo "<p id='film_brand_".$film_brand['id']."'>".$film_brand['name']."</p>";
-                    echo '<ul>';
                     
-                    foreach ($film_brand_variations as $film_brand_variation) {
-                        if($film_brand_variation['film_brand_id'] == $film_brand['id']) {
-                            echo "<li>".$film_brand_variation['width']." ".$film_brand_variation['weight']."</li>";
-                        }
+                    $current_film_brand_variations = array_filter($film_brand_variations, function($param) use($film_brand) { return $param['film_brand_id'] == $film_brand['id']; });
+                    echo '<ul>';
+                    foreach ($current_film_brand_variations as $current_film_brand_variation) {
+                        echo "<li>".$current_film_brand_variation['width']." ".$current_film_brand_variation['weight']."</li>";
                     }
                     echo '</ul>';
                     ?>
@@ -141,6 +139,7 @@ $name = htmlentities($row['name']);
                     </form>
                     <button class="btn btn-link add-variation-button"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
                     <?php endforeach; ?>
+                    
                     <form method="post" class="form-inline" id="add-brand-form">
                         <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
                         <div class="form-group">
