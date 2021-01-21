@@ -74,7 +74,7 @@ if($delete_user_submit !== null) {
                                 ."<td>".$row['phone']."</td>";
                         echo '<td>';
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
-                            echo "<a href='".APPLICATION."/user/edit.php?id=".$row['id']."'><i class='fas fa-edit'></i></a>";
+                            echo "<a href='".APPLICATION."/user/edit.php?id=".$row['id']."'><i class='fas fa-pencil-alt'></i></a>";
                         }
                         echo '</td>';
                         echo '<td>';
