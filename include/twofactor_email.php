@@ -67,7 +67,7 @@
             }
             ?>
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6">
                     <h1>Код безопасности</h1>
                     <p>Введите код, отправленный на Ваш адрес электронной почты.</p>
                     <form method="post">

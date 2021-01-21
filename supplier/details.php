@@ -104,40 +104,67 @@ $name = htmlentities($row['name']);
                 <div class="p-1"></div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 supplier-page">
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                     <h1><?=$name ?></h1>
                     <h2>Пленки</h2>
                     <?php
                     $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
                     $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
-                    foreach ($film_brands as $film_brand):
-                        echo "<p id='film_brand_".$film_brand['id']."'>".$film_brand['name']."</p>";
                     
-                    $current_film_brand_variations = array_filter($film_brand_variations, function($param) use($film_brand) { return $param['film_brand_id'] == $film_brand['id']; });
-                    echo '<ul>';
-                    foreach ($current_film_brand_variations as $current_film_brand_variation) {
-                        echo "<li>".$current_film_brand_variation['width']." ".$current_film_brand_variation['weight']."</li>";
-                    }
-                    echo '</ul>';
+                    foreach ($film_brands as $film_brand):
                     ?>
-                    <form method="post" class="form-inline add-variation-form">
-                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
-                        <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
-                        <div class="form-group">
-                            <label for="width" class="mr-2">Толщина</label>
-                            <input type="number" min="1" step="1" max="999" id="width" name="width" required="required"/>
-                            <div class="invalid-feedback">Толщина обязательно</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="weight" class="mr-2 ml-2">Удельный вес</label>
-                            <input type="number" min="1" step="0.1" max="999" id="weight" name="weight" required="required"/>
-                            <div class="invalid-feedback">Удельный вес обязательно</div>
-                        </div>
-                        <button type="submit" class="btn btn-dark ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
-                        <button class="btn btn-outline-dark ml-2 add-variation-cancel"><i class="fas fa-undo"></i>&nbsp;Отмена</button>
-                    </form>
-                    <button class="btn btn-link add-variation-button"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
+                    <table class="table film-table">
+                        <?php
+                        $current_film_brand_variations = array_filter($film_brand_variations, function($param) use($film_brand) { return $param['film_brand_id'] == $film_brand['id']; });
+                        if(count($current_film_brand_variations) == 0):
+                        ?>
+                        <tr>
+                            <td><?=$film_brand['name'] ?></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right">
+                                <i class="fas fa-trash-alt"></i>
+                            </td>
+                        </tr>
+                        <?php
+                        else:
+                            foreach ($current_film_brand_variations as $current_film_brand_variation):
+                            ?>
+                        <tr>
+                            <td><?=$film_brand['name'] ?></td>
+                            <td><?=$current_film_brand_variation['width'] ?></td>
+                            <td><?=$current_film_brand_variation['weight'] ?></td>
+                            <td class="text-right">
+                                <i class="fas fa-trash-alt"></i>
+                            </td>
+                        </tr>
+                        <?php
+                            endforeach;
+                        endif;
+                        ?>
+                        <tr>
+                            <td colspan="4" class="text-right">
+                                <form method="post" class="form-inline add-variation-form">
+                                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                                    <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
+                                    <div class="form-group">
+                                        <label for="width" class="mr-2">Толщина</label>
+                                        <input type="number" min="1" step="1" max="999" id="width" name="width" required="required"/>
+                                        <div class="invalid-feedback">Толщина обязательно</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight" class="mr-2 ml-2">Удельный вес</label>
+                                        <input type="number" min="1" step="0.1" max="999" id="weight" name="weight" required="required"/>
+                                        <div class="invalid-feedback">Удельный вес обязательно</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
+                                    <button class="btn btn-outline-dark ml-2 add-variation-cancel"><i class="fas fa-undo"></i></button>
+                                </form>
+                                <button class="btn btn-link add-variation-button"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
+                            </td>
+                        </tr>
+                    </table>
                     <?php endforeach; ?>
                     
                     <form method="post" class="form-inline" id="add-brand-form">

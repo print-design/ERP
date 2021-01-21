@@ -195,7 +195,7 @@ if(!LoggedIn()) {
             }
             ?>
             <div class="row">
-               <div class="col-12 col-md-6 col-lg-4">
+               <div class="col-12 col-md-6">
                    <form method="post">
                        <div class="form-group">
                            <label for="supplier_id">Поставщик</label>

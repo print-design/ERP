@@ -64,7 +64,7 @@ if($supplier_create_submit !== null) {
                 <div class="p-1"></div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6">
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                     <h1>Добавление поставщика</h1>
                     <form method="post">

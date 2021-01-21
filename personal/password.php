@@ -69,7 +69,7 @@ if($password_change_submit !== null) {
             }
             ?>
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6">
                     <a href="<?=APPLICATION ?>/personal/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                     <h1>Смена пароля</h1>
                     <form method="post">
