@@ -111,7 +111,9 @@ if($user_create_submit !== null) {
             </div>
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <a href="<?=APPLICATION ?>/user/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
+                    <div class="backlink">
+                        <a href="<?=APPLICATION ?>/user/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
+                    </div>
                     <h1>Добавление сотрудника</h1>
                     <form method="post">
                         <div class="form-group">
