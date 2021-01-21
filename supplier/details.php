@@ -11,6 +11,33 @@ if(filter_input(INPUT_GET, 'id') == null) {
     header('Location: '.APPLICATION.'/supplier/');
 }
 
+// Валидация формы создания марки пленки
+define('ISINVALID', ' is-invalid');
+$form_valid = true;
+$error_message = '';
+
+$name_valid = '';
+
+// Обработка отправки формы создания марки пленки
+$film_brand_create_submit = filter_input(INPUT_POST, 'film_brand_create_submit');
+if($film_brand_create_submit !== null) {
+    $name = filter_input(INPUT_POST, 'name');
+    if($name == '') {
+        $name_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if($form_valid) {
+        $name = addslashes($name);
+        $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+        $executer = new Executer("insert into film_brand (name, supplier_id) values ('$name', $supplier_id)");
+        
+        if($error_message == '') {
+            header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id");
+        }
+    }
+}
+
 // Получение объекта
 $row = (new Fetcher("select name from supplier where id=". filter_input(INPUT_GET, 'id')))->Fetch();
 $name = htmlentities($row['name']);
@@ -47,11 +74,46 @@ $name = htmlentities($row['name']);
                 <div class="col-12 col-md-6 col-lg-4">
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                     <h1><?=$name ?></h1>
+                    <h2>Пленки</h2>
+                    <?php
+                    $sql = "select name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id');
+                    $fetcher = new Fetcher($sql);
+                    
+                    while ($row = $fetcher->Fetch()) {
+                        $name = $row['name'];
+                        echo "<p>$name</p>";
+                    }
+                    ?>
+                    <form method="post" class="form-inline" id="add-brand-form">
+                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                        <div class="form-group">
+                            <label for="name" class="mr-2">Марка пленки</label>
+                            <input type="text" class="form-control mr-2" id="name" name="name" required="required"/>
+                            <div class="invalid-feedback">Марка пленки обязательно</div>
+                        </div>
+                        <button type="submit" class="btn btn-dark" id="film_brand_create_submit" name="film_brand_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
+                        <button class="btn btn-outline-dark ml-2" id="add-brand-cancel"><i class="fas fa-undo"></i>&nbsp;Отмена</button>
+                    </form>
+                    <button class="btn btn-outline-dark" id="add-brand-button"><i class="fas fa-plus"></i>&nbsp;Добавить марку пленки</button>
                 </div>
             </div>
         </div>
         <?php
         include '../include/footer.php';
         ?>
+        <script>
+            $('#add-brand-form').hide();
+            
+            $('#add-brand-button').click(function(){
+                $(this).hide();
+                $('#add-brand-form').show();
+                $('#add-brand-form').find('input[id="name"]').focus();
+            });
+            
+            $('#add-brand-cancel').click(function(){
+                $('#add-brand-form').hide();
+                $('#add-brand-button').show();
+            });
+        </script>
     </body>
 </html>

@@ -53,11 +53,12 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                     $error_message = $fetcher->error;
                     
                     while ($row = $fetcher->Fetch()) {
+                        $id = $row['id'];
                         $name = htmlentities($row['name']);
                         echo "<tr>"
-                        . "<td>$name</td>"
+                        . "<td><a href='".APPLICATION."/supplier/details.php?id=$id'>$name</a></td>"
                                 . "<td>!</td>"
-                                . "<td><a href='".APPLICATION."/supplier/edit.php?id=".$row['id']."'><i class='fas fa-edit'></i></a></td>"
+                                . "<td><a href='".APPLICATION."/supplier/edit.php?id=$id'><i class='fas fa-pencil-alt'></i></a></td>"
                                 . "</tr>";
                     }
                     ?>
