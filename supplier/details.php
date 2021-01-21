@@ -11,12 +11,17 @@ if(filter_input(INPUT_GET, 'id') == null) {
     header('Location: '.APPLICATION.'/supplier/');
 }
 
-// Валидация формы создания марки пленки
+// Валидация формы
 define('ISINVALID', ' is-invalid');
 $form_valid = true;
 $error_message = '';
 
+// создание марки плёнки
 $name_valid = '';
+
+// создание вариации
+$width_valid = '';
+$weight_valid = '';
 
 // Обработка отправки формы создания марки пленки
 $film_brand_create_submit = filter_input(INPUT_POST, 'film_brand_create_submit');
@@ -31,9 +36,37 @@ if($film_brand_create_submit !== null) {
         $name = addslashes($name);
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         $executer = new Executer("insert into film_brand (name, supplier_id) values ('$name', $supplier_id)");
+        $error_message = $executer->error;
         
         if($error_message == '') {
             header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id");
+        }
+    }
+}
+
+// Обработка отправки формы создания вариации марки пленки
+$film_brand_variation_create_submit = filter_input(INPUT_POST, 'film_brand_variation_create_submit');
+if($film_brand_variation_create_submit !== null) {
+    $width = filter_input(INPUT_POST, 'width');
+    if($width == '') {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $weight = filter_input(INPUT_POST, 'weight');
+    if($weight == '') {
+        $weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if($form_valid) {
+        $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+        $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+        $executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($film_brand_id, $width, $weight)");
+        $error_message = $executer->error;
+        
+        if($error_message == '') {
+            header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id#film_brand_$film_brand_id");
         }
     }
 }
@@ -76,18 +109,22 @@ $name = htmlentities($row['name']);
                     <h1><?=$name ?></h1>
                     <h2>Пленки</h2>
                     <?php
-                    $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')))->result;
-                    $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')))->result;
+                    $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
+                    $film_brand_variations = (new Grabber("select v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
                     foreach ($film_brands as $film_brand):
-                        echo "<p>".$film_brand['name']."</p>";
-                        
-                        foreach ($film_brand_variations as $film_brand_variation) {
-                            echo '<ul>';
+
+                        echo "<p id='film_brand_".$film_brand['id']."'>".$film_brand['name']."</p>";
+                    echo '<ul>';
+                    
+                    foreach ($film_brand_variations as $film_brand_variation) {
+                        if($film_brand_variation['film_brand_id'] == $film_brand['id']) {
                             echo "<li>".$film_brand_variation['width']." ".$film_brand_variation['weight']."</li>";
-                            echo '</ul>';
                         }
+                    }
+                    echo '</ul>';
                     ?>
                     <form method="post" class="form-inline add-variation-form">
+                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
                         <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                         <div class="form-group">
                             <label for="width" class="mr-2">Толщина</label>
