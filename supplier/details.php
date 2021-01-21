@@ -129,10 +129,11 @@ $name = htmlentities($row['name']);
                         </tr>
                         <?php
                         else:
+                            $first = true;
                             foreach ($current_film_brand_variations as $current_film_brand_variation):
                             ?>
                         <tr>
-                            <td><?=$film_brand['name'] ?></td>
+                            <td><?=($first ? $film_brand['name'] : '') ?></td>
                             <td><?=$current_film_brand_variation['width'] ?></td>
                             <td><?=$current_film_brand_variation['weight'] ?></td>
                             <td class="text-right">
@@ -140,7 +141,8 @@ $name = htmlentities($row['name']);
                             </td>
                         </tr>
                         <?php
-                            endforeach;
+                        $first = false;
+                        endforeach;
                         endif;
                         ?>
                         <tr>
