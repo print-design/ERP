@@ -10,7 +10,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 define('ISINVALID', ' is-invalid');
 $form_valid = true;
 $error_message = '';
-        
+
 $first_name_valid = '';
 $last_name_valid = '';
 $role_id_valid = '';

@@ -43,29 +43,20 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
                     <tr>
                         <th>Название поставщика</th>
                         <th>Типы пленок</th>
-                        <td></td>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "select s.id, s.name, "
-                            . "(select count(id) from film_type where supplier_id=s.id) count, "
-                            . "(select name from film_type where supplier_id=s.id limit 1) first "
-                            . "from supplier s order by s.name";
+                    $sql = "select s.id, s.name from supplier s order by s.name";
                     $fetcher = new Fetcher($sql);
                     $error_message = $fetcher->error;
                     
                     while ($row = $fetcher->Fetch()) {
                         $name = htmlentities($row['name']);
-                        $first = htmlentities($row['first']);
-                        $count = intval($row['count']);
-                        $more = '';
-                        if($count > 1) {
-                            $more = ' и еще '.($count - 1);
-                        }
                         echo "<tr>"
                         . "<td>$name</td>"
-                                . "<td>$first$more</td>"
+                                . "<td>!</td>"
                                 . "<td><a href='".APPLICATION."/supplier/details.php?id=".$row['id']."'><i class='fas fa-edit'></i></a></td>"
                                 . "</tr>";
                     }

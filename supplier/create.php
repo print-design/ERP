@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'administrator', 'technologist'))) {
+if(!IsInRole(array('admin', 'dev', 'technologist'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -15,8 +15,7 @@ $name_valid = '';
 
 // Обработка отправки формы
 $supplier_create_submit = filter_input(INPUT_POST, 'supplier_create_submit');
-$film_type_create_submit = filter_input(INPUT_POST, 'film_type_create_submit');
-if($supplier_create_submit !== null || $film_type_create_submit !== null) {
+if($supplier_create_submit !== null) {
     $name = filter_input(INPUT_POST, 'name');
     if($name == '') {
         $name_valid = ISINVALID;
@@ -31,15 +30,7 @@ if($supplier_create_submit !== null || $film_type_create_submit !== null) {
         $id = $executer->insert_id;
 
         if($error_message == '') {
-            if($supplier_create_submit !== null) {
-                echo 'supplier_create_submit';
-                header('Location: '.APPLICATION."/supplier/");
-            }
-            
-            if($film_type_create_submit !== null) {
-                echo 'film_type_create_submit';
-                header('Location: '.APPLICATION."/supplier/details=$id");
-            }
+            header('Location: '.APPLICATION."/supplier/details.php?id=$id");
         }
     }
 }
@@ -61,6 +52,17 @@ if($supplier_create_submit !== null || $film_type_create_submit !== null) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
+            <div class="d-flex justify-content-between mb-2 nav2">
+                <div class="p-1 row">
+                    <div class="col-6">
+                        <a href="<?=APPLICATION ?>/user/">Сотрудники</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="active" href="<?=APPLICATION ?>/supplier/">Поставщики</a>    
+                    </div>
+                </div>
+                <div class="p-1"></div>
+            </div>
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-4">
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
@@ -70,9 +72,6 @@ if($supplier_create_submit !== null || $film_type_create_submit !== null) {
                             <label for="name">Название поставщика</label>
                             <input type="text" id="name" name="name" class="form-control<?=$name_valid ?>" value="<?= filter_input(INPUT_POST, 'name') ?>" required="required"/>
                             <div class="invalid-feedback">Название поставщика обязательно</div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-outline-dark" id="film_type_create_submit" name="film_type_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить марку пленки</button>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-dark" id="supplier_create_submit" name="supplier_create_submit">Создать поставщика</button>
