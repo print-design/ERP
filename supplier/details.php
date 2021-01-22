@@ -37,10 +37,6 @@ if($film_brand_create_submit !== null) {
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         $executer = new Executer("insert into film_brand (name, supplier_id) values ('$name', $supplier_id)");
         $error_message = $executer->error;
-        
-        if($error_message == '') {
-            header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id");
-        }
     }
 }
 
@@ -64,10 +60,6 @@ if($film_brand_variation_create_submit !== null) {
         $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
         $executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($film_brand_id, $width, $weight)");
         $error_message = $executer->error;
-        
-        if($error_message == '') {
-            header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id#film_brand_$film_brand_id");
-        }
     }
 }
 
@@ -85,10 +77,6 @@ if($delete_variation_submit !== null) {
     $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
     $supplier_id = filter_input(INPUT_POST, 'supplier_id');
     $error_message = (new Executer("delete from film_brand_variation where id=$id"))->error;
-    
-    if($error_message == '') {
-        header('Location: '.APPLICATION."/supplier/details.php?id=$supplier_id#film_brand_$film_brand_id");
-    }
 }
 
 // Получение объекта
@@ -149,6 +137,7 @@ $name = htmlentities($row['name']);
                             <td class="text-right">
                                 <form method="post">
                                     <input type="hidden" id="id" name="id" value="<?=$film_brand['id'] ?>"/>
+                                    <input type="hidden" id="scroll" name="scroll" />
                                     <button type="submit" class="btn btn-link confirmable" id="delete_brand_submit" name="delete_brand_submit"><i class="fas fa-trash-alt"></i></button>
                                 </form>
                             </td>
@@ -167,6 +156,7 @@ $name = htmlentities($row['name']);
                                     <input type="hidden" id="id" name="id" value="<?=$current_film_brand_variation['id'] ?>"/>
                                     <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                                     <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                                    <input type="hidden" id="scroll" name="scroll" />
                                     <button type="submit" class="btn btn-link confirmable" id="delete_variation_submit" name="delete_variation_submit"><i class="fas fa-trash-alt"></i></button>
                                 </form>                                
                             </td>
@@ -181,6 +171,7 @@ $name = htmlentities($row['name']);
                                 <form method="post" class="form-inline add-variation-form">
                                     <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
                                     <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
+                                    <input type="hidden" id="scroll" name="scroll" />
                                     <div class="form-group">
                                         <label for="width" class="mr-2">Толщина</label>
                                         <input type="number" min="1" step="1" max="999" id="width" name="width" required="required"/>
@@ -202,6 +193,7 @@ $name = htmlentities($row['name']);
                     
                     <form method="post" class="form-inline" id="add-brand-form">
                         <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                        <input type="hidden" id="scroll" name="scroll" />
                         <div class="form-group">
                             <label for="name" class="mr-2">Марка пленки</label>
                             <input type="text" class="form-control mr-2" id="name" name="name" required="required"/>
@@ -245,6 +237,15 @@ $name = htmlentities($row['name']);
                 frm.hide();
                 frm.next('.add-variation-button').show();
             });
+            
+            // Прокрутка на прежнее место после отправки формы
+            $(window).on("scroll", function(){
+                $('input[name="scroll"]').val($(window).scrollTop());
+            })
+            
+            <?php if(!empty($_REQUEST['scroll'])): ?>
+                window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
+            <?php endif; ?>
         </script>
     </body>
 </html>
