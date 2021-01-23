@@ -14,10 +14,9 @@ $error_message = '';
 $name_valid = '';
 
 // Обработка отправки формы
-$supplier_create_submit = filter_input(INPUT_POST, 'supplier_create_submit');
-if($supplier_create_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
     $name = filter_input(INPUT_POST, 'name');
-    if($name == '') {
+    if(empty($name)) {
         $name_valid = ISINVALID;
         $form_valid = false;
     }
@@ -29,7 +28,7 @@ if($supplier_create_submit !== null) {
         $error_message = $executer->error;
         $id = $executer->insert_id;
 
-        if($error_message == '') {
+        if(empty($error_message)) {
             header('Location: '.APPLICATION."/supplier/details.php?id=$id");
         }
     }
@@ -48,7 +47,7 @@ if($supplier_create_submit !== null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>

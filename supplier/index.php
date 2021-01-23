@@ -7,8 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 }
 
 // Обработка отправки формы
-$delete_supplier_submit = filter_input(INPUT_POST, 'delete_supplier_submit');
-if($delete_supplier_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'delete_supplier_submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $error_message = (new Executer("delete from supplier where id=$id"))->error;
 }
@@ -26,7 +25,7 @@ if($delete_supplier_submit !== null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>

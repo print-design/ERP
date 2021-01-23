@@ -7,7 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 }
 
 // Если не задано значение id, перенаправляем на список
-if(filter_input(INPUT_GET, 'id') == null) {
+if(empty(filter_input(INPUT_GET, 'id'))) {
     header('Location: '.APPLICATION.'/supplier/');
 }
 
@@ -24,10 +24,9 @@ $width_valid = '';
 $weight_valid = '';
 
 // Обработка отправки формы создания марки пленки
-$film_brand_create_submit = filter_input(INPUT_POST, 'film_brand_create_submit');
-if($film_brand_create_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'film_brand_create_submit')) {
     $name = filter_input(INPUT_POST, 'name');
-    if($name == '') {
+    if(empty($name)) {
         $name_valid = ISINVALID;
         $form_valid = false;
     }
@@ -41,16 +40,15 @@ if($film_brand_create_submit !== null) {
 }
 
 // Обработка отправки формы создания вариации марки пленки
-$film_brand_variation_create_submit = filter_input(INPUT_POST, 'film_brand_variation_create_submit');
-if($film_brand_variation_create_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'film_brand_variation_create_submit')) {
     $width = filter_input(INPUT_POST, 'width');
-    if($width == '') {
+    if(empty($width)) {
         $width_valid = ISINVALID;
         $form_valid = false;
     }
     
     $weight = filter_input(INPUT_POST, 'weight');
-    if($weight == '') {
+    if(empty($weight)) {
         $weight_valid = ISINVALID;
         $form_valid = false;
     }
@@ -64,15 +62,13 @@ if($film_brand_variation_create_submit !== null) {
 }
 
 // Обработка отправки формы удаления марки
-$delete_brand_submit = filter_input(INPUT_POST, 'delete_brand_submit');
-if($delete_brand_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'delete_brand_submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $error_message = (new Executer("delete from film_brand where id=$id"))->error;
 }
 
 // Обработка отправки формы удаления вариации
-$delete_variation_submit = filter_input(INPUT_POST, 'delete_variation_submit');
-if($delete_variation_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'delete_variation_submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
     $supplier_id = filter_input(INPUT_POST, 'supplier_id');
@@ -96,7 +92,7 @@ $name = htmlentities($row['name']);
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
@@ -241,7 +237,7 @@ $name = htmlentities($row['name']);
             // Прокрутка на прежнее место после отправки формы
             $(window).on("scroll", function(){
                 $('input[name="scroll"]').val($(window).scrollTop());
-            })
+            });
             
             <?php if(!empty($_REQUEST['scroll'])): ?>
                 window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);

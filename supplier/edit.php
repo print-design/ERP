@@ -7,7 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 }
 
 // Если не задано значение id, перенаправляем на список
-if(filter_input(INPUT_GET, 'id') == null) {
+if(empty(filter_input(INPUT_GET, 'id'))) {
     header('Location: '.APPLICATION.'/supplier/');
 }
 
@@ -19,20 +19,18 @@ $error_message = '';
 $name_valid = '';
 
 // Обработка отправки формы
-$supplier_edit_submit = filter_input(INPUT_POST, 'supplier_edit_submit');
-if($supplier_edit_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'supplier_edit_submit')) {
     $name = filter_input(INPUT_POST, 'name');
-    if($name == '') {
+    if(empty($name)) {
         $name_valid = ISINVALID;
         $form_valid = false;
     }
     
     if($form_valid) {
-        $name = addslashes($name);
-        
+        $name = addslashes($name);    
         $error_message = (new Executer("update supplier set name='$name' where id=".filter_input(INPUT_POST, 'id')))->error;
         
-        if($error_message == '') {
+        if(empty($error_message)) {
             header('Location: '.APPLICATION."/supplier/details.php?id=".filter_input(INPUT_POST, 'id'));
         }
     }
@@ -42,7 +40,7 @@ if($supplier_edit_submit !== null) {
 $row = (new Fetcher("select name from supplier where id=". filter_input(INPUT_GET, 'id')))->Fetch();
 
 $name = filter_input(INPUT_POST, 'name');
-if($name == null) {
+if(empty($name)) {
     $name = htmlentities($row['name']);
 }
 ?>
@@ -59,7 +57,7 @@ if($name == null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
