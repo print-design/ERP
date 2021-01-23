@@ -14,8 +14,7 @@ $weekdays[6] = 'Сб';
 
 // Функции
 function LoggedIn() {
-    $username = filter_input(INPUT_COOKIE, USERNAME);
-    return $username !== null;
+    return !empty(filter_input(INPUT_COOKIE, USERNAME));
 }
 
 function GetUserId() {
@@ -118,16 +117,15 @@ $login_username_valid = '';
 $login_password_valid = '';
 
 // Обработка отправки формы логина
-$login_submit = filter_input(INPUT_POST, 'login_submit');
-if($login_submit !== null){
+if(null !== filter_input(INPUT_POST, 'login_submit')) {
     $login_username = filter_input(INPUT_POST, 'login_username');
-    if($login_username == '') {
+    if(empty($login_username)) {
         $login_username_valid = LOGINISINVALID;
         $login_form_valid = false;
     }
     
     $login_password = filter_input(INPUT_POST, 'login_password');
-    if($login_password == '') {
+    if(empty($login_password)) {
         $login_password_valid = LOGINISINVALID;
         $login_form_valid = false;
     }
@@ -157,7 +155,7 @@ if($login_submit !== null){
             $twofactor = $row['twofactor'];
         }
         
-        if($user_id == '' || $username == '') {
+        if(empty($user_id) || empty($username)) {
             $error_message = "Неправильный логин или пароль";
         }
         else {
@@ -181,8 +179,7 @@ if($login_submit !== null){
 }
 
 // Обработка формы отправки кода безопасности
-$security_code_submit = filter_input(INPUT_POST, 'security_code_submit');
-if($security_code_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'security_code_submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $sql = "select u.id, u.username, u.last_name, u.first_name, u.email, u.code, r.name role "
             . "from user u inner join role r on u.role_id = r.id "
@@ -220,8 +217,7 @@ if($security_code_submit !== null) {
 }
 
 // Выход из системы
-$logout_submit = filter_input(INPUT_POST, 'logout_submit');
-if($logout_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'logout_submit')) {
     setcookie(USER_ID, '', 0, "/");
     setcookie(USERNAME, '', 0, "/");
     setcookie(LAST_NAME, '', 0, "/");

@@ -56,8 +56,7 @@ function Initials() {
             echo '</div>';
             echo '&nbsp;&nbsp;';
         }
-        $user_name = filter_input(INPUT_COOKIE, USERNAME);
-        if($user_name !== null):
+        if(!empty(filter_input(INPUT_COOKIE, USERNAME))):
         ?>
         <ul class="navbar-nav">
             <?php

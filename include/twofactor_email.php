@@ -3,8 +3,8 @@
         <?php
         include 'head.php';
         
-        if(!isset($user_id) || $user_id == null || $user_id == '' ||
-                !isset($email) || $email == null || $email == '' ||
+        if(!isset($user_id) || empty($user_id) ||
+                !isset($email) || empty($email) ||
                 !isset($last_name) || !isset($first_name) || !isset($code_valid)) {
             header('Location: '.APPLICATION);
         }
@@ -62,12 +62,12 @@
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(isset($error_message) && !empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 col-lg-4">
                     <h1>Код безопасности</h1>
                     <p>Введите код, отправленный на Ваш адрес электронной почты.</p>
                     <form method="post">
@@ -90,4 +90,3 @@
 <?php
 die();
 ?>
-
