@@ -27,13 +27,11 @@ $phone = $row['phone'];
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             
-            $password = filter_input(INPUT_GET, 'password');
-            
-            if($password == 'true') {
+            if(filter_input(INPUT_GET, 'password') == 'true') {
                 echo "<div class='alert alert-info'>Пароль успешно изменён</div>";
             }
             ?>

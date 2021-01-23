@@ -18,34 +18,33 @@ $email_valid = '';
 $phone_valid = '';
         
 // Обработка отправки формы
-$user_edit_submit = filter_input(INPUT_POST, 'user_edit_submit');
-if($user_edit_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'user_edit_submit')) {
     $username = filter_input(INPUT_POST, 'username');
-    if($username == '') {
+    if(empty($username)) {
         $username_valid = ISINVALID;
         $form_valid = false;
     }
     
     $last_name = filter_input(INPUT_POST, 'last_name');
-    if($last_name == '') {
+    if(empty($last_name)) {
         $last_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $first_name = filter_input(INPUT_POST, 'first_name');
-    if($first_name == '') {
+    if(empty($first_name)) {
         $first_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $email = filter_input(INPUT_POST, 'email');
-    if($email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if(!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $email_valid = ISINVALID;
         $form_valid = false;
     }
     
     $phone = filter_input(INPUT_POST, 'phone');
-    if($phone == '') {
+    if(empty($phone)) {
         $phone_valid = ISINVALID;
         $form_valid = false;
     }
@@ -58,7 +57,7 @@ if($user_edit_submit !== null) {
         $phone = addslashes($phone);
         $error_message = (new Executer("update user set username='$username', last_name='$last_name', first_name='$first_name', email='$email', phone='$phone' where id=".GetUserId()))->error;
         
-        if($error_message == '') {
+        if(empty($error_message)) {
             header('Location: '.APPLICATION.'/personal/');
         }
     }
@@ -68,27 +67,27 @@ if($user_edit_submit !== null) {
 $row = (new Fetcher("select username, last_name, first_name, email, phone from user where id=".GetUserId()))->Fetch();
 
 $username = filter_input(INPUT_POST, 'username');
-if($username == null) {
+if(empty($username)) {
     $username = htmlentities($row['username']);
 }
 
 $last_name = filter_input(INPUT_POST, 'last_name');
-if($last_name == null) {
+if(empty($last_name)) {
     $last_name = htmlentities($row['last_name']);
 }
 
 $first_name = filter_input(INPUT_POST, 'first_name');
-if($first_name == null) {
+if(empty($first_name)) {
     $first_name = htmlentities($row['first_name']);
 }
 
 $email = filter_input(INPUT_POST, 'email');
-if($email == null) {
+if(empty($email)) {
     $email = htmlentities($row['email']);
 }
 
 $phone = filter_input(INPUT_POST, 'phone');
-if($phone == null) {
+if(empty($phone)) {
     $phone = htmlentities($row['phone']);
 }
 ?>
@@ -105,7 +104,7 @@ if($phone == null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>

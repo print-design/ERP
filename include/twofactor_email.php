@@ -62,7 +62,7 @@
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && !empty($error_message)) {
+            if(!empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>

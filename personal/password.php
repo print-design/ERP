@@ -16,16 +16,15 @@ $new_password_valid = '';
 $confirm_valid = '';
         
 // Обработка отправки формы
-$password_change_submit = filter_input(INPUT_POST, 'password_change_submit');
-if($password_change_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'password_change_submit')) {
     $old_password = filter_input(INPUT_POST, 'old_password');
-    if($old_password == '') {
+    if(empty($old_password)) {
         $old_password_valid = ISINVALID;
         $form_valid = false;
     }
     
     $new_password = filter_input(INPUT_POST, 'new_password');
-    if($new_password == '') {
+    if(empty($new_password)) {
         $new_password_valid = ISINVALID;
         $form_valid = false;
     }
@@ -44,7 +43,7 @@ if($password_change_submit !== null) {
         else {
             $error_message = (new Executer("update user set password=password('$new_password') where id=".GetUserId()))->error;
             
-            if($error_message == '') {
+            if(empty($error_message)) {
                 header('Location: '.APPLICATION.'/personal/index.php?password=true');
             }
         }
@@ -64,7 +63,7 @@ if($password_change_submit !== null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
