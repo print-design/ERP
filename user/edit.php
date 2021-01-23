@@ -7,7 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 }
 
 // Если не задано значение id, перенаправляем на список
-if(filter_input(INPUT_GET, 'id') == null) {
+if(empty(filter_input(INPUT_GET, 'id'))) {
     header('Location: '.APPLICATION.'/user/');
 }
 
@@ -24,40 +24,39 @@ $phone_valid = '';
 $username_valid = '';
 
 // Обработка отправки формы
-$user_edit_submit = filter_input(INPUT_POST, 'user_edit_submit');
-if($user_edit_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'user_edit_submit')) {
     $first_name = filter_input(INPUT_POST, 'first_name');
-    if($first_name == '') {
+    if(empty($first_name)) {
         $first_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $last_name = filter_input(INPUT_POST, 'last_name');
-    if($last_name == '') {
+    if(empty($last_name)) {
         $last_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $role_id = filter_input(INPUT_POST, 'role_id');
-    if($role_id == '') {
+    if(empty($role_id)) {
         $role_id_valid = ISINVALID;
         $form_valid = false;
     }
     
     $email = filter_input(INPUT_POST, 'email');
-    if($email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if(!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $email_valid = ISINVALID;
         $form_valid = false;
     }
     
     $phone = filter_input(INPUT_POST, 'phone');
-    if($phone == '') {
+    if(empty($phone)) {
         $phone_valid = ISINVALID;
         $form_valid = false;
     }
     
     $username = filter_input(INPUT_POST, 'username');
-    if($username == '') {
+    if(empty($username)) {
         $username_valid = ISINVALID;
         $form_valid = false;
     }
@@ -73,14 +72,14 @@ if($user_edit_submit !== null) {
         $sql = "update user set username='$username', first_name='$first_name', last_name='$last_name', role_id=$role_id, email='$email', phone='$phone' where id=$id";
         
         $password = filter_input(INPUT_POST, 'password');
-        if($password != '') {
+        if(!empty($password)) {
             $password = addslashes($password);
             $sql = "update user set username='$username', password=password('$password'), first_name='$first_name', last_name='$last_name', role_id=$role_id, email='$email', phone='$phone' where id=$id";
         }
         
         $error_message = (new Executer($sql))->error;
         
-        if($error_message == '') {
+        if(empty($error_message)) {
             header('Location: '.APPLICATION.'/user/');
         }
     }
@@ -90,32 +89,32 @@ if($user_edit_submit !== null) {
 $row = (new Fetcher("select username, last_name, first_name, email, phone, role_id from user where id=". filter_input(INPUT_GET, 'id')))->Fetch();
 
 $username = filter_input(INPUT_POST, 'username');
-if($username == null) {
+if(empty($username)) {
     $username = htmlentities($row['username']);
 }
 
 $last_name = filter_input(INPUT_POST, 'last_name');
-if($last_name == null) {
+if(empty($last_name)) {
     $last_name = htmlentities($row['last_name']);
 }
 
 $first_name = filter_input(INPUT_POST, 'first_name');
-if($first_name == null) {
+if(empty($first_name)) {
     $first_name = htmlentities($row['first_name']);
 }
 
 $email = filter_input(INPUT_POST, 'email');
-if($email == null) {
+if(empty($email)) {
     $email = htmlentities($row['email']);
 }
 
 $phone = filter_input(INPUT_POST, 'phone');
-if($phone == null) {
+if(empty($phone)) {
     $phone = htmlentities($row['phone']);
 }
 
 $role_id = filter_input(INPUT_POST, 'role_id');
-if($role_id == null) {
+if(empty($role_id)) {
     $role_id = $row['role_id'];
 }
 ?>
@@ -132,7 +131,7 @@ if($role_id == null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>

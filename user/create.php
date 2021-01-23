@@ -20,46 +20,45 @@ $username_valid = '';
 $password_valid = '';
         
 // Обработка отправки формы
-$user_create_submit = filter_input(INPUT_POST, 'user_create_submit');
-if($user_create_submit !== null) {
+if(null !== filter_input(INPUT_POST, 'user_create_submit')) {
     $first_name = filter_input(INPUT_POST, 'first_name');
-    if($first_name == '') {
+    if(empty($first_name)) {
         $first_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $last_name = filter_input(INPUT_POST, 'last_name');
-    if($last_name == '') {
+    if(empty($last_name)) {
         $last_name_valid = ISINVALID;
         $form_valid = false;
     }
     
     $role_id = filter_input(INPUT_POST, 'role_id');
-    if($role_id == '') {
+    if(empty($role_id)) {
         $role_id_valid = ISINVALID;
         $form_valid = false;
     }
     
     $email = filter_input(INPUT_POST, 'email');
-    if($email != '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if(!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $email_valid = ISINVALID;
         $form_valid = false;
     }
     
     $phone = filter_input(INPUT_POST, 'phone');
-    if($phone == '') {
+    if(empty($phone)) {
         $phone_valid = ISINVALID;
         $form_valid = false;
     }
     
     $username = filter_input(INPUT_POST, 'username');
-    if($username == '') {
+    if(empty($username)) {
         $username_valid = ISINVALID;
         $form_valid = false;
     }
     
     $password = filter_input(INPUT_POST, 'password');
-    if($password == '') {
+    if(empty($password)) {
         $password_valid = ISINVALID;
         $form_valid = false;
     }
@@ -75,7 +74,7 @@ if($user_create_submit !== null) {
         $error_message = $executer->error;
         $id = $executer->insert_id;
         
-        if($error_message == '') {
+        if(empty($error_message)) {
             header('Location: '.APPLICATION."/user/");
         }
     }
@@ -94,7 +93,7 @@ if($user_create_submit !== null) {
         ?>
         <div class="container-fluid">
             <?php
-            if(isset($error_message) && $error_message != '') {
+            if(!empty($error_message)) {
                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
