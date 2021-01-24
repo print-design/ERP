@@ -89,7 +89,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                             </tr-->
                             <tr id="add-variation-tr">
                                 <td colspan="4" class="text-right">
-                                    <button type="button" class="btn btn-link"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
+                                    <button type="button" class="btn btn-link" id="add-brand-table-link"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
                                 </td>
                             </tr>
                         </table>
@@ -137,13 +137,23 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 $('#add-brand-button').show();
             });
             
+            $('#add-brand-table-link').click(function(){
+                $('#add-brand-button').click();
+            });
+            
             $('#add-brand-link').click(function(){
                 var empties = $('#add-brand-form input').filter(function(){return $(this).val() == ''});
                 if(empties.length > 0) {
                     $('#add-brand-form').find('input').filter(function(){return $(this).val() == ''}).first().focus();
                 }
                 else {
-                    alert('OK');
+                    // Показ таблицы
+                    $('#variations-table').show();
+                    
+                    // Скрытие формы и показ кнопки
+                    $('#add-brand-form').find('input').val('');
+                    $('#add-brand-form').hide();
+                    $('#add-brand-button').show();
                 }
             });
         </script>
