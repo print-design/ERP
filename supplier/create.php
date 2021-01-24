@@ -81,12 +81,6 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 <div class="form-group row">
                     <div class="col-12 col-md-6">
                         <table class="table" id="variations-table">
-                            <!--tr>
-                                <td>HTPL</td>
-                                <td>23</td>
-                                <td>4.5</td>
-                                <td>Удалить</td>
-                            </tr-->
                             <tr id="add-variation-tr">
                                 <td colspan="4" class="text-right">
                                     <button type="button" class="btn btn-link" id="add-brand-table-link"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
@@ -141,6 +135,19 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 $('#add-brand-button').click();
             });
             
+            function RemoveVariation(param) {
+                if(confirm("Действительно удалить?")) {
+                    param.closest("tr").remove();
+                    
+                    var tblrows = $('#variations-table').find("tr");
+                    var tblrnumber = tblrows.length;
+                    
+                    if(tblrnumber == 1) {
+                        $('#variations-table').hide();
+                    }
+                }
+            }
+            
             $('#add-brand-link').click(function(){
                 var empties = $('#add-brand-form input').filter(function(){return $(this).val() == ''});
                 if(empties.length > 0) {
@@ -148,7 +155,18 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 }
                 else {
                     // Показ таблицы
-                    $('#variations-table').show();
+                    if($('#variations-table').is(':hidden')) {
+                        $('#variations-table').show();
+                    }
+                    
+                    // Добавление строки в таблицу
+                    var tblrow = '<tr>' + 
+                            '<td>' + $('#add-brand-form').find('input[id="film_brand"]').val() + '</td>' + 
+                            '<td class="text-right">' + $('#add-brand-form').find('input[id="width"]').val() + '</td>' + 
+                            '<td class="text-right">' + $('#add-brand-form').find('input[id="weight"]').val() + '</td>' + 
+                            '<td class="text-right"><button type="button" class="btn btn-link" onclick="javascript:RemoveVariation($(this));"><i class="fas fa-trash-alt"></i></button></td>'
+                            '</tr>';
+                    $('#variations-table tr:last').before(tblrow);
                     
                     // Скрытие формы и показ кнопки
                     $('#add-brand-form').find('input').val('');
