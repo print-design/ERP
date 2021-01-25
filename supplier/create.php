@@ -22,9 +22,14 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
     }
     
     if($form_valid) {
+        // Сохранение поставщика
         $name = addslashes($name);
         
-        //-------------------------------------------------------------------------
+        $executer = new Executer("insert into supplier (name) values ('$name')");
+        $error_message = $executer->error;
+        $id = $executer->insert_id;
+        
+        // Получение данных о марках и вариациях
         $post_keys = array_keys($_POST);
         $film_brands = array();
         
@@ -45,8 +50,6 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
             }
         }
         
-        print_r($film_brands);
-        
         $film_brand_variations = array();
         
         foreach ($film_brands as $film_brand) {
@@ -60,18 +63,27 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
             array_push($film_brand_variations[$film_brand['film_brand']], $variation);
         }
         
-        print_r($film_brand_variations);
-        //-------------------------------------------------------------------------
+        // Сохранение марок
+        $film_brand_variations_keys = array_keys($film_brand_variations);
         
-        
-        
-        /*$executer = new Executer("insert into supplier (name) values ('$name')");
-        $error_message = $executer->error;
-        $id = $executer->insert_id;
+        foreach ($film_brand_variations_keys as $film_brand_variations_key) {
+            $film_brand_variations_key = addslashes($film_brand_variations_key);
+            $executer = new Executer("insert into film_brand (name, supplier_id) values ('$film_brand_variations_key', $id)");
+            $error_message = $executer->error;
+            $film_brand_id = $executer->insert_id;
+            
+            // Сохранение вариаций
+            foreach ($film_brand_variations[$film_brand_variations_key] as $variation) {
+                $width = $variation['width'];
+                $weight = $variation['weight'];
+                $executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($film_brand_id, $width, $weight)");
+                $error_message = $executer->error;
+            }
+        }
 
         if(empty($error_message)) {
             header('Location: '.APPLICATION."/supplier/details.php?id=$id");
-        }*/
+        }
     }
 }
 ?>
