@@ -26,26 +26,26 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
         
         //-------------------------------------------------------------------------
         $post_keys = array_keys($_POST);
-        $film_brands_array = array();
+        $film_brands = array();
         
         foreach ($post_keys as $post_key) {
             if(strpos($post_key, "film_brand_") === 0) {
                 $reminder = substr($post_key, strlen("film_brand_"));
-                $film_brands_array[$reminder]["film_brand"] = $_POST[$post_key];
+                $film_brands[$reminder]["film_brand"] = $_POST[$post_key];
             }
             
             if(strpos($post_key, "width_") === 0) {
                 $reminder = substr($post_key, strlen("width_"));
-                $film_brands_array[$reminder]["width"] = $_POST[$post_key];
+                $film_brands[$reminder]["width"] = $_POST[$post_key];
             }
             
             if(strpos($post_key, "weight_") === 0) {
                 $reminder = substr($post_key, strlen("weight_"));
-                $film_brands_array[$reminder]["weight"] = $_POST[$post_key];
+                $film_brands[$reminder]["weight"] = $_POST[$post_key];
             }
         }
         
-        print_r($film_brands_array);
+        print_r($film_brands);
         //-------------------------------------------------------------------------
         
         
