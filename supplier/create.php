@@ -46,6 +46,21 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
         }
         
         print_r($film_brands);
+        
+        $film_brand_variations = array();
+        
+        foreach ($film_brands as $film_brand) {
+            if(!isset($film_brand_variations[$film_brand['film_brand']]) || !is_array($film_brand_variations[$film_brand['film_brand']])) {
+                $film_brand_variations[$film_brand['film_brand']] = array();
+            }
+            
+            $variation = array();
+            $variation['width'] = $film_brand['width'];
+            $variation['weight'] = $film_brand['weight'];
+            array_push($film_brand_variations[$film_brand['film_brand']], $variation);
+        }
+        
+        print_r($film_brand_variations);
         //-------------------------------------------------------------------------
         
         
