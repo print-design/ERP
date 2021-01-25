@@ -21,21 +21,43 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
         $form_valid = false;
     }
     
-    //-------------------------------------------------------------
-    print_r($_POST);
-    //-------------------------------------------------------------
-    
-    /*if($form_valid) {
+    if($form_valid) {
         $name = addslashes($name);
         
-        $executer = new Executer("insert into supplier (name) values ('$name')");
+        //-------------------------------------------------------------------------
+        $post_keys = array_keys($_POST);
+        $film_brands_array = array();
+        
+        foreach ($post_keys as $post_key) {
+            if(strpos($post_key, "film_brand_") === 0) {
+                $reminder = substr($post_key, strlen("film_brand_"));
+                $film_brands_array[$reminder]["film_brand"] = $_POST[$post_key];
+            }
+            
+            if(strpos($post_key, "width_") === 0) {
+                $reminder = substr($post_key, strlen("width_"));
+                $film_brands_array[$reminder]["width"] = $_POST[$post_key];
+            }
+            
+            if(strpos($post_key, "weight_") === 0) {
+                $reminder = substr($post_key, strlen("weight_"));
+                $film_brands_array[$reminder]["weight"] = $_POST[$post_key];
+            }
+        }
+        
+        print_r($film_brands_array);
+        //-------------------------------------------------------------------------
+        
+        
+        
+        /*$executer = new Executer("insert into supplier (name) values ('$name')");
         $error_message = $executer->error;
         $id = $executer->insert_id;
 
         if(empty($error_message)) {
             header('Location: '.APPLICATION."/supplier/details.php?id=$id");
-        }
-    }*/
+        }*/
+    }
 }
 ?>
 <!DOCTYPE html>
