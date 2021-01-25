@@ -160,10 +160,15 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     }
                     
                     // Добавление строки в таблицу
+                    var film_brand = $('#add-brand-form').find('input[id="film_brand"]').val();
+                    var width = $('#add-brand-form').find('input[id="width"]').val();
+                    var weight = $('#add-brand-form').find('input[id="weight"]').val();
+                    var rowscount = $('#variations-table').find("tr").length;
+                    
                     var tblrow = '<tr>' + 
-                            '<td>' + $('#add-brand-form').find('input[id="film_brand"]').val() + '</td>' + 
-                            '<td class="text-right">' + $('#add-brand-form').find('input[id="width"]').val() + '</td>' + 
-                            '<td class="text-right">' + $('#add-brand-form').find('input[id="weight"]').val() + '</td>' + 
+                            '<td>' + film_brand + '<input type="hidden" id="film_brand_' + rowscount + '" name="film_brand_' + rowscount + '" value="' + film_brand + '" /></td>' + 
+                            '<td class="text-right">' + width + '<input type="hidden" id="width_' + rowscount + '" name="width_' + rowscount + '" value="' + width + '" /></td>' + 
+                            '<td class="text-right">' + weight + '<input type="hidden" id="weight_' + rowscount + '" name="weight_' + rowscount + '" value="' + weight + '" /></td>' + 
                             '<td class="text-right"><button type="button" class="btn btn-link" onclick="javascript:RemoveVariation($(this));"><i class="fas fa-trash-alt"></i></button></td>'
                             '</tr>';
                     $('#variations-table tr:last').before(tblrow);
