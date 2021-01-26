@@ -23,9 +23,6 @@ function Initials() {
 ?>
 <div class="container-fluid header">
     <nav class="navbar navbar-expand-sm">
-        <a class="navbar-brand" href="<?=APPLICATION ?>/">
-            <i class="fas fa-home"></i>
-        </a>
         <ul class="navbar-nav mr-auto">
             <?php
             $pallets_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/pallets/index.php' ? ' disabled' : '';

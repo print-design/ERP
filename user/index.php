@@ -40,7 +40,7 @@ if(null !== filter_input(INPUT_POST, 'delete_user_submit')) {
                 </div>
                 <div class="p-1">
                     <a href="create.php" title="Добавить пользователя" class="btn btn-outline-dark">
-                        <i class="fas fa-plus"></i>&nbsp;Добавить сотрудника
+                        <i class="fas fa-plus" style="font-size: 12px;"></i>&nbsp;&nbsp;Добавить сотрудника
                     </a>
                 </div>
             </div>
@@ -52,7 +52,7 @@ if(null !== filter_input(INPUT_POST, 'delete_user_submit')) {
                         <th>Логин</th>
                         <th>E-Mail</th>
                         <th>Телефон</th>
-                        <th></th>
+                        <!--th></th-->
                         <th></th>
                     </tr>
                 </thead>
@@ -71,16 +71,16 @@ if(null !== filter_input(INPUT_POST, 'delete_user_submit')) {
                                 ."<td>".$row['username']."</td>"
                                 ."<td>".$row['email']."</td>"
                                 ."<td>".$row['phone']."</td>";
-                        echo "<td class='text-right'>";
+                        /*echo "<td class='text-right'>";
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<a href='".APPLICATION."/user/edit.php?id=".$row['id']."'><i class='fas fa-pencil-alt'></i></a>";
                         }
-                        echo '</td>';
+                        echo '</td>';*/
                         echo "<td class='text-right'>";
                         if(filter_input(INPUT_COOKIE, USER_ID) != $row['id']) {
                             echo "<form method='post'>";
                             echo "<input type='hidden' id='id' name='id' value='".$row['id']."' />";
-                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_user_submit' name='delete_user_submit'><i class='fas fa-trash-alt'></i></button>";
+                            echo "<button type='submit' class='btn btn-link confirmable' id='delete_user_submit' name='delete_user_submit'><img src='../images/trash.svg' /></button>";
                             echo '</form>';
                         }
                         echo '</td>';

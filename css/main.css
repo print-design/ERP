@@ -1,3 +1,13 @@
+a:link, a:visited {
+    color: #228AD6;
+    text-decoration: none;
+}
+
+a:active, a:hover {
+    color: darkblue;
+    text-decoration: underline;
+}
+
 .newline {
     white-space: pre-line;
 }
@@ -10,14 +20,35 @@
     z-index: 100;
 }
 
+.header a:link, .header a:visited {
+    color: #333333;
+    text-decoration: none;
+}
+
+.header a:active, .header a:hover {
+    color: gray;
+    text-decoration: underline;
+}
+
 #topmost {
     height: 90px;
 }
 
 .navbar {
     margin-top: 12px;
+    margin-left: 0;
+    padding-left: 0;
     font-size: 14px;
     line-height: 18px;
+}
+
+.nav-link {
+    padding-left: 2px!important;
+    padding-right: 45px!important;
+}
+
+.nav-link#navbardrop {
+    padding-right: 5px!important;
 }
 
 li#nav-user {
@@ -35,6 +66,15 @@ li#nav-user {
 
 li#nav-user a.dropdown-toggle::after {
     display: none;
+}
+
+.container-fluid {
+    padding-left: 45px;
+    padding-right: 95px;
+}
+
+.container-fluid.header {
+    padding-right: 15px;
 }
 
 /*Заголовки*/
@@ -56,7 +96,11 @@ h2 {
 
 /*Второе меню*/
 .nav2 {
-    margin-bottom: 30px!important;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    margin-top: 20px;
+    margin-bottom: 20px!important;
 }
 .nav2 a.active {
     border-bottom: solid 1px blue;
@@ -64,9 +108,59 @@ h2 {
 }
 
 /*Таблица*/
+table.table {
+    border-bottom: solid 1px #dee2e6;
+}
 table.table button.btn-link {
     padding: 0;
     margin: 0;
+    border-top: 0;
+}
+
+table.table tr th {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    border-top: 0;
+    border-bottom: 0;
+    padding-left: 25px;
+    padding-top: 6px;
+    padding-bottom: 18px;
+}
+
+table.table tr td {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    vertical-align: middle;
+    height: 40px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+table.table tr td img {
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+}
+
+table.table tr td button {
+    padding: 0;
+    margin: 0;
+}
+
+/*Кнопки*/
+a.btn {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-right: 32px;
+    padding-left: 32px;
 }
 
 /*Элементы страниц*/
