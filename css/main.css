@@ -221,6 +221,12 @@ button.btn-dark {
     padding-left: 32px;
 }
 
+button.btn-outline-dark {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
 /*Элементы страниц*/
 .backlink {
     margin-top: 26px;

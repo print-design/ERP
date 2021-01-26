@@ -168,17 +168,15 @@ $name = htmlentities($row['name']);
                                 <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                                 <input type="hidden" id="scroll" name="scroll" />
                                 <div class="form-group">
-                                    <label for="width" class="mr-2">Толщина</label>
-                                    <input type="number" min="1" step="1" max="999" id="width" name="width" required="required"/>
+                                    <input type="number" min="1" step="1" max="999" class="form-control mr-2" id="width" name="width" placeholder="Толщина" required="required" style="width:100px;"/>
                                     <div class="invalid-feedback">Толщина обязательно</div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="weight" class="mr-2 ml-2">Удельный вес</label>
-                                    <input type="number" min="1" step="0.1" max="999" id="weight" name="weight" required="required"/>
+                                    <input type="number" min="1" step="0.1" max="999" class="form-control" id="weight" name="weight" placeholder="Удельный вес" required="required" style="width:120px;"/>
                                     <div class="invalid-feedback">Удельный вес обязательно</div>
                                 </div>
-                                <button type="submit" class="btn btn-dark ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
-                                <button class="btn btn-outline-dark ml-2 add-variation-cancel"><i class="fas fa-undo"></i></button>
+                                <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                                <button class="btn btn-link ml-2 add-variation-cancel"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
                             </form>
                             <button class="btn btn-link add-variation-button"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 9px;"></i>&nbsp;Добавить</button>
                         </td>
@@ -190,14 +188,16 @@ $name = htmlentities($row['name']);
                     <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
                     <input type="hidden" id="scroll" name="scroll" />
                     <div class="form-group">
-                        <label for="name" class="mr-2">Марка пленки</label>
-                        <input type="text" class="form-control mr-2" id="name" name="name" required="required"/>
+                        <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
                         <div class="invalid-feedback">Марка пленки обязательно</div>
                     </div>
-                    <button type="submit" class="btn btn-dark" id="film_brand_create_submit" name="film_brand_create_submit"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
-                    <button class="btn btn-outline-dark ml-2" id="add-brand-cancel"><i class="fas fa-undo"></i>&nbsp;Отмена</button>
+                    <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                    <button class="btn btn-link ml-2" id="add-brand-cancel"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
                 </form>
-                <button class="btn btn-outline-dark" id="add-brand-button"><i class="fas fa-plus"></i>&nbsp;Добавить марку пленки</button>
+                <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px;">
+                    <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                    &nbsp;Добавить марку<br/>пленки
+                </button>
             </div>
         </div>
         <?php
