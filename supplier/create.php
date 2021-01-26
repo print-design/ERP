@@ -120,44 +120,34 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
             </div>
             <h1>Добавление поставщика</h1>
             <form method="post">
-                <div class="form-group row">
-                    <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group" style="padding-bottom: 6px;">
+                    <div style="width:319px;">
                         <label for="name">Название поставщика</label>
                         <input type="text" id="name" name="name" class="form-control<?=$name_valid ?>" value="<?= filter_input(INPUT_POST, 'name') ?>" required="required"/>
                         <div class="invalid-feedback">Название поставщика обязательно</div>                            
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-12 col-md-6">
-                        <table class="table" id="variations-table">
-                            <tr id="add-variation-tr">
-                                <td colspan="4" class="text-right">
-                                    <button type="button" class="btn btn-link" id="add-brand-table-link"><i class="fas fa-plus"></i>&nbsp;Добавить</button>
-                                </td>
-                            </tr>
-                        </table>
+                <div class="form-group" style="padding-bottom: 14px;">
+                    <table class="table film-table" id="variations-table" style="width: 472px;">
+                        <tr id="add-variation-tr">
+                            <td colspan="3" class="text-right" style="border-bottom: 0;">
+                                <button type="button" class="btn btn-link" id="add-brand-table-link"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="form-inline" id="add-brand-form">
+                        <input type="text" id="film_brand" name="film_brand" class="form-control" placeholder="Название" style="width:215px; margin-right: 13px;" />
+                        <input type="number" min="1" step="1" id="width" name="width" class="form-control" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
+                        <input type="number" min="1" step="0.1" id="weight" name="weight" class="form-control" placeholder="Удельный вес" style="width: 129px; margin-right: 13px;" />
+                        <button type="button" class="btn btn-link" id="add-brand-link">Добавить</button>
                     </div>
-                    <div class="col-12 col-md-10">
-                        <div class="row" id="add-brand-form">
-                            <div class="col-4">
-                                <input type="text" id="film_brand" name="film_brand" class="form-control" placeholder="Название" />
-                            </div>
-                            <div class="col-2">
-                                <input type="number" min="1" step="1" id="width" name="width" class="form-control" placeholder="Толщина" />
-                            </div>
-                            <div class="col-2">
-                                <input type="number" min="1" step="0.1" id="weight" name="weight" class="form-control" placeholder="Удельный вес" />
-                            </div>
-                            <div class="col-4">
-                                <button type="button" class="btn btn-link" id="add-brand-link">Добавить</button>
-                                <button type="button" class="btn btn-link" id="add-brand-cancel">Отмена</button>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-dark" id="add-brand-button"><i class="fas fa-plus"></i>&nbsp;Добавить марку пленки</button>
-                    </div>
+                    <button type="button" class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 40px; padding-right: 62px;">
+                        <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                        &nbsp;Добавить марку<br/>пленки
+                    </button>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-dark" id="supplier_create_submit" name="supplier_create_submit">Создать поставщика</button>
+                    <button type="submit" class="btn btn-dark" id="supplier_create_submit" name="supplier_create_submit" style="padding-left: 58px; padding-right: 62px;">Создать поставщика</button>
                 </div>
             </form>
         </div>
@@ -217,8 +207,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     var tblrow = '<tr>' + 
                             '<td>' + film_brand + '<input type="hidden" id="film_brand_' + rowscount + '" name="film_brand_' + rowscount + '" value="' + film_brand + '" /></td>' + 
                             '<td class="text-right">' + width + '<input type="hidden" id="width_' + rowscount + '" name="width_' + rowscount + '" value="' + width + '" /></td>' + 
-                            '<td class="text-right">' + weight + '<input type="hidden" id="weight_' + rowscount + '" name="weight_' + rowscount + '" value="' + weight + '" /></td>' + 
-                            '<td class="text-right"><button type="button" class="btn btn-link" onclick="javascript:RemoveVariation($(this));"><i class="fas fa-trash-alt"></i></button></td>'
+                            '<td class="text-right">' + weight + '<input type="hidden" id="weight_' + rowscount + '" name="weight_' + rowscount + '" value="' + weight + '" /></td>'
                             '</tr>';
                     $('#variations-table tr:last').before(tblrow);
                     
