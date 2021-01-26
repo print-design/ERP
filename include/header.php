@@ -60,7 +60,7 @@ function Initials() {
             if(IsInRole(array('admin', 'dev', 'technologist'))):
             ?>
             <li class="nav-item">
-                <a class="nav-link" href="<?=APPLICATION ?>/user/">Админка</a>
+                <a class="nav-link admin" href="<?=APPLICATION ?>/user/">Админка</a>
             </li>
             <?php
             endif;

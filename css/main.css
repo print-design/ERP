@@ -25,8 +25,18 @@ a:active, a:hover {
     text-decoration: none;
 }
 
+.header a.admin:link, .header a.admin:visited {
+    color: #228AD6;
+    text-decoration: none;
+}
+
 .header a:active, .header a:hover {
     color: gray;
+    text-decoration: underline;
+}
+
+.header a.admin:active, .header a.admin:hover {
+    color: darkblue;
     text-decoration: underline;
 }
 
@@ -165,6 +175,7 @@ a.btn {
     padding-bottom: 16px;
     padding-right: 32px;
     padding-left: 32px;
+    color: black;
 }
 
 /*Элементы страниц*/
