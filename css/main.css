@@ -101,7 +101,7 @@ h2 {
     font-weight: 600;
     line-height: 24px;
     margin-top: 10px;
-    margin-bottom: 35px;
+    margin-bottom: 28px;
 }
 
 /*Второе меню*/
@@ -112,10 +112,32 @@ h2 {
     margin-top: 20px;
     margin-bottom: 20px!important;
 }
+
+.nav2 a:link, .nav2 a:visited {
+    color: #333333;
+    text-decoration: none;
+}
+
+.nav2 a.active:link, .nav2 a.active:visited {
+    color: #228AD6;
+    text-decoration: none;
+}
+
+.nav2 a:active, .nav2 a:hover {
+    color: gray;
+    text-decoration: underline;
+}
+
+.nav2 a.active:active, .nav2 a.active:hover {
+    color: darkblue;
+    text-decoration: none;
+}
+
 .nav2 a {
     padding-left: 5px;
     padding-right: 5px;
 }
+
 .nav2 a.active {
     border-bottom: solid 1px blue;
     padding-bottom: 10px;
@@ -159,6 +181,16 @@ table.table tr td img {
     vertical-align: top;
     padding: 0;
     margin: 0;
+}
+
+table.table.film-table {
+    border-bottom: 0;
+}
+
+table.table.film-table tr td {
+    border-top: 0;
+    border-bottom: solid 1px #E0E0E0;
+    padding-left: 12px;
 }
 
 table.table tr td button {

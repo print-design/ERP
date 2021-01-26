@@ -50,7 +50,6 @@ if(null !== filter_input(INPUT_POST, 'delete_supplier_submit')) {
                         <th>Название поставщика</th>
                         <th>Типы пленок</th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,17 +75,17 @@ if(null !== filter_input(INPUT_POST, 'delete_supplier_submit')) {
                             }
                         }
                         echo "<tr>"
-                        . "<td><a href='".APPLICATION."/supplier/details.php?id=$id'>$name</a></td>"
+                        . "<td>$name</td>"
                                 . "<td>$products</td>"
-                                . "<td class='text-right'><a href='".APPLICATION."/supplier/edit.php?id=$id'><i class='fas fa-pencil-alt'></i></a></td>";
-                        echo "<td class='text-right'>";
+                                . "<td class='text-right'><a href='".APPLICATION."/supplier/details.php?id=$id'><image src='../images/edit.svg' /></a></td>";
+                        /*echo "<td class='text-right'>";
                         if($first == null) {
                             echo "<form method='post'>";
                             echo "<input type='hidden' id='id' name='id' value='$id' />";
                             echo "<button type='submit' class='btn btn-link confirmable' id='delete_supplier_submit' name='delete_supplier_submit'><i class='fas fa-trash-alt'></i></button>";
                             echo '</form>';
                         }
-                        echo '</td>';
+                        echo '</td>';*/
                         echo "</tr>";
                     }
                     ?>
