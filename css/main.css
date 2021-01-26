@@ -102,6 +102,10 @@ h2 {
     margin-top: 20px;
     margin-bottom: 20px!important;
 }
+.nav2 a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
 .nav2 a.active {
     border-bottom: solid 1px blue;
     padding-bottom: 10px;
