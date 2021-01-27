@@ -33,5 +33,8 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             <h1>Новый паллет</h1>
             <h2>Паллет №</h2>
         </div>
+        <?php
+        include '../include/footer.php';
+        ?>
     </body>
 </html>
