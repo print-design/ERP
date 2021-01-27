@@ -31,11 +31,29 @@ if(null !== filter_input(INPUT_POST, 'film_brand_create_submit')) {
         $form_valid = false;
     }
     
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $weight = filter_input(INPUT_POST, 'weight');
+    if(empty($weight)) {
+        $weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
     if($form_valid) {
         $name = addslashes($name);
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         $executer = new Executer("insert into film_brand (name, supplier_id) values ('$name', $supplier_id)");
         $error_message = $executer->error;
+        
+        if(empty($error_message)) {
+            $insert_id = $executer->insert_id;
+            $variation_executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($insert_id, $width, $weight)");
+            $error_message = $variation_executer->error;
+        }
     }
 }
 
@@ -168,11 +186,11 @@ $name = htmlentities($row['name']);
                                 <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                                 <input type="hidden" id="scroll" name="scroll" />
                                 <div class="form-group">
-                                    <input type="number" min="1" step="1" max="999" class="form-control mr-2" id="width" name="width" placeholder="Толщина" required="required" style="width:100px;"/>
+                                    <input type="text" class="form-control int-only mr-2" id="width" name="width" placeholder="Толщина" required="required" style="width:100px;"/>
                                     <div class="invalid-feedback">Толщина обязательно</div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="number" min="1" step="0.1" max="999" class="form-control" id="weight" name="weight" placeholder="Удельный вес" required="required" style="width:120px;"/>
+                                    <input type="text" class="form-control float-only" id="weight" name="weight" placeholder="Удельный вес" required="required" style="width:120px;"/>
                                     <div class="invalid-feedback">Удельный вес обязательно</div>
                                 </div>
                                 <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
@@ -182,23 +200,30 @@ $name = htmlentities($row['name']);
                         </td>
                     </tr>
                 </table>
-                <?php endforeach; ?>
-                    
-                <form method="post" class="form-inline" id="add-brand-form">
-                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
-                    <input type="hidden" id="scroll" name="scroll" />
-                    <div class="form-group">
-                        <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
-                        <div class="invalid-feedback">Марка пленки обязательно</div>
-                    </div>
-                    <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
-                    <button class="btn btn-link ml-2" id="add-brand-cancel"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
-                </form>
-                <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px;">
-                    <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
-                    &nbsp;Добавить марку<br/>пленки
-                </button>
+                <?php endforeach; ?>                
             </div>
+            <form method="post" class="form-inline" id="add-brand-form">
+                <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                <input type="hidden" id="scroll" name="scroll" />
+                <div class="form-group">
+                    <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
+                    <div class="invalid-feedback">Марка пленки обязательно</div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="width" name="width" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
+                    <div class="invalid-feedback">Толщина обязательно</div>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 120px; margin-left: 12px;" required="required" />
+                    <div class="invalid-feedback">Удельный вес обязательно</div>
+                </div>
+                <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                <button class="btn btn-link" id="add-brand-cancel"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
+            </form>
+            <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px;">
+                <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                &nbsp;Добавить марку<br/>пленки
+            </button>
         </div>
         <?php
         include '../include/footer.php';

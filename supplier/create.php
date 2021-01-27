@@ -131,8 +131,8 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     <table class="table film-table" id="variations-table" style="width: 472px;"></table>
                     <div class="form-inline" id="add-brand-form">
                         <input type="text" id="film_brand" name="film_brand" class="form-control" placeholder="Название" style="width:215px; margin-right: 13px;" />
-                        <input type="text" min="1" step="1" id="width" name="width" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
-                        <input type="text" min="1" step="0.1" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 129px; margin-right: 13px;" />
+                        <input type="text" id="width" name="width" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
+                        <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 129px; margin-right: 13px;" />
                         <button type="button" class="btn btn-link" id="add-brand-link">Добавить</button>
                     </div>
                     <button type="button" class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 40px; padding-right: 62px;">
