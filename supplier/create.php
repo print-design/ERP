@@ -128,13 +128,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     </div>
                 </div>
                 <div class="form-group" style="padding-bottom: 14px;">
-                    <table class="table film-table" id="variations-table" style="width: 472px;">
-                        <tr id="add-variation-tr">
-                            <td colspan="3" class="text-right" style="border-bottom: 0;">
-                                <button type="button" class="btn btn-link" id="add-brand-table-link"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
-                            </td>
-                        </tr>
-                    </table>
+                    <table class="table film-table" id="variations-table" style="width: 472px;"></table>
                     <div class="form-inline" id="add-brand-form">
                         <input type="text" id="film_brand" name="film_brand" class="form-control" placeholder="Название" style="width:215px; margin-right: 13px;" />
                         <input type="number" min="1" step="1" id="width" name="width" class="form-control" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
@@ -209,7 +203,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                             '<td class="text-right">' + width + '<input type="hidden" id="width_' + rowscount + '" name="width_' + rowscount + '" value="' + width + '" /></td>' + 
                             '<td class="text-right">' + weight + '<input type="hidden" id="weight_' + rowscount + '" name="weight_' + rowscount + '" value="' + weight + '" /></td>'
                             '</tr>';
-                    $('#variations-table tr:last').before(tblrow);
+                    $('#variations-table').append(tblrow);
                     
                     // Скрытие формы и показ кнопки
                     $('#add-brand-form').find('input').val('');
