@@ -30,16 +30,16 @@ function Initials() {
             $cut_requests_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/cut_requests/index.php' ? ' disabled' : '';
             $user_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/user/index.php' ? ' disabled' : '';
             $personal_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/personal/index.php' ? ' disabled' : '';
-            if(LoggedIn()):
+            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
             ?>
             <li class="nav-item">
-                <a class="nav-link<?=$pallets_status ?>" href="<?=APPLICATION ?>/pallets/">Паллеты</a>
+                <a class="nav-link<?=$pallets_status ?>" href="<?=APPLICATION ?>/pallet/">Паллеты</a>
             </li>
             <li class='nav-item'>
-                <a class="nav-link<?=$rolls_status ?>" href="<?=APPLICATION ?>/rolls/">Рулоны</a>
+                <a class="nav-link<?=$rolls_status ?>" href="<?=APPLICATION ?>/roll/">Рулоны</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_requests/">Заявки</a>
+                <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_request/">Заявки</a>
             </li>
             <?php
             endif;

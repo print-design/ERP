@@ -55,7 +55,7 @@ if(empty($name)) {
         <?php
         include '../include/header.php';
         ?>
-        <div class="container-fluid">
+        <div class="container-fluid form-page">
             <?php
             if(!empty($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
