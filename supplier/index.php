@@ -77,7 +77,7 @@ if(null !== filter_input(INPUT_POST, 'delete_supplier_submit')) {
                         echo "<tr>"
                         . "<td>$name</td>"
                                 . "<td>$products</td>"
-                                . "<td class='text-right'><a href='".APPLICATION."/supplier/details.php?id=$id'><image src='../images/edit.svg' /></a></td>";
+                                . "<td class='text-right'><a href='".APPLICATION."/supplier/details.php?id=$id'><image src='../images/icons/edit.svg' /></a></td>";
                         /*echo "<td class='text-right'>";
                         if($first == null) {
                             echo "<form method='post'>";
