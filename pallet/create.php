@@ -36,8 +36,8 @@ $date = date("d.m.Y");
             </div>
             <h1 style="font-size: 32px; line-height: 48px; font-weight: 600; margin-bottom: 20px;">Новый паллет</h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">Паллет № <?=$id ?> от <?=$date ?></h2>
-            <div style="width: 423px;">
-                <form method="post">
+            <form method="post">
+                <div style="width: 423px;">
                     <input type="hidden" />
                     <div class="form-group">
                         <label for="supplier_id">Поставщик</label>
@@ -120,8 +120,15 @@ $date = date("d.m.Y");
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                         </select>
                     </div>
-                </form>
-            </div>
+                    <div class="form-group">
+                        <label for="comment">Комментарий</label>
+                        <textarea id="comment" name="comment" rows="4" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-inline" style="margin-top: 30px;">
+                    <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px;">СОЗДАТЬ ПАЛЛЕТ</button>
+                </div>
+            </form>
         </div>
         <?php
         include '../include/footer.php';
