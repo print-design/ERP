@@ -43,6 +43,14 @@ $date = date("d.m.Y");
                         <label for="supplier_id">Поставщик</label>
                         <select id="supplier_id" name="supplier_id" class="form-control" required="required">
                             <option value="">Выберите поставщика</option>
+                            <?php
+                            $suppliers = (new Grabber("select id, name from supplier order by name"))->result;
+                            foreach ($suppliers as $supplier) {
+                                $id = $supplier['id'];
+                                $name = $supplier['name'];
+                                echo "<option value='$id'>$name</option>";
+                            }
+                            ?>
                         </select>
                         <div class="invalid-feedback">Поставщик обязательно</div>
                     </div>
@@ -118,6 +126,15 @@ $date = date("d.m.Y");
                         <label for="manager_id">Менеджер</label>
                         <select id="manager_id" name="manager_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
+                            <?php
+                            $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
+                            foreach ($managers as $manager) {
+                                $id = $manager['id'];
+                                $first_name = $manager['first_name'];
+                                $last_name = $manager['last_name'];
+                                echo "<option value='$id'>$last_name $first_name</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="form-group">
