@@ -7,12 +7,115 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 }
 
 // Валидация формы
+define('ISINVALID', ' is-invalid');
+$form_valid = true;
+$error_message = '';
+
+$supplier_id_valid = '';
+$id_from_supplier_valid = '';
+$film_brand_id_valid = '';
+$width_valid = '';
+$thickness_valid = '';
+$length_valid = '';
+$net_weight_valid = '';
+$rolls_number_valid = '';
+$cell_valid = '';
+$manager_id_valid = '';
+$status_id_valid = '';
 
 // Обработка отправки формы
+if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) {
+        $supplier_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) {
+        $id_from_supplier_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) {
+        $film_brand_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $length = filter_input(INPUT_POST, 'length');
+    if(empty($length)) {
+        $length_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $net_weight = filter_input(INPUT_POST, 'net_weight');
+    if(empty($net_weight)) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $rolls_number = filter_input(INPUT_POST, 'rolls_number');
+    if(empty($rolls_number)) {
+        $rolls_number_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) {
+        $cell_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $manager_id = filter_input(INPUT_POST, 'manager_id');
+    if(empty($manager_id)) {
+        $manager_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        $status_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $date = filter_input(INPUT_POST, 'date');
+    
+    if($form_valid) {
+        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, manager_id, status_id, comment, inner_id, date) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date')";
+        $error_message = (new Executer($sql))->error;
+        $error_message = (new Executer("delete from new_pallet_id where id=$inner_id"))->error;
+        
+        if(empty($error_message)) {
+            header('Location: '.APPLICATION."/pallet/");
+        }
+    }
+}
 
 // Получение данных
-$id = 0;
-$date = date("d.m.Y");
+$inner_id = 0;
+$row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();
+if(!empty($row)) {
+    $inner_id = intval($row['id']);
+}
+$inner_id++;
+
+$error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)"))->error;
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,10 +138,11 @@ $date = date("d.m.Y");
                 <a href="<?=APPLICATION ?>/pallet/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
             </div>
             <h1 style="font-size: 32px; line-height: 48px; font-weight: 600; margin-bottom: 20px;">Новый паллет</h1>
-            <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">Паллет № <?=$id ?> от <?=$date ?></h2>
+            <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">Паллет № <?=$inner_id ?> от <?=date("d.m.Y") ?></h2>
             <form method="post">
                 <div style="width: 423px;">
-                    <input type="hidden" />
+                    <input type="hidden" id="inner_id" name="inner_id" value="<?=$inner_id ?>" />
+                    <input type="hidden" id="date" name="date" value="<?= date("Y-m-d") ?>" />
                     <div class="form-group">
                         <label for="supplier_id">Поставщик</label>
                         <select id="supplier_id" name="supplier_id" class="form-control" required="required">
@@ -93,12 +197,12 @@ $date = date("d.m.Y");
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" class="form-control float-only" placeholder="Введите длину" required="required" />
+                            <input type="text" id="length" name="length" class="form-control int-only" placeholder="Введите длину" required="required" />
                             <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" class="form-control float-only" placeholder="Введите массу нетто" required="required" />
+                            <input type="text" id="net_weight" name="net_weight" class="form-control int-only" placeholder="Введите массу нетто" required="required" />
                             <div class="invalid-feedback">Масса нетто обязательно</div>
                         </div>
                     </div>
@@ -124,8 +228,8 @@ $date = date("d.m.Y");
                     </div>
                     <div class="form-group">
                         <label for="manager_id">Менеджер</label>
-                        <select id="manager_id" name="manager_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
-                            <option value="">ВЫБРАТЬ СТАТУС</option>
+                        <select id="manager_id" name="manager_id" class="form-control" required="required">
+                            <option value="">Выберите менеджера</option>
                             <?php
                             $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
                             foreach ($managers as $manager) {
@@ -133,6 +237,20 @@ $date = date("d.m.Y");
                                 $first_name = $manager['first_name'];
                                 $last_name = $manager['last_name'];
                                 echo "<option value='$id'>$last_name $first_name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_id">Статус</label>
+                        <select id="status_id" name="status_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
+                            <option value="">ВЫБРАТЬ СТАТУС</option>
+                            <?php
+                            $statuses = (new Grabber("select s.id, s.name from status s inner join status_level sl on sl.status_id = s.id order by s.name"))->result;
+                            foreach ($statuses as $status) {
+                                $id = $status['id'];
+                                $name = $status['name'];
+                                echo "<option value='$id'>$name</option>";
                             }
                             ?>
                         </select>
