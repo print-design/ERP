@@ -265,8 +265,3 @@ input.form-control {
     height: 40px;
     border: solid 1px #A1A4B1;
 }
-
-select.form-control {
-    height: 48px!important;
-    margin-bottom: 20px!important;
-}
