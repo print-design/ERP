@@ -258,10 +258,9 @@ label {
 }
 
 input.form-control {
-    font-size: 14px;
-    line-height: 21px;
-    font-weight: 400;
-    margin-bottom: 10px;
-    height: 40px;
+    border: solid 1px #A1A4B1;
+}
+
+select.form-control {
     border: solid 1px #A1A4B1;
 }
