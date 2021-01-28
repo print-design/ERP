@@ -150,5 +150,21 @@ $date = date("d.m.Y");
         <?php
         include '../include/footer.php';
         ?>
+        <script>
+            $('#supplier_id').change(function(){
+                if($(this).val() == "") {
+                    $('#film_brand_id').html("<option id=''>Выберите марку</option>");
+                }
+                else {
+                    $.ajax({ url: "../ajax/film_brand.php?supplier_id=" + $(this).val() })
+                            .done(function(data) {
+                                $('#film_brand_id').html(data);
+                            })
+                            .fail(function() {
+                                alert('Ошибка при выборе поставщика');
+                            });
+                    }
+                });
+        </script>
     </body>
 </html>
