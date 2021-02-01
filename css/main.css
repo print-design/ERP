@@ -207,7 +207,7 @@ table.table tr td button {
 }
 
 /*Кнопки*/
-a.btn {
+a.btn, button.btn {
     font-size: 14px;
     line-height: 16px;
     font-weight: 600;
@@ -263,4 +263,8 @@ input.form-control {
 
 select.form-control {
     border: solid 1px #A1A4B1;
+}
+
+#filterModal .modal-dialog {
+    width: 535px;
 }
