@@ -107,9 +107,41 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <h2>Статус</h2>
                     <form method="get">
                         <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint" /> В ПЕЧАТЬ
-                            </label>
+                            <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint" />
+                            <label class="form-check-label" for="chkPrint">В печать</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkUnavailable" name="chkUnavailable" />
+                            <label class="form-check-label" for="chkUnavailable">Не доступен для раскроя</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkFree" name="chkFree" />
+                            <label class="form-check-label" for="chkFree">Свободен</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkPartial" name="chkPartial" />
+                            <label class="form-check-label" for="chkPartial">Частично свободен</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkReserved" name="chkReserved" />
+                            <label class="form-check-label" for="chkReserved">Забронирован</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkReturn" name="chkReturn" />
+                            <label class="form-check-label" for="chkReturn">На возврат</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="film_brand" class="form-control" name="film_brand" style="background-color: #8B90A0; color: white;">
+                                <option value="">МАРКА ПЛЕНКИ</option>
+                                <?php
+                                $film_brands = (new Grabber("select id, name from film_brand order by name"))->result;
+                                foreach ($film_brands as $film_brand) {
+                                    $id = $film_brand['id'];
+                                    $name = $film_brand['name'];
+                                    echo "<option value='$id'>$name</option>";
+                                }
+                                ?>
+                            </select>
                         </div>
                     </form>
                 </div>
