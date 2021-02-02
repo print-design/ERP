@@ -12,6 +12,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
         <?php
         include '../include/head.php';
         ?>
+        <link href="<?=APPLICATION ?>/css/jquery-ui.css" rel="stylesheet"/>
     </head>
     <body>
         <?php
@@ -101,11 +102,11 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
         ?>
         <div class="modal fade" id="filterModal">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
                     <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 15px; top: 5px;">&times;</button>
                     <h1>Фильтр</h1>
-                    <h2>Статус</h2>
                     <form method="get">
+                        <h2>Статус</h2>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint" />
                             <label class="form-check-label" for="chkPrint">В печать</label>
@@ -134,7 +135,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             <select id="film_brand" class="form-control" name="film_brand" style="background-color: #8B90A0; color: white;">
                                 <option value="">МАРКА ПЛЕНКИ</option>
                                 <?php
-                                $film_brands = (new Grabber("select id, name from film_brand order by name"))->result;
+                                $film_brands = (new Grabber("select distinct fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id order by fb.name"))->result;
                                 foreach ($film_brands as $film_brand) {
                                     $id = $film_brand['id'];
                                     $name = $film_brand['name'];
@@ -143,9 +144,39 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                                 ?>
                             </select>
                         </div>
+                        <h2>Толщина</h2>
+                        <div id="width_slider" style="width: 465px;">
+                            <label for="amount">Price range:</label>
+                            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                            <div id="width_slider_values" style="height: 50px;">
+                                <div style="position: absolute; bottom: 10px; left: 0;">8 мкм</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(80 - 8) * 50 / 535 ?>px;">50</div>
+                                <div style="position: absolute; bottom: 10px; right: 0;">80 мкм</div>
+                            </div>
+                            <div id="slider-range"></div>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+        <?php
+        include '../include/footer.php';
+        ?>
+        <script src="<?=APPLICATION ?>/js/jquery-ui.js"></script>
+        <script>
+            $( function() {
+                $( "#slider-range" ).slider({
+                    range: true,
+                    min: 8,
+                    max: 80,
+                    values: [ 20, 50 ],
+                    slide: function( event, ui ) {
+                        $("#amount").val(ui.values[ 0 ] + "мкм" + " - " + ui.values[ 1 ] + "мкм");
+                    }
+                });
+                $("#amount").val($("#slider-range").slider("values", 0) + "мкм" +
+                        " - " + $("#slider-range").slider("values", 1) + "мкм");
+            });
+        </script>
     </body>
 </html>

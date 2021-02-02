@@ -264,7 +264,3 @@ input.form-control {
 select.form-control {
     border: solid 1px #A1A4B1;
 }
-
-#filterModal .modal-dialog {
-    width: 535px;
-}
