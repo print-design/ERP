@@ -148,7 +148,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <div id="width_slider" style="width: 465px;">
                             <label for="amount">Price range:</label>
                             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                            <div id="width_slider_values" style="height: 50px;">
+                            <div id="width_slider_values" style="height: 50px; position: relative;">
                                 <div style="position: absolute; bottom: 10px; left: 0;">8 мкм</div>
                                 <div style="position: absolute; bottom: 10px;  left: <?=(80 - 8) * 50 / 535 ?>px;">50</div>
                                 <div style="position: absolute; bottom: 10px; right: 0;">80 мкм</div>
