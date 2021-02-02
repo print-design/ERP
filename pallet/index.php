@@ -186,7 +186,9 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                                 foreach ($film_brands as $film_brand) {
                                     $id = $film_brand['id'];
                                     $name = $film_brand['name'];
-                                    echo "<option value='$id'>$name</option>";
+                                    $selected = '';
+                                    if(filter_input(INPUT_GET, 'film_brand_id') == $film_brand['id']) $selected = " selected='selected'";
+                                    echo "<option value='$id'$selected>$name</option>";
                                 }
                                 ?>
                             </select>
