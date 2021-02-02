@@ -103,10 +103,10 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
         <div class="modal fade" id="filterModal">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
-                    <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 15px; top: 5px;">&times;</button>
-                    <h1>Фильтр</h1>
+                    <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 32px; top: 55px;">&times;</button>
+                    <h1 style="margin-top: 53px; margin-bottom: 20px; font-size: 32px; line-height: 48px; font-weight: 600;">Фильтр</h1>
                     <form method="get">
-                        <h2>Статус</h2>
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px;">Статус</h2>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint" />
                             <label class="form-check-label" for="chkPrint">В печать</label>
@@ -132,7 +132,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             <label class="form-check-label" for="chkReturn">На возврат</label>
                         </div>
                         <div class="form-group">
-                            <select id="film_brand" class="form-control" name="film_brand" style="background-color: #8B90A0; color: white;">
+                            <select id="film_brand" class="form-control" name="film_brand" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
                                 <option value="">МАРКА ПЛЕНКИ</option>
                                 <?php
                                 $film_brands = (new Grabber("select distinct fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id order by fb.name"))->result;
@@ -144,17 +144,35 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                                 ?>
                             </select>
                         </div>
-                        <h2>Толщина</h2>
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600;">Толщина</h2>
                         <div id="width_slider" style="width: 465px;">
                             <label for="amount">Price range:</label>
                             <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                            <div id="width_slider_values" style="height: 50px; position: relative;">
+                            <div id="width_slider_values" style="height: 50px; position: relative; font-size: 14px; line-height: 18px;">
                                 <div style="position: absolute; bottom: 10px; left: 0;">8 мкм</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(80 - 8) * 50 / 535 ?>px;">50</div>
-                                <div style="position: absolute; bottom: 10px; right: 0;">80 мкм</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 10 / 72) + 5 ?>px;">20</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 20 / 72) + 5 ?>px;">30</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 30 / 72) + 5 ?>px;">40</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 40 / 72) + 5 ?>px;">50</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 50 / 72) + 5 ?>px;">60</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 60 / 72) + 5 ?>px;">70</div>
+                                <div style="position: absolute; bottom: 10px; right: -7px;">80</div>
                             </div>
                             <div id="slider-range"></div>
                         </div>
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600;">Ширина</h2>
+                        <div class="row">
+                            <div class="col-5 form-group">
+                                <label for="width_from">От</label>
+                                <input type="number" min="0" id="width_from" name="width_from" class="form-control" />
+                            </div>
+                            <div class="col-2 text-center" style="padding-top: 30px;"><strong>&ndash;</strong></div>
+                            <div class="col-5">
+                                <label for="width_to">До</label>
+                                <input type="number" min="0" id="width_to" name="width_to" class="form-control" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark" style="margin-bottom: 50px;">Применить</button>
                     </form>
                 </div>
             </div>
