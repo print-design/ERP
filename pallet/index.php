@@ -57,6 +57,44 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                 </thead>
                 <tbody>
                     <?php
+                    $where = '';
+                    
+                    $thickness_from = filter_input(INPUT_GET, 'thickness_from');
+                    if(!empty($thickness_from)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "thickness >= ".$thickness_from;
+                    }
+                    
+                    $thickness_to = filter_input(INPUT_GET, 'thickness_to');
+                    if(!empty($thickness_to)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "thickness <= $thickness_to";
+                    }
+                    
+                    $width_from = filter_input(INPUT_GET, 'width_from');
+                    if(!empty($width_from)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "width >= $width_from";
+                    }
+                    
+                    $width_to = filter_input(INPUT_GET, 'width_to');
+                    if(!empty($width_to)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "width <= $width_to";
+                    }
+                    
+                    if(!empty($where)) {
+                        $where = "where $where ";
+                    }
+                    
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
                             . "st.name status, p.comment "
@@ -65,6 +103,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             . "inner join supplier s on p.supplier_id = s.id "
                             . "inner join user u on p.manager_id = u.id "
                             . "inner join status st on p.status_id = st.id "
+                            . $where
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
@@ -146,33 +185,34 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         </div>
                         <h2 style="font-size: 24px; line-height: 32px; font-weight: 600;">Толщина</h2>
                         <div id="width_slider" style="width: 465px;">
-                            <label for="amount">Price range:</label>
-                            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
                             <div id="width_slider_values" style="height: 50px; position: relative; font-size: 14px; line-height: 18px;">
                                 <div style="position: absolute; bottom: 10px; left: 0;">8 мкм</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 10 / 72) + 5 ?>px;">20</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 20 / 72) + 5 ?>px;">30</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 30 / 72) + 5 ?>px;">40</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 40 / 72) + 5 ?>px;">50</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 50 / 72) + 5 ?>px;">60</div>
-                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 60 / 72) + 5 ?>px;">70</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 10 / 72) + 6 ?>px;">20</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 20 / 72) + 6 ?>px;">30</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 30 / 72) + 6 ?>px;">40</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 40 / 72) + 6 ?>px;">50</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 50 / 72) + 6 ?>px;">60</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 60 / 72) + 6 ?>px;">70</div>
                                 <div style="position: absolute; bottom: 10px; right: -7px;">80</div>
+                                <div style="position: absolute; bottom: 10px; right: -34px;">мкм</div>
                             </div>
                             <div id="slider-range"></div>
                         </div>
-                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600;">Ширина</h2>
+                        <input type="hidden" id="thickness_from" name="thickness_from" />
+                        <input type="hidden" id="thickness_to" name="thickness_to" />
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-top: 43px; margin-bottom: 18px;">Ширина</h2>
                         <div class="row">
                             <div class="col-5 form-group">
                                 <label for="width_from">От</label>
-                                <input type="number" min="0" id="width_from" name="width_from" class="form-control" />
+                                <input type="number" min="1" id="width_from" name="width_from" class="form-control" value="<?= filter_input(INPUT_GET, 'width_from') ?>" />
                             </div>
                             <div class="col-2 text-center" style="padding-top: 30px;"><strong>&ndash;</strong></div>
                             <div class="col-5">
                                 <label for="width_to">До</label>
-                                <input type="number" min="0" id="width_to" name="width_to" class="form-control" />
+                                <input type="number" min="1" id="width_to" name="width_to" class="form-control" value="<?= filter_input(INPUT_GET, 'width_to') ?>" />
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-dark" style="margin-bottom: 50px;">Применить</button>
+                        <button type="submit" class="btn btn-dark" id="filter_submit" name="filter_submit" style="margin-top: 20px; margin-bottom: 35px;">Применить</button>
                     </form>
                 </div>
             </div>
@@ -182,19 +222,22 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
         ?>
         <script src="<?=APPLICATION ?>/js/jquery-ui.js"></script>
         <script>
-            $( function() {
-                $( "#slider-range" ).slider({
-                    range: true,
-                    min: 8,
-                    max: 80,
-                    values: [ 20, 50 ],
-                    slide: function( event, ui ) {
-                        $("#amount").val(ui.values[ 0 ] + "мкм" + " - " + ui.values[ 1 ] + "мкм");
-                    }
-                });
-                $("#amount").val($("#slider-range").slider("values", 0) + "мкм" +
-                        " - " + $("#slider-range").slider("values", 1) + "мкм");
+            var slider_start_from = <?= null === filter_input(INPUT_GET, 'thickness_from') ? "20" : filter_input(INPUT_GET, 'thickness_from') ?>;
+            var slider_start_to = <?= null === filter_input(INPUT_GET, 'thickness_to') ? "50" : filter_input(INPUT_GET, 'thickness_to') ?>;
+            
+            $( "#slider-range" ).slider({
+                range: true,
+                min: 8,
+                max: 80,
+                values: [slider_start_from, slider_start_to],
+                slide: function(event, ui) {
+                    $("#thickness_from").val(ui.values[0]);
+                    $("#thickness_to").val(ui.values[1]);
+                }
             });
+            
+            $("#thickness_from").val(slider_start_from);
+            $("#thickness_to").val(slider_start_to);
         </script>
     </body>
 </html>
