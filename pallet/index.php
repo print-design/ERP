@@ -155,27 +155,27 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <form method="get">
                         <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px;">Статус</h2>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint" />
+                            <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint"<?= filter_input(INPUT_GET, 'chkPrint') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkPrint">В печать</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkUnavailable" name="chkUnavailable" />
+                            <input type="checkbox" class="form-check-input" id="chkUnavailable" name="chkUnavailable"<?= filter_input(INPUT_GET, 'chkUnavailable') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkUnavailable">Не доступен для раскроя</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkFree" name="chkFree" />
+                            <input type="checkbox" class="form-check-input" id="chkFree" name="chkFree"<?= filter_input(INPUT_GET, 'chkFree') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkFree">Свободен</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkPartial" name="chkPartial" />
+                            <input type="checkbox" class="form-check-input" id="chkPartial" name="chkPartial"<?= filter_input(INPUT_GET, 'chkPartial') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkPartial">Частично свободен</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkReserved" name="chkReserved" />
+                            <input type="checkbox" class="form-check-input" id="chkReserved" name="chkReserved"<?= filter_input(INPUT_GET, 'chkReserved') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkReserved">Забронирован</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkReturn" name="chkReturn" />
+                            <input type="checkbox" class="form-check-input" id="chkReturn" name="chkReturn"<?= filter_input(INPUT_GET, 'chkReturn') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkReturn">На возврат</label>
                         </div>
                         <div class="form-group">
