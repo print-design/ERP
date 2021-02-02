@@ -59,6 +59,14 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <?php
                     $where = '';
                     
+                    $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
+                    if(!empty($film_brand_id)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "film_brand_id = $film_brand_id";
+                    }
+                    
                     $thickness_from = filter_input(INPUT_GET, 'thickness_from');
                     if(!empty($thickness_from)) {
                         if(!empty($where)) {
@@ -171,7 +179,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             <label class="form-check-label" for="chkReturn">На возврат</label>
                         </div>
                         <div class="form-group">
-                            <select id="film_brand" class="form-control" name="film_brand" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
+                            <select id="film_brand_id" name="film_brand_id" class="form-control" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
                                 <option value="">МАРКА ПЛЕНКИ</option>
                                 <?php
                                 $film_brands = (new Grabber("select distinct fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id order by fb.name"))->result;
