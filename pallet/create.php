@@ -107,6 +107,19 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     }
 }
 
+if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
+    $myCurl = curl_init();
+    curl_setopt_array($myCurl, array(
+        CURLOPT_URL => APPLICATION."/pallet/sticker.php",
+        CURLOPT_RETURNTRANSFER => false,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query(array())
+    ));
+    $response = curl_exec($myCurl);
+    curl_close($myCurl);
+    //print_r($response);
+}
+
 // Получение данных
 $inner_id = 0;
 $row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();
@@ -278,7 +291,8 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                     </div>
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
-                    <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px;">СОЗДАТЬ ПАЛЛЕТ</button>
+                    <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px;">СОЗДАТЬ ПАЛЛЕТ</button>
+                    <button type="submit" formaction="<?=APPLICATION ?>/pallet/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark">Распечатать стикер</button>
                 </div>
             </form>
         </div>
