@@ -99,6 +99,29 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         $where .= "width <= $width_to";
                     }
                     
+                    $statuses = array();
+                    
+                    if(filter_input(INPUT_GET, 'chkPrint') == 'on') {
+                        array_push($statuses, 1); // В печать
+                    }
+                    
+                    if(filter_input(INPUT_GET, 'chkCut') == 'on') {
+                        array_push($statuses, 2); // На раскрой
+                    }
+                    
+                    if(filter_input(INPUT_GET, 'chkFree') == 'on') {
+                        array_push($statuses, 3); // Свободен
+                    }
+                    
+                    $strStatuses = implode(", ", $statuses);
+                    
+                    if(!empty($strStatuses)) {
+                        if(!empty($where)) {
+                            $where = "$where and ";
+                        }
+                        $where .= "status_id in ($strStatuses)";
+                    }
+                    
                     if(!empty($where)) {
                         $where = "where $where ";
                     }
@@ -159,24 +182,12 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             <label class="form-check-label" for="chkPrint">В печать</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkUnavailable" name="chkUnavailable"<?= filter_input(INPUT_GET, 'chkUnavailable') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkUnavailable">Не доступен для раскроя</label>
+                            <input type="checkbox" class="form-check-input" id="chkCut" name="chkCut"<?= filter_input(INPUT_GET, 'chkCut') == 'on' ? " checked='checked'" : "" ?> />
+                            <label class="form-check-label" for="chkCut">На раскрой</label>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="chkFree" name="chkFree"<?= filter_input(INPUT_GET, 'chkFree') == 'on' ? " checked='checked'" : "" ?> />
                             <label class="form-check-label" for="chkFree">Свободен</label>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkPartial" name="chkPartial"<?= filter_input(INPUT_GET, 'chkPartial') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkPartial">Частично свободен</label>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkReserved" name="chkReserved"<?= filter_input(INPUT_GET, 'chkReserved') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkReserved">Забронирован</label>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkReturn" name="chkReturn"<?= filter_input(INPUT_GET, 'chkReturn') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkReturn">На возврат</label>
                         </div>
                         <div class="form-group">
                             <select id="film_brand_id" name="film_brand_id" class="form-control" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
