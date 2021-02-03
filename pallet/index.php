@@ -37,7 +37,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th><input type="checkbox" class="form-check" /></th>
+                        <th><input type="checkbox" class="form-check" id="chkMain" /></th>
                         <th>Дата прихода</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
@@ -141,7 +141,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     while ($row = $fetcher->Fetch()):
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="" name="" class="form-check" /></td>
+                        <td><input type="checkbox" id="" name="" class="form-check chkPallet" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -156,7 +156,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td><?= $row['status'] ?></td>
                         <td><?= htmlentities($row['comment']) ?></td>
-                        <td></td>
+                        <td><i class="fas fa-ellipsis-h"></i></td>
                     </tr>
                     <?php
                     endwhile;
@@ -259,6 +259,19 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             
             $("#thickness_from").val(slider_start_from);
             $("#thickness_to").val(slider_start_to);
+            
+            $('#chkMain').change(function(){
+                if($(this).is(':checked')) {
+                    $('.chkPallet').prop('checked', true);
+                }
+                else {
+                    $('.chkPallet').prop('checked', false);
+                }
+            });
+            
+            $('.chkPallet').change(function(){
+                $('#chkMain').prop('checked', false);
+            });
         </script>
     </body>
 </html>
