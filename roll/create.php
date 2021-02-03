@@ -6,93 +6,15 @@ if(!LoggedIn()) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
-// Валидация формы
-        define('ISINVALID', ' is-invalid');
-        $form_valid = true;
-        $error_message = '';
-        
-        $supplier_id_valid = '';
-        $model_id_valid = '';
-        $width_valid = '';
-        $thickness_valid = '';
-        $length_valid = '';
-        $weight_valid = '';
-        $cell_valid = '';
-        $status_id_valid = '';
-        
-        // Обработка отправки формы
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            if($_POST['supplier_id'] == '') {
-                $supplier_id_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['model_id'] == '') {
-                $model_id_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['width'] == '') {
-                $width_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['thickness'] == '') {
-                $thickness_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['length'] == '') {
-                $length_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['cell'] == '') {
-                $cell_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['weight'] == '') {
-                $weight_valid = ISINVALID;
-                $form_valid = false;
-            }
-            if($_POST['status_id'] == '') {
-                $status_id_valid = ISINVALID;
-                $form_valid = false;
-            }
-            
-            if($form_valid){
-                $conn = new mysqli('localhost', 'root', '', 'erp');
-                if($conn->connect_error) {
-                    die('Ошибка соединения: '.$conn->connect_error);
-                }
-                
-                $unix_time = time();
-                $supplier_id = $_POST['supplier_id'];
-                $model_id = $_POST['model_id'];
-                $width = $_POST['width'];
-                $thickness = $_POST['thickness'];
-                $length = $_POST['length'];
-                $weight = $_POST['weight'];
-                $cell = $_POST['cell'];
-                $status_id = $_POST['status_id'];
-                $user_id = 1;
-                $comment = $_POST['comment'];
-                $in_pallet = 'false';
-                $supplier_code = $_POST['supplier_code'];
-                $qr_code = microtime();
-                
-                $sql = "insert into roll"
-                        . "(date, supplier_id, model_id, width, thickness, length, weight, cell, "
-                        . "status_id, user_id, comment, in_pallet, supplier_code, qr_code) "
-                        . "values "
-                        . "(FROM_UNIXTIME($unix_time), $supplier_id, $model_id, $width, $thickness, $length, $weight, '$cell', "
-                        . "$status_id, $user_id, '$comment', $in_pallet, '$supplier_code', '$qr_code')";
-                
-                if ($conn->query($sql) === true) {
-                    header('Location: '.APPLICATION.'/rolls/');
-                }
-                else {
-                    $error_message = $conn->error;
-                }
-                
-                $conn->close();
-            }
-        }
+// Получение данных
+$inner_id = 0;
+$row = (new Fetcher("select id from new_roll_id union select inner_id from roll order by id desc limit 1"))->Fetch();
+if(!empty($row)) {
+    $inner_id = intval($row['id']);
+}
+$inner_id++;
+
+$error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))->error;
 ?>
 <!DOCTYPE html>
 <html>

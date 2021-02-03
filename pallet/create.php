@@ -277,7 +277,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                         <select id="status_id" name="status_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
-                            $statuses = (new Grabber("select s.id, s.name from status s inner join status_level sl on sl.status_id = s.id order by s.name"))->result;
+                            $statuses = (new Grabber("select s.id, s.name from pallet_status s inner join pallet_status_level sl on sl.status_id = s.id order by s.name"))->result;
                             foreach ($statuses as $status) {
                                 $id = $status['id'];
                                 $name = $status['name'];

@@ -53,7 +53,7 @@ if(!empty($supplier_id) || !empty($film_brand_id) || !empty($manager_id) || !emp
             . "left join supplier s on p.supplier_id = s.id "
             . "left join film_brand fb on p.film_brand_id = fb.id "
             . "left join user u on p.manager_id = u.id "
-            . "left join status st on p.status_id = st.id";
+            . "left join pallet_status st on p.status_id = st.id";
     
     $row = (new Fetcher($sql))->Fetch();
     if(!empty($row['supplier'])) $supplier = $row['supplier'];

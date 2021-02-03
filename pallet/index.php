@@ -133,7 +133,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             . "inner join film_brand fb on p.film_brand_id = fb.id "
                             . "inner join supplier s on p.supplier_id = s.id "
                             . "inner join user u on p.manager_id = u.id "
-                            . "inner join status st on p.status_id = st.id "
+                            . "inner join pallet_status st on p.status_id = st.id "
                             . $where
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
