@@ -108,19 +108,6 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     }
 }
 
-if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
-    $myCurl = curl_init();
-    curl_setopt_array($myCurl, array(
-        CURLOPT_URL => APPLICATION."/pallet/sticker.php",
-        CURLOPT_RETURNTRANSFER => false,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => http_build_query(array())
-    ));
-    $response = curl_exec($myCurl);
-    curl_close($myCurl);
-    //print_r($response);
-}
-
 // Получение данных
 $inner_id = 0;
 $row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();

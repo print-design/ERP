@@ -2,8 +2,103 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!LoggedIn()) {
+if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
+}
+
+// Валидация формы
+define('ISINVALID', ' is-invalid');
+$form_valid = true;
+$error_message = '';
+
+$supplier_id_valid = '';
+$id_from_supplier_valid = '';
+$film_brand_id_valid = '';
+$width_valid = '';
+$thickness_valid = '';
+$length_valid = '';
+$net_weight_valid = '';
+$cell_valid = '';
+$manager_id_valid = '';
+$status_id_valid = '';
+
+// Обработка отправки формы
+if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) {
+        $supplier_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) {
+        $id_from_supplier_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) {
+        $film_brand_id = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $length = filter_input(INPUT_POST, 'length');
+    if(empty($length)) {
+        $length_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $net_weight = filter_input(INPUT_POST, 'net_weight');
+    if(empty($net_weight)) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) {
+        $cell_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $manager_id = filter_input(INPUT_POST, 'manager_id');
+    if(empty($manager_id)) {
+        $manager_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        $status_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $date = filter_input(INPUT_POST, 'date');
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
+    
+    if($form_valid) {
+        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, manager_id, status_id, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
+        $error_message = (new Executer($sql))->error;
+        $error_message = (new Executer("delete from new_roll_id where id=$inner_id"))->error;
+        
+        if(empty($error_message)) {
+            header('Location: '.APPLICATION."/roll/");
+        }
+    }
 }
 
 // Получение данных
