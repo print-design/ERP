@@ -94,10 +94,11 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
     $inner_id = filter_input(INPUT_POST, 'inner_id');
     $date = filter_input(INPUT_POST, 'date');
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, manager_id, status_id, comment, inner_id, date) "
-                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date')";
+        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, manager_id, status_id, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
         $error_message = (new Executer("delete from new_pallet_id where id=$inner_id"))->error;
         
@@ -156,6 +157,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                 <div style="width: 423px;">
                     <input type="hidden" id="inner_id" name="inner_id" value="<?=$inner_id ?>" />
                     <input type="hidden" id="date" name="date" value="<?= date("Y-m-d") ?>" />
+                    <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= GetUserId() ?>" />
                     <div class="form-group">
                         <label for="supplier_id">Поставщик</label>
                         <select id="supplier_id" name="supplier_id" class="form-control" required="required">
@@ -268,6 +270,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Менеджер обязательно</div>
                     </div>
                     <div class="form-group">
                         <label for="status_id">Статус</label>
@@ -284,6 +287,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Статус обязательно</div>
                     </div>
                     <div class="form-group">
                         <label for="comment">Комментарий</label>

@@ -46,7 +46,7 @@ if(!empty($supplier_id) || !empty($film_brand_id) || !empty($manager_id) || !emp
     
     if(!empty($status_id)) {
         if(!empty($sql)) $sql .= ", ";
-        $sql .= "st.name";
+        $sql .= "st.name status";
     }
     
     $sql = "select $sql from pallet p "
