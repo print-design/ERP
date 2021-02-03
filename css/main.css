@@ -8,6 +8,16 @@ a:active, a:hover {
     text-decoration: underline;
 }
 
+a.black:link, a.black:visited, a.btn-outline-dark:link, a.btn-outline-dark:visited, .black a:link, .black a:visited, .btn-outline-dark a:link, .btn-outline-dark a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+a.black:active, a.black:hover, a.btn-outline-dark:active, a.btn-outline-dark:hover, .black a:active, .black a:hover, .btn-outline-dark a:active, .btn-outline-dark a:hover {
+    color: lightgray;
+    text-decoration: underline;
+}
+
 .newline {
     white-space: pre-line;
 }
