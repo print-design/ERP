@@ -117,197 +117,175 @@ $error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))
         <?php
         include '../include/head.php';
         ?>
-        <script src='<?=APPLICATION ?>/js/jsQR.js'></script>
-        <style>
-            #canvas {
-                width: 100%;
-            }
-        </style>
     </head>
     <body>
         <?php
         include '../include/header.php';
         ?>
-        <div class="container-fluid">
+        <div class="container-fluid" style="padding-left: 40px;">
             <?php
-            if(isset($error_message) && $error_message != '') {
-                echo "<div class='alert alert-danger'>$error_message</div>";
+            if(!empty($error_message)) {
+                echo "<div class='alert alert-danger>$error_message</div>";
             }
             ?>
-            <div class="btn-group">
-                <a href="<?=APPLICATION ?>/rolls/" class="btn btn-outline-dark"><i class="fas fa-undo"></i>&nbsp;Назад</a>
+            <div class="backlink" style="margin-bottom: 56px;">
+                <a href="<?=APPLICATION ?>/roll/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
             </div>
-            <h1>Новый ролик</h1>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <form method="post">
-                        <div class="form-group">
-                            <label for="supplier_id">Поставщик</label>
-                            <select id="supplier_id" name="supplier_id" class="form-control<?=$supplier_id_valid ?>" required='required'>
-                                <option value="">...</option>
+            <h1 style="font-size: 32px; line-height: 48px; font-weight: 600; margin-bottom: 20px;">Новый рулон</h1>
+            <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">Рулон № <?=$inner_id ?> от <?= date("d.m.Y") ?></h2>
+            <form method="post">
+                <div style="width: 423px;">
+                    <input type="hidden" id="inner_id" name="inner_id" value="<?=$inner_id ?>" />
+                    <input type="hidden" id="date" name="date" value="<?= date("Y-m-d") ?>" />
+                    <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= GetUserId() ?>" />
+                    <div class="form-group">
+                        <label for="supplier_id">Поставщик</label>
+                        <select id="supplier_id" name="supplier_id" class="form-control" required="required">
+                            <option value="">Выберите поставщика</option>
+                            <?php
+                            $suppliers = (new Grabber("select id, name from supplier order by name"))->result;
+                            foreach ($suppliers as $supplier) {
+                                $id = $supplier['id'];
+                                $name = $supplier['name'];
+                                $selected = '';
+                                if(filter_input(INPUT_POST, 'supplier_id') == $supplier['id']) $selected = " selected='selected'";
+                                echo "<option value='$id'$selected>$name</option>";
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">Поставщик обязательно</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_from_supplier">ID рулона от поставщика</label>
+                        <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= filter_input(INPUT_POST, 'id_from_supplier') ?>" class="form-control" placeholder="Введите ID" required="required" />
+                        <div class="invalid-feedback">ID рулона от поставщика обязательно</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="film_brand_id">Марка пленки</label>
+                        <select id="film_brand_id" name="film_brand_id" class="form-control" required="required">
+                            <option value="">Выберите марку</option>
+                            <?php
+                            if(null !== filter_input(INPUT_POST, 'supplier_id')) {
+                                $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+                                $film_brands = (new Grabber("select id, name from film_brand where supplier_id = $supplier_id"))->result;
+                                foreach ($film_brands as $film_brand) {
+                                    $id = $film_brand['id'];
+                                    $name = $film_brand['name'];
+                                    $selected = '';
+                                    if(filter_input(INPUT_POST, 'film_brand_id') == $film_brand['id']) $selected = " selected='selected'";
+                                    echo "<option value='$id'$selected>$name</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">Марка пленки обязательно</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="width">Ширина</label>
+                            <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only" placeholder="Введите ширину" required="required" />
+                            <div class="invalid-feedback">Ширина обязательно</div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="thickness">Толщина</label>
+                            <select id="thickness" name="thickness" class="form-control" required="required">
+                                <option value="">Выберите толщину</option>
+                                <option value="8">8</option>
                                 <?php
-                                $conn = new mysqli('localhost', 'root', '', 'erp');
-                                if($conn->connect_error) {
-                                    die('Ошибка соединения: ' . $conn->connect_error);
+                                for($i=10; $i<=80; $i=$i+10) {
+                                    $selected = '';
+                                    if(filter_input(INPUT_POST, 'thickness') == $i) $selected = " selected='selected'";
+                                    echo "<option value='$i'$selected>$i</option>";
                                 }
-                                $result = $conn->query('select id, name from roll_supplier order by name');
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        $selected = $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['supplier_id'] == $row['id'] ? " selected='selected'" : "";
-                                        echo "<option value='".$row['id']."'".$selected.">".$row["name"]."</option>";
-                                    }
-                                }
-                                $conn->close();
                                 ?>
                             </select>
-                            <div class="invalid-feedback">Поставщик обязательно</div>
+                            <div class="invalid-feedback">Толщина обязательно</div>
                         </div>
-                        <div class="form-group">
-                            <label for="supplier_qr_code">Штрих-код от поставщика</label>
-                            <input type="text" id="supplier_qr_code" name="supplier_qr_code" class="form-control" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['supplier_qr_code'] : '' ?>" />
-                            <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-                            <canvas id="canvas" hidden></canvas>
-                            <script>
-                               var video = document.createElement("video");
-                               var canvasElement = document.getElementById("canvas");
-                               var canvas = canvasElement.getContext("2d");
-                               var loadingMessage = document.getElementById("loadingMessage");
-                               var outputData = document.getElementById("supplier_qr_code");
-                               
-                                function drawLine(begin, end, color) {
-                                    canvas.beginPath();
-                                    canvas.moveTo(begin.x, begin.y);
-                                    canvas.lineTo(end.x, end.y);
-                                    canvas.lineWidth = 4;
-                                    canvas.strokeStyle = color;
-                                    canvas.stroke();
-                                }
-                                
-                                // Use facingMode: environment to attemt to get the front camera on phones
-                                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-                                    video.srcObject = stream;
-                                    video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-                                    video.play();
-                                    requestAnimationFrame(tick);
-                                });
-                                
-                                function tick() {
-                                    loadingMessage.innerText = "⌛ Loading video..."
-                                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                                        loadingMessage.hidden = true;
-                                        canvasElement.hidden = false;
-                                        canvasElement.height = video.videoHeight;
-                                        canvasElement.width = video.videoWidth;
-                                        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-                                        var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-                                        var code = jsQR(imageData.data, imageData.width, imageData.height, {
-                                            inversionAttempts: "dontInvert",
-                                        });
-                                        
-                                        if (code) {
-                                            drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-                                            drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-                                            drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-                                            drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-                                            outputData.value = code.data;
-                                        }
-                                    }
-                                    requestAnimationFrame(tick);
-                                }
-                            </script>
-                            <div class="invalid-feedback">Штрих-код от поставщика обязательно</div>
-                       </div>
-                       <div class="form-group">
-                           <label for="model_id">Марка</label>
-                           <select id="model_id" name="model_id" class="form-control<?=$model_id_valid ?>" required='required'>
-                               <option value="">...</option>
-                                <?php
-                                $conn = new mysqli('localhost', 'root', '', 'erp');
-                                if($conn->connect_error) {
-                                    die('Ошибка соединения: ' . $conn->connect_error);
-                                }
-                                $result = $conn->query('select id, name from roll_model order by name');
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        $selected = $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['model_id'] == $row['id'] ? " selected='selected'" : "";
-                                        echo "<option value='".$row['id']."'".$selected.">".$row["name"]."</option>";
-                                    }
-                                }
-                                $conn->close();
-                                ?>
-                           </select>
-                           <div class="invalid-feedback">Марка обязательно</div>
-                       </div>
-                       <div class="row">
-                           <div class="col-6 form-group">
-                               <label for="width">Ширина</label>
-                               <input type="number" id="width" name="width" class="form-control int-only<?=$width_valid ?>" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['width'] : '' ?>" required='required' />
-                               <div class="invalid-feedback">Ширина обязательно</div>
-                           </div>
-                           <div class="col-6 form-group">
-                               <label for="thickness">Толщина</label>
-                               <input type="number" id="thickness" name="thickness" class="form-control int-only<?=$thickness_valid ?>" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['thickness'] : '' ?>" required='required' />
-                               <div class="invalid-feedback">Толщина обязательно</div>
-                           </div>
-                       </div>
-                       <div class="row">
-                           <div class="col-6 form-group">
-                               <label for="length">Длина</label>
-                               <input type="number" id="length" name="length" class="form-control int-only<?=$length_valid ?>" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['length'] : '' ?>" required="required" />
-                               <div class="invalid-feedback">Длина обязательно</div>
-                           </div>
-                           <div class="col-6 form-group">
-                               <label for="weight">Масса</label>
-                               <input type="text" id="weight" name="weight" class="form-control float-only<?=$weight_valid ?>" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['weight'] : '' ?>" required="required" />
-                               <div class="invalid-feedback">Масса обязательно</div>
-                           </div>
-                       </div>
-                       <div class="row">
-                           <div class="col-6 form-group">
-                               <label for="cell">Ячейка на складе</label>
-                               <input type="text" id="cell" name="cell" class="form-control<?=$cell_valid ?>" value="<?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['cell'] : '' ?>" required="required" />
-                               <div class="invalid-feedback">Ячейка на складе обязательно</div>
-                           </div>
-                       </div>
-                       <div class="form-group">
-                           <label for="status_id">Статус</label>
-                           <select id="status_id" name="status_id" class="form-control<?=$status_id_valid ?>" required="required">
-                               <option value="">...</option>
-                               <?php
-                               $conn = new mysqli('localhost', 'root', '', 'erp');
-                               if($conn->connect_error) {
-                                   die('Ошибка соединения: ' . $conn->connect_error);
-                                }
-                                $result = $conn->query('select id, name from roll_status order by name');
-                                if ($result->num_rows > 0) {
-                                    while($row = $result->fetch_assoc()) {
-                                        $selected = $_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['status_id'] == $row['id'] ? " selected='selected'" : "";
-                                        echo "<option value='".$row['id']."'".$selected.">".$row["name"]."</option>";
-                                    }
-                                }
-                                $conn->close();
-                                ?>
-                           </select>
-                           <div class="invalid-feedback">Статус обязательно</div>
-                       </div>
-                       <div class="form-group">
-                           <label for="comment">Комментарий</label>
-                           <textarea rows="5" id="comment" name="comment" class="form-control"><?=$_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST['comment'] : '' ?></textarea>
-                       </div>
-                       <div class="d-flex justify-content-between mb-2">
-                           <div class="p-1">
-                               <button type="submit" class="btn btn-primary">Сохранить</button>
-                           </div>
-                           <div class="p-1">
-                               <button type="button" class="btn btn-secondary">Стикер</button>
-                           </div>
-                       </div>
-                   </form>
-               </div>
-           </div>
-       </div>
-       <?php
-       include '../include/footer.php';
-       ?>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <label for="length">Длина</label>
+                            <input type="text" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" class="form-control int-only" placeholder="Введите длину" required="required" />
+                            <div class="invalid-feedback">Длина обязательно</div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="net_weight">Масса нетто</label>
+                            <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only" placeholder="Введите массу нетто" required="required" />
+                            <div class="invalid-feedback">Масса нетто обязательно</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 form-group"></div>
+                        <div class="col-6 form-group">
+                            <label for="cell">Ячейка на складе</label>
+                            <input type="text" id="cell" name="cell" value="<?= filter_input(INPUT_POST, 'cell') ?>" class="form-control" placeholder="Введите ячейку" required="required" />
+                            <div class="invalid-feedback">Ячейка на складе обязательно</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="manager_id">Менеджер</label>
+                        <select id="manager_id" name="manager_id" class="form-control" required="required">
+                            <option value="">Выберите менеджера</option>
+                            <?php
+                            $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
+                            foreach ($managers as $manager) {
+                                $id = $manager['id'];
+                                $first_name = $manager['first_name'];
+                                $last_name = $manager['last_name'];
+                                $selected = '';
+                                if(filter_input(INPUT_POST, 'manager_id') == $manager['id']) $selected = " selected='selected'";
+                                echo "<option value='$id'$selected>$last_name $first_name</option>";
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">Менеджер обязательно</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_id">Статус</label>
+                        <select id="status_id" name="status_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
+                            <option value="">ВЫБРАТЬ СТАТУС</option>
+                            <?php
+                            $statuses = (new Grabber("select s.id, s.name from roll_status s order by s.name"))->result;
+                            foreach ($statuses as $status) {
+                                $id = $status['id'];
+                                $name = $status['name'];
+                                $selected = '';
+                                if(filter_input(INPUT_POST, 'status_id') == $status['id']) $selected = " selected='selected'";
+                                echo "<option value='$id'$selected>$name</option>";
+                            }
+                            ?>
+                        </select>
+                        <div class="invalid-feedback">Статус обязательно</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Комментарий</label>
+                        <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities(filter_input(INPUT_POST, 'comment')) ?></textarea>
+                    </div>
+                </div>
+                <div class="form-inline" style="margin-top: 30px;">
+                    <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px;">СОЗДАТЬ РУЛОН</button>
+                    <button type="submit" formaction="<?=APPLICATION ?>/roll/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                </div>
+            </form>
+        </div>
+        <?php
+        include '../include/footer.php';
+        ?>
+        <script>
+            $('#supplier_id').change(function(){
+                if($(this).val() == "") {
+                    $('#film_brand_id').html("<option id=''>Выберите марку</option>");
+                }
+                else {
+                    $.ajax({ url: "../ajax/film_brand.php?supplier_id=" + $(this).val() })
+                            .done(function(data) {
+                                $('#film_brand_id').html(data);
+                            })
+                            .fail(function() {
+                                alert('Ошибка при выборе поставщика');
+                            });
+                }
+            });
+        </script>
    </body>
 </html>

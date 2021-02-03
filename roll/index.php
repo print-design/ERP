@@ -36,7 +36,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             </div>
             <table class="table">
                 <thead>
-                    <tr>
+                    <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th><input type="checkbox" class="form-check" id="chkMain" /></th>
                         <th>Дата создания</th>
                         <th>Марка пленки</th>
