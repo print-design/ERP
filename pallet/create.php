@@ -292,7 +292,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
                     <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px;">СОЗДАТЬ ПАЛЛЕТ</button>
-                    <button type="submit" formaction="<?=APPLICATION ?>/pallet/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark">Распечатать стикер</button>
+                    <button type="submit" formaction="<?=APPLICATION ?>/pallet/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
                 </div>
             </form>
         </div>
