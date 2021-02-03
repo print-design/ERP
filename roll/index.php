@@ -55,6 +55,11 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    $where = '';
+                    
+                    $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
+                    ?>
                 </tbody>
             </table>
         </div>

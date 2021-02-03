@@ -99,21 +99,16 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         $where .= "width <= $width_to";
                     }
                     
-                    $statuses = array();
+                    $arrStatuses = array();
                     
-                    if(filter_input(INPUT_GET, 'chkPrint') == 'on') {
-                        array_push($statuses, 1); // В печать
+                    $statuses = (new Grabber("select distinct ps.id, ps.name from pallet p inner join pallet_status ps on p.status_id = ps.id"))->result;
+                    foreach ($statuses as $status) {
+                        if(filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
+                            array_push($arrStatuses, $status['id']);
+                        }
                     }
                     
-                    if(filter_input(INPUT_GET, 'chkCut') == 'on') {
-                        array_push($statuses, 2); // На раскрой
-                    }
-                    
-                    if(filter_input(INPUT_GET, 'chkFree') == 'on') {
-                        array_push($statuses, 3); // Свободен
-                    }
-                    
-                    $strStatuses = implode(", ", $statuses);
+                    $strStatuses = implode(", ", $arrStatuses);
                     
                     if(!empty($strStatuses)) {
                         if(!empty($where)) {
@@ -177,18 +172,17 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <h1 style="margin-top: 53px; margin-bottom: 20px; font-size: 32px; line-height: 48px; font-weight: 600;">Фильтр</h1>
                     <form method="get">
                         <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px;">Статус</h2>
+                        <?php
+                        $statuses = (new Grabber("select distinct ps.id, ps.name from pallet p inner join pallet_status ps on p.status_id = ps.id"))->result;
+                        foreach ($statuses as $status):
+                        ?>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkPrint" name="chkPrint"<?= filter_input(INPUT_GET, 'chkPrint') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkPrint">В печать</label>
+                            <input type="checkbox" class="form-check-input" id="chk<?=$status['id'] ?>" name="chk<?=$status['id'] ?>"<?= filter_input(INPUT_GET, 'chk'.$status['id']) == 'on' ? " checked='checked'" : "" ?> />
+                            <label class="form-check-label" for="chk<?=$status['id'] ?>"><?=$status['name'] ?></label>
                         </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkCut" name="chkCut"<?= filter_input(INPUT_GET, 'chkCut') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkCut">На раскрой</label>
-                        </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="chkFree" name="chkFree"<?= filter_input(INPUT_GET, 'chkFree') == 'on' ? " checked='checked'" : "" ?> />
-                            <label class="form-check-label" for="chkFree">Свободен</label>
-                        </div>
+                        <?php
+                        endforeach;
+                        ?>
                         <div class="form-group">
                             <select id="film_brand_id" name="film_brand_id" class="form-control" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
                                 <option value="">МАРКА ПЛЕНКИ</option>
