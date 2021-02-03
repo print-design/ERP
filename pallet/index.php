@@ -136,7 +136,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     while ($row = $fetcher->Fetch()):
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="" name="" class="form-check chkPallet" /></td>
+                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkPallet" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -222,7 +222,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                                 <input type="number" min="1" id="width_from" name="width_from" class="form-control" value="<?= filter_input(INPUT_GET, 'width_from') ?>" />
                             </div>
                             <div class="col-2 text-center" style="padding-top: 30px;"><strong>&ndash;</strong></div>
-                            <div class="col-5">
+                            <div class="col-5 form-group">
                                 <label for="width_to">До</label>
                                 <input type="number" min="1" id="width_to" name="width_to" class="form-control" value="<?= filter_input(INPUT_GET, 'width_to') ?>" />
                             </div>
