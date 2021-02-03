@@ -109,8 +109,9 @@ $comment = $row['comment'];
                             <label for="thickness">Толщина</label>
                             <select id="thickness" name="thickness" class="form-control" disabled="disabled">
                                 <option value="">Выберите толщину</option>
+                                <option value="8">8</option>
                                 <?php
-                                for($i=1; $i<11; $i++) {
+                                for($i=10; $i<=80; $i=$i+10) {
                                     $selected = '';
                                     if($thickness == $i) $selected = " selected='selected'";
                                     echo "<option value='$i'$selected>$i</option>";

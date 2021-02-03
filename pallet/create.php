@@ -210,8 +210,9 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                             <label for="thickness">Толщина</label>
                             <select id="thickness" name="thickness" class="form-control" required="required">
                                 <option value="">Выберите толщину</option>
+                                <option value="8">8</option>
                                 <?php
-                                for($i=1; $i<11; $i++) {
+                                for($i=10; $i<=80; $i=$i+10) {
                                     $selected = '';
                                     if(filter_input(INPUT_POST, 'thickness') == $i) $selected = " selected='selected'";
                                     echo "<option value='$i'$selected>$i</option>";
