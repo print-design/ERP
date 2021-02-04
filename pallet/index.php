@@ -150,7 +150,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['cell'] ?></td>
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td><?= $row['status'] ?></td>
-                        <td><?= htmlentities($row['comment']) ?></td>
+                        <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td><a class="black" href="<?=APPLICATION ?>/pallet/details.php?id=<?=$row['id'] ?>"><i class="fas fa-ellipsis-h"></i></a></td>
                     </tr>
                     <?php
