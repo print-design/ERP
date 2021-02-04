@@ -38,6 +38,10 @@ function Initials() {
             <li class='nav-item'>
                 <a class="nav-link<?=$rolls_status ?>" href="<?=APPLICATION ?>/roll/">Рулоны</a>
             </li>
+            <?php
+            endif;
+            if(IsInRole(array('admin', 'dev', 'technologist', 'cutter'))):
+            ?>
             <li class="nav-item">
                 <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_request/">Заявки</a>
             </li>
