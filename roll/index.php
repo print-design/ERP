@@ -179,7 +179,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         endforeach;
                         ?>
                         <div class="form-group">
-                            <select id="film_brand_id" name="film_brand_id" class="form-control" style="background-color: #8B90A0; color: white; margin-top: 30px; margin-bottom: 30px;">
+                            <select id="film_brand_id" name="film_brand_id" class="form-control" style="margin-top: 30px; margin-bottom: 30px;">
                                 <option value="">МАРКА ПЛЕНКИ</option>
                                 <?php
                                 $film_brands = (new Grabber("select distinct fb.id, fb.name from roll r inner join film_brand fb on r.film_brand_id = fb.id order by fb.name"))->result;

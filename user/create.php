@@ -115,7 +115,7 @@ if(null !== filter_input(INPUT_POST, 'user_create_submit')) {
                 <h1>Добавление сотрудника</h1>
                 <form method="post">
                     <div class="form-group">
-                        <select id="role_id" name="role_id" class="form-control" required="required" style="background-color: #8B90A0; color: white;">
+                        <select id="role_id" name="role_id" class="form-control" required="required">
                             <option value="">ВЫБЕРИТЕ ДОЛЖНОСТЬ</option>
                             <?php
                             $roles = (new Grabber('select id, local_name from role order by priority'))->result;

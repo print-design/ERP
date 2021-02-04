@@ -155,7 +155,7 @@ $comment = $row['comment'];
                     </div>
                     <div class="form-group">
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" disabled="disabled" style="background-color: #8B90A0; color: white;">
+                        <select id="status_id" name="status_id" class="form-control" disabled="disabled">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from roll_status s order by s.name"))->result;
