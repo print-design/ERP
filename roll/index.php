@@ -124,10 +124,10 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                             . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
                             . "rs.name status, r.comment "
                             . "from roll r "
-                            . "inner join film_brand fb on r.film_brand_id = fb.id "
-                            . "inner join supplier s on r.supplier_id = s.id "
-                            . "inner join user u on r.manager_id = u.id "
-                            . "inner join roll_status rs on r.status_id = rs.id "
+                            . "left join film_brand fb on r.film_brand_id = fb.id "
+                            . "left join supplier s on r.supplier_id = s.id "
+                            . "left join user u on r.manager_id = u.id "
+                            . "left join roll_status rs on r.status_id = rs.id "
                             . $where
                             . "order by r.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);

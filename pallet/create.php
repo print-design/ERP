@@ -79,16 +79,16 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
         $form_valid = false;
     }
     
+    // Выбор менеджера пока не обязательный.
     $manager_id = filter_input(INPUT_POST, 'manager_id');
     if(empty($manager_id)) {
-        $manager_id_valid = ISINVALID;
-        $form_valid = false;
+        $manager_id = "NULL";
     }
     
+    // Статус пока не обязательно.
     $status_id = filter_input(INPUT_POST, 'status_id');
     if(empty($status_id)) {
-        $status_id_valid = ISINVALID;
-        $form_valid = false;
+        $status_id = "NULL";
     }
     
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
@@ -100,10 +100,13 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
         $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, manager_id, status_id, comment, inner_id, date, storekeeper_id) "
                 . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
-        $error_message = (new Executer("delete from new_pallet_id where id=$inner_id"))->error;
         
         if(empty($error_message)) {
-            header('Location: '.APPLICATION."/pallet/");
+            $error_message = (new Executer("delete from new_pallet_id where id=$inner_id"))->error;
+            
+            if(empty($error_message)) {
+                header('Location: '.APPLICATION."/pallet/");
+            }
         }
     }
 }
@@ -248,7 +251,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                     </div>
                     <div class="form-group">
                         <label for="manager_id">Менеджер</label>
-                        <select id="manager_id" name="manager_id" class="form-control" required="required">
+                        <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
                             <option value="">Выберите менеджера</option>
                             <?php
                             $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
@@ -266,7 +269,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                     </div>
                     <div class="form-group">
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" required="required">
+                        <select id="status_id" name="status_id" class="form-control" disabled="disabled">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s inner join pallet_status_level sl on sl.status_id = s.id order by s.name"))->result;
