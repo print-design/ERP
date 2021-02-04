@@ -109,18 +109,12 @@ $comment = $row['comment'];
                             <label for="thickness">Толщина</label>
                             <select id="thickness" name="thickness" class="form-control" disabled="disabled">
                                 <option value="">Выберите толщину</option>
-                                <option value="8">8</option>
                                 <?php
-                                $film_brand_variations = (new Grabber("select thickness from film_brand_variations where film_brand_id = $film_brand_id order by thickness"))->result;
+                                $film_brand_variations = (new Grabber("select thickness from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
                                 foreach ($film_brand_variations as $film_brand_variation) {
                                     $selected = '';
-                                    if($thickness = $film_brand_variation['thickness']) $selected = " selected='selected'";
+                                    if($thickness == $film_brand_variation['thickness']) $selected = " selected='selected'";
                                     echo "<option value='$thickness'$selected>$thickness</option>";
-                                }
-                                for($i=10; $i<=80; $i=$i+10) {
-                                    $selected = '';
-                                    if($thickness == $i) $selected = " selected='selected'";
-                                    echo "<option value='$i'$selected>$i</option>";
                                 }
                                 ?>
                             </select>
