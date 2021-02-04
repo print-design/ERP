@@ -162,9 +162,6 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             include '../include/pager_bottom.php';
             ?>
         </div>
-        <?php
-        include '../include/footer.php';
-        ?>
         <div class="modal fade" id="filterModal">
             <div class="modal-dialog">
                 <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
