@@ -27,39 +27,24 @@ $film_brand = '';
 $manager = '';
 $status = '';
 
-if(!empty($supplier_id) || !empty($film_brand_id) || !empty($manager_id) || !empty($status_id)) {
-    $sql = '';
-    
-    if(!empty($supplier_id)) {
-        $sql .= "s.name supplier"; 
-    }
-    
-    if(!empty($film_brand_id)) {
-        if(!empty($sql)) $sql .= ", ";
-        $sql .= "fb.name film_brand";
-    }
-    
-    if(!empty($manager_id)) {
-        if(!empty($sql)) $sql .= ", ";
-        $sql .= "u.last_name, u.first_name";
-    }
-    
-    if(!empty($status_id)) {
-        if(!empty($sql)) $sql .= ", ";
-        $sql .= "st.name status";
-    }
-    
-    $sql = "select $sql from pallet p "
-            . "left join supplier s on p.supplier_id = s.id "
-            . "left join film_brand fb on p.film_brand_id = fb.id "
-            . "left join user u on p.manager_id = u.id "
-            . "left join pallet_status st on p.status_id = st.id";
-    
-    $row = (new Fetcher($sql))->Fetch();
-    if(!empty($row['supplier'])) $supplier = $row['supplier'];
-    if(!empty($row['film_brand'])) $film_brand = $row['film_brand'];
-    if(!empty($row['last_name']) || !empty($row['first_name'])) $manager = $row['last_name'].' '.$row['first_name'];
-    if(!empty($row['status'])) $status = $row['status'];
+if(!empty($supplier_id)) {
+    $row = (new Fetcher("select name from supplier where id = $supplier_id"))->Fetch();
+    $supplier = $row['name'];
+}
+
+if(!empty($film_brand_id)) {
+    $row = (new Fetcher("select name from film_brand where id = $film_brand_id"))->Fetch();
+    $film_brand = $row['name'];
+}
+
+if(!empty($manager_id)) {
+    $row = (new Fetcher("select first_name, last_name from user where id = $manager_id"))->Fetch();
+    $manager = $row['last_name'].' '.$row['first_name'];
+}
+
+if(!empty($status_id)) {
+    $row = (new Fetcher("select name from pallet_status where id = $status_id"))->Fetch();
+    $status = $row['name'];
 }
 ?>
 <!DOCTYPE html>
@@ -144,7 +129,7 @@ if(!empty($supplier_id) || !empty($film_brand_id) || !empty($manager_id) || !emp
             </table>
         </div>
         <script>
-            var css = '@page { size: landscape; margin: 8mm; }',
+            /*var css = '@page { size: landscape; margin: 8mm; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
@@ -159,6 +144,7 @@ if(!empty($supplier_id) || !empty($film_brand_id) || !empty($manager_id) || !emp
             
             head.appendChild(style);
             
-            window.print();</script>
+            window.print();*/
+        </script>
     </body>
 </html>
