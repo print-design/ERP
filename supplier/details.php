@@ -20,7 +20,7 @@ $error_message = '';
 $name_valid = '';
 
 // создание вариации
-$width_valid = '';
+$thickness_valid = '';
 $weight_valid = '';
 
 // Обработка отправки формы создания марки пленки
@@ -31,9 +31,9 @@ if(null !== filter_input(INPUT_POST, 'film_brand_create_submit')) {
         $form_valid = false;
     }
     
-    $width = filter_input(INPUT_POST, 'width');
-    if(empty($width)) {
-        $width_valid = ISINVALID;
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
         $form_valid = false;
     }
     
@@ -51,7 +51,7 @@ if(null !== filter_input(INPUT_POST, 'film_brand_create_submit')) {
         
         if(empty($error_message)) {
             $insert_id = $executer->insert_id;
-            $variation_executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($insert_id, $width, $weight)");
+            $variation_executer = new Executer("insert into film_brand_variation (film_brand_id, thickness, weight) values ($insert_id, $thickness, $weight)");
             $error_message = $variation_executer->error;
         }
     }
@@ -59,9 +59,9 @@ if(null !== filter_input(INPUT_POST, 'film_brand_create_submit')) {
 
 // Обработка отправки формы создания вариации марки пленки
 if(null !== filter_input(INPUT_POST, 'film_brand_variation_create_submit')) {
-    $width = filter_input(INPUT_POST, 'width');
-    if(empty($width)) {
-        $width_valid = ISINVALID;
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
         $form_valid = false;
     }
     
@@ -74,7 +74,7 @@ if(null !== filter_input(INPUT_POST, 'film_brand_variation_create_submit')) {
     if($form_valid) {
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
-        $executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($film_brand_id, $width, $weight)");
+        $executer = new Executer("insert into film_brand_variation (film_brand_id, thickness, weight) values ($film_brand_id, $thickness, $weight)");
         $error_message = $executer->error;
     }
 }
@@ -133,7 +133,7 @@ $name = htmlentities($row['name']);
                 <h2>Пленки</h2>
                 <?php
                 $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
-                $film_brand_variations = (new Grabber("select v.id, v.film_brand_id, v.width, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by width, weight"))->result;
+                $film_brand_variations = (new Grabber("select v.id, v.film_brand_id, v.thickness, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by thickness, weight"))->result;
 
                 foreach ($film_brands as $film_brand):
                 ?>
@@ -162,7 +162,7 @@ $name = htmlentities($row['name']);
                     ?>
                     <tr>
                         <td><?=($first ? $film_brand['name'] : '') ?></td>
-                        <td style="width:70px;"><?=$current_film_brand_variation['width'] ?></td>
+                        <td style="width:70px;"><?=$current_film_brand_variation['thickness'] ?></td>
                         <td style="width:70px;"><?=$current_film_brand_variation['weight'] ?></td>
                         <!--td class="text-right" style="width:50px;">
                             <form method="post">
@@ -186,7 +186,7 @@ $name = htmlentities($row['name']);
                                 <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                                 <input type="hidden" id="scroll" name="scroll" />
                                 <div class="form-group">
-                                    <input type="text" class="form-control int-only mr-2" id="width" name="width" placeholder="Толщина" required="required" style="width:100px;"/>
+                                    <input type="text" class="form-control int-only mr-2" id="thickness" name="thickness" placeholder="Толщина" required="required" style="width:100px;"/>
                                     <div class="invalid-feedback">Толщина обязательно</div>
                                 </div>
                                 <div class="form-group">
@@ -210,7 +210,7 @@ $name = htmlentities($row['name']);
                     <div class="invalid-feedback">Марка пленки обязательно</div>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="width" name="width" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
+                    <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
                     <div class="invalid-feedback">Толщина обязательно</div>
                 </div>
                 <div class="form-group">
@@ -248,7 +248,7 @@ $name = htmlentities($row['name']);
                 $(this).hide();
                 var frm = $(this).prev('.add-variation-form');
                 frm.show();
-                frm.find('input[id="width"]').focus();
+                frm.find('input[id="thickness"]').focus();
             });
             
             $('.add-variation-cancel').click(function(){

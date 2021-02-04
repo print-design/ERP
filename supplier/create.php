@@ -39,9 +39,9 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 $film_brands[$reminder]["film_brand"] = $_POST[$post_key];
             }
             
-            if(strpos($post_key, "width_") === 0) {
-                $reminder = substr($post_key, strlen("width_"));
-                $film_brands[$reminder]["width"] = $_POST[$post_key];
+            if(strpos($post_key, "thickness_") === 0) {
+                $reminder = substr($post_key, strlen("thickness_"));
+                $film_brands[$reminder]["thickness"] = $_POST[$post_key];
             }
             
             if(strpos($post_key, "weight_") === 0) {
@@ -58,7 +58,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
             }
             
             $variation = array();
-            $variation['width'] = $film_brand['width'];
+            $variation['thickness'] = $film_brand['thickness'];
             $variation['weight'] = $film_brand['weight'];
             array_push($film_brand_variations[$film_brand['film_brand']], $variation);
         }
@@ -74,9 +74,9 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
             
             // Сохранение вариаций
             foreach ($film_brand_variations[$film_brand_variations_key] as $variation) {
-                $width = $variation['width'];
+                $thickness = $variation['thickness'];
                 $weight = $variation['weight'];
-                $executer = new Executer("insert into film_brand_variation (film_brand_id, width, weight) values ($film_brand_id, $width, $weight)");
+                $executer = new Executer("insert into film_brand_variation (film_brand_id, thickness, weight) values ($film_brand_id, $thickness, $weight)");
                 $error_message = $executer->error;
             }
         }
@@ -131,7 +131,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     <table class="table film-table" id="variations-table" style="width: 472px;"></table>
                     <div class="form-inline" id="add-brand-form">
                         <input type="text" id="film_brand" name="film_brand" class="form-control" placeholder="Название" style="width:215px; margin-right: 13px;" />
-                        <input type="text" id="width" name="width" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
+                        <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-right: 13px;" />
                         <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 129px; margin-right: 13px;" />
                         <button type="button" class="btn btn-link" id="add-brand-link">Добавить</button>
                     </div>
@@ -194,13 +194,13 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     
                     // Добавление строки в таблицу
                     var film_brand = $('#add-brand-form').find('input[id="film_brand"]').val();
-                    var width = $('#add-brand-form').find('input[id="width"]').val();
+                    var thickness = $('#add-brand-form').find('input[id="thickness"]').val();
                     var weight = $('#add-brand-form').find('input[id="weight"]').val();
                     var rowscount = $('#variations-table').find("tr").length;
                     
                     var tblrow = '<tr>' + 
                             '<td>' + film_brand + '<input type="hidden" id="film_brand_' + rowscount + '" name="film_brand_' + rowscount + '" value="' + film_brand + '" /></td>' + 
-                            '<td class="text-right">' + width + '<input type="hidden" id="width_' + rowscount + '" name="width_' + rowscount + '" value="' + width + '" /></td>' + 
+                            '<td class="text-right">' + thickness + '<input type="hidden" id="thickness_' + rowscount + '" name="thickness_' + rowscount + '" value="' + thickness + '" /></td>' + 
                             '<td class="text-right">' + weight + '<input type="hidden" id="weight_' + rowscount + '" name="weight_' + rowscount + '" value="' + weight + '" /></td>'
                             '</tr>';
                     $('#variations-table').append(tblrow);
