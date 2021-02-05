@@ -68,7 +68,7 @@ if(!empty($status_id)) {
                     <tr>
                         <td colspan="2">
                             <strong>ID от поставщика:</strong><br/>
-                            <?=$inner_id ?>
+                            <?=$id_from_supplier ?>
                         </td>
                     </tr>
                     <tr>
