@@ -6,17 +6,17 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
-// Если не задано значение id, перенаправляем на список
-if(empty(filter_input(INPUT_GET, 'id'))) {
+// Если не задано значение inner_id, перенаправляем на список
+if(empty(filter_input(INPUT_GET, 'inner_id'))) {
     header('Location: '.APPLICATION.'/pallet/');
 }
 
 // Получение данных
-$id = filter_input(INPUT_GET, 'id');
+$inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.inner_id, p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, p.manager_id, p.status_id, p.comment "
         . "from pallet p inner join user u on p.storekeeper_id = u.id "
-        . "where p.id=$id";
+        . "where p.inner_id=$inner_id";
 
 $row = (new Fetcher($sql))->Fetch();
 $inner_id = $row['inner_id'];

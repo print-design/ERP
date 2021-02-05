@@ -6,17 +6,17 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
-// Если не задано значение id, перенаправляем на список
-if(empty(filter_input(INPUT_GET, 'id'))) {
+// Если не задано значение inner_id, перенаправляем на список
+if(empty(filter_input(INPUT_GET, 'inner_id'))) {
     header('Location: '.APPLICATION.'/roll/');
 }
 
 // Получение данных
-$id = filter_input(INPUT_GET, 'id');
+$inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select r.inner_id, r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
         . "r.net_weight, r.cell, r.manager_id, r.status_id, r.comment "
         . "from roll r inner join user u on r.storekeeper_id = u.id "
-        . "where r.id=$id";
+        . "where r.inner_id=$inner_id";
 
 $row = (new Fetcher($sql))->Fetch();
 $inner_id = $row['inner_id'];

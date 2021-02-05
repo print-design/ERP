@@ -149,7 +149,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td><?= $row['status'] ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
-                        <td><a class="black" href="<?=APPLICATION ?>/roll/details.php?id=<?=$row['id'] ?>"><i class="fas fa-ellipsis-h"></i></a></td>
+                        <td><a class="black" href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>"><i class="fas fa-ellipsis-h"></i></a></td>
                     </tr>
                     <?php
                     endwhile;
