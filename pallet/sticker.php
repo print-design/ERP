@@ -46,6 +46,7 @@ if(!empty($status_id)) {
     $row = (new Fetcher("select name from pallet_status where id = $status_id"))->Fetch();
     $status = $row['name'];
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -84,13 +85,22 @@ if(!empty($status_id)) {
                         </table>
                     </td>
                     <td style="vertical-align: top; padding-left: 50px;">
-                        <?php
+                        <?php    
                         include '../qr/qrlib.php';
                         $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
-                        $data = filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
-                        $filename = '../temp/test.png';
-                        QRcode::png(addslashes($data), $filename, $errorCorrectionLevel, 10, 4, true);
+                        $data = $_SERVER['HTTP_ORIGIN'].APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
+                        $current_date_time = date("dmYHis");
+                        $filename = "../temp/$current_date_time.png";
+                        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 10, 4, true);
                         echo "<img src='$filename' />";
+                        
+                        // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
+                        $files = scandir("../temp/");
+                        foreach ($files as $file) {
+                            if($file != "$current_date_time.png" && !is_dir($file)) {
+                                unlink("../temp/$file");
+                            }
+                        }
                         ?>
                     </td>
                 </tr>
