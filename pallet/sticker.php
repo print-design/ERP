@@ -55,9 +55,12 @@ if(!empty($status_id)) {
         ?>
     </head>
     <body class="print">
-        <div style="width: 400px; margin-left: 20px;">
+        <div style="margin-left: 20px;">
             <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Паллет №<?=$inner_id ?> от <?=$date ?></h1>
-            <table class="table table-bordered">
+            <table>
+                <tr>
+                    <td>
+                        <table class="table table-bordered" style="width: 400px;">
                 <tbody>
                     <tr>
                         <td colspan="2">
@@ -127,9 +130,29 @@ if(!empty($status_id)) {
                     </tr>
                 </tbody>
             </table>
+                        </td>
+                        <td style="vertical-align: top; padding-left: 50px;">
+                            <div style="white-space: nowrap;"><?= filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?></div>
+                            <?php
+                            $PNG_TEMP_DIR = APPLICATION.'/temp/';
+                            $PNG_WEB_DIR = APPLICATION.'/temp/';
+                            include '../qr/qrlib.php';
+                            //$filename = '../temp/test.png';
+                            $errorCorrectionLevel = 'H'; // 'L','M','Q','H'
+                            $matrixPointSize = 4;
+                            $data = filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
+                            $filename = '../temp/'.date('dmYHis').'.png';
+                            QRcode::png($date, $filename, 'H', 10, 4, true);
+                            echo $data;
+                            echo "<img src='$filename' />";
+                            //echo "<img src='($PNG_TEMP_DIR)orwell.png/' />";
+                            ?>
+                        </td>
+                </tr>
+                </table>
         </div>
         <script>
-            var css = '@page { size: landscape; margin: 8mm; }',
+            /*var css = '@page { size: landscape; margin: 8mm; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
@@ -144,7 +167,7 @@ if(!empty($status_id)) {
             
             head.appendChild(style);
             
-            window.print();
+            window.print();*/
         </script>
     </body>
 </html>
