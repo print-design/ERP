@@ -27,7 +27,22 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             ?>
             <div class="d-flex justify-content-between mb-auto">
                 <div class="p-1">
-                    <h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Паллеты</h1>
+                    <table>
+                        <tr>
+                            <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Паллеты</h1></td>
+                            <td style='padding-left: 35px; padding-right: 30px;'>
+                                <button class="btn btn-dark" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
+                                    <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                                    &nbsp;Заявка на<br/>раскрой
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-dark" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
+                                    Заявка на<br/>резервирование
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="p-1">
                     <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-right: 44px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
