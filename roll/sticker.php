@@ -54,74 +54,45 @@ if(!empty($status_id)) {
         ?>
     </head>
     <body class="print">
-        <div style="width: 400px; margin-left: 20px;">
+        <div style="margin-left: 20px;">
             <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Рулон №<?=$inner_id ?> от <?=$date ?></h1>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td colspan="2">
-                            <strong>Поставщик:</strong><br/>
-                            <?=$supplier ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <strong>ID от поставщика:</strong><br/>
-                            <?=$id_from_supplier ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <strong>Марка пленки</strong><br/>
-                            <?=$film_brand ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>Ширина</strong><br/>
-                            <?=$width ?>
-                        </td>
-                        <td>
-                            <strong>Толщина</strong><br/>
-                            <?=$thickness ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>Длина</strong><br/>
-                            <?=$length ?>
-                        </td>
-                        <td>
-                            <strong>Масса нетто</strong><br/>
-                            <?=$net_weight ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <strong>Ячейка на складе</strong><br/>
-                            <?=$cell ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <strong>Менеджер</strong><br/>
-                            <?=$manager ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <strong>Статус</strong><br/>
-                            <?=$status ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <strong>Комментарий</strong><br/>
-                            <div style="white-space: pre-wrap;"><?= $comment ?></div>
-                        </td>
-                    </tr>
-                </tbody>
+            <table>
+                <tr>
+                    <td>
+                        <table class="table table-bordered" style="width: 400px;">
+                            <tbody>
+                                <tr><td colspan="2"><strong>Поставщик:</strong><br/><?=$supplier ?></td></tr>
+                                <tr><td colspan="2"><strong>ID от поставщика:</strong><br/><?=$id_from_supplier ?></td></tr>
+                                <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
+                                <tr>
+                                    <td><strong>Ширина</strong><br/><?=$width ?></td>
+                                    <td><strong>Толщина</strong><br/><?=$thickness ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Длина</strong><br/><?=$length ?></td>
+                                    <td><strong>Масса нетто</strong><br/><?=$net_weight ?></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>Ячейка на складе</strong><br/><?=$cell ?></td>
+                                </tr>
+                                <tr><td colspan="2"><strong>Менеджер</strong><br/><?=$manager ?></td></tr>
+                                <tr><td colspan="2"><strong>Статус</strong><br/><?=$status ?></td></tr>
+                                <tr><td colspan="2"><strong>Комментарий</strong><br/><div style="white-space: pre-wrap;"><?= $comment ?></div></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top; padding-left: 50px;">
+                        <?php
+                        include '../qr/qrlib.php';
+                        $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
+                        $data = filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION.'/roll/details.php?inner_id='.$inner_id;
+                        $filename = '../temp/test.png';
+                        QRcode::png(addslashes($data), $filename, $errorCorrectionLevel, 10, 4, true);
+                        echo "<img src='$filename' />";
+                        ?>
+                    </td>
+                </tr>
             </table>
         </div>
         <script>
