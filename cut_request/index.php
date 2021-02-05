@@ -34,7 +34,23 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'cutter'))) {
                 </div>
             </div>
             <table class="table">
-                <thead></thead>
+                <thead>
+                    <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
+                        <th><input type="checkbox" class="form-check" id="chkMain" /></th>
+                        <th>Дата создания</th>
+                        <th>Марка пленки</th>
+                        <th>Толщина мкм</th>
+                        <th>Ширина мкм</th>
+                        <th>Длина раскроя</th>
+                        <th>ID рулона</th>
+                        <th>№ ячейки</th>
+                        <th>Как режем</th>
+                        <th>Менеджер</th>
+                        <th>Для заказа</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                </thead>
                 <tbody></tbody>
             </table>
             <?php
