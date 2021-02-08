@@ -125,63 +125,26 @@ $name = htmlentities($row['name']);
                 </div>
                 <div class="p-1"></div>
             </div>
-            <div class="supplier-page" style="width: 472px;">
+            <div class="supplier-page">
                 <div class="backlink">
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                 </div>
-                <h1><?=$name ?></h1>
-                <h2>Пленки</h2>
+                <h1 style="font-size: 24px; line-height: 32px; font-weight: 600;"><?=$name ?></h1>
+                <h2 style="font-size: 18px; line-height: 24px; font-weight: 600;">Пленки</h2>
                 <?php
                 $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
                 $film_brand_variations = (new Grabber("select v.id, v.film_brand_id, v.thickness, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by thickness, weight"))->result;
 
                 foreach ($film_brands as $film_brand):
-                ?>
-                <div id="film_brand_<?=$film_brand['id'] ?>" style="transform: translateY(-70px);"></div>
-                <table class="table film-table">
-                    <?php
                     $current_film_brand_variations = array_filter($film_brand_variations, function($param) use($film_brand) { return $param['film_brand_id'] == $film_brand['id']; });
-                    if(count($current_film_brand_variations) == 0):
-                    ?>
+                ?>
+                <table>
                     <tr>
-                        <td><?=$film_brand['name'] ?></td>
-                        <td></td>
-                        <td></td>
-                        <!--td class="text-right">
-                            <form method="post">
-                                <input type="hidden" id="id" name="id" value="<?=$film_brand['id'] ?>"/>
-                                <input type="hidden" id="scroll" name="scroll" />
-                                <button type="submit" class="btn btn-link confirmable" id="delete_brand_submit" name="delete_brand_submit"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                        </td-->
-                    </tr>
-                    <?php
-                    else:
-                        $first = true;
-                    foreach ($current_film_brand_variations as $current_film_brand_variation):
-                    ?>
-                    <tr>
-                        <td><?=($first ? $film_brand['name'] : '') ?></td>
-                        <td style="width:70px;"><?=$current_film_brand_variation['thickness'] ?></td>
-                        <td style="width:70px;"><?=$current_film_brand_variation['weight'] ?></td>
-                        <!--td class="text-right" style="width:50px;">
-                            <form method="post">
-                                <input type="hidden" id="id" name="id" value="<?=$current_film_brand_variation['id'] ?>"/>
-                                <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
-                                <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
-                                <input type="hidden" id="scroll" name="scroll" />
-                                <button type="submit" class="btn btn-link confirmable" id="delete_variation_submit" name="delete_variation_submit"><i class="fas fa-trash-alt"></i></button>
-                            </form>                                
-                        </td-->
-                    </tr>
-                    <?php
-                    $first = false;
-                    endforeach;
-                    endif;
-                    ?>
-                    <tr style="border-bottom: 0;">
-                        <td colspan="3" class="text-right" style="border-bottom: 0;">
-                            <form method="post" class="form-inline add-variation-form">
+                        <td>
+                            <h2 style="font-size: 18px; line-height: 24px; font-weight: 600;"><?=$film_brand['name'] ?></h2>
+                        </td>
+                        <td>
+                            <form method="post" class="form-inline add-variation-form" style="margin-left: 30px;">
                                 <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
                                 <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
                                 <input type="hidden" id="scroll" name="scroll" />
@@ -193,11 +156,47 @@ $name = htmlentities($row['name']);
                                     <input type="text" class="form-control float-only" id="weight" name="weight" placeholder="Удельный вес" required="required" style="width:120px;"/>
                                     <div class="invalid-feedback">Удельный вес обязательно</div>
                                 </div>
-                                <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
-                                <button class="btn btn-link ml-2 add-variation-cancel"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
+                                <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit" style="padding-left: 0;"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 4px;"></i>&nbsp;Добавить</button>
+                                <button class="btn btn-link ml-2 add-variation-cancel" style="padding-left: 0;"><i class="fas fa-undo" style="font-size: 10px; vertical-align: top; padding-top: 3px;"></i>&nbsp;Отмена</button>
                             </form>
-                            <button class="btn btn-link add-variation-button"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 9px;"></i>&nbsp;Добавить</button>
+                            <button class="btn btn-link add-variation-button"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 4px;"></i>&nbsp;Добавить</button>
                         </td>
+                    </tr>
+                </table>
+                <table class="table" style="width: auto; border-bottom: 0; margin-bottom: 30px;">
+                    <tr>
+                        <th>Толщина</th>
+                        <?php
+                        foreach ($current_film_brand_variations as $current_film_brand_variation) {
+                            echo "<td>".$current_film_brand_variation['thickness']."</td>";
+                        }
+                        ?>
+                    </tr>
+                    <tr>
+                        <th>Удельный вес</th>
+                        <?php
+                        foreach ($current_film_brand_variations as $current_film_brand_variation) {
+                            echo "<td>".$current_film_brand_variation['weight']."</td>";
+                        }
+                        ?>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <?php
+                        foreach ($current_film_brand_variations as $current_film_brand_variation):
+                        ?>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" id="id" name="id" value="<?=$current_film_brand_variation['id'] ?>"/>
+                                <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand['id'] ?>"/>
+                                <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                                <input type="hidden" id="scroll" name="scroll" />
+                                <button type="submit" class="btn btn-link confirmable" id="delete_variation_submit" name="delete_variation_submit"><img src="<?=APPLICATION ?>/images/icons/trash1.svg" /></button>
+                            </form>  
+                        </td>
+                        <?php
+                        endforeach;
+                        ?>
                     </tr>
                 </table>
                 <?php endforeach; ?>                
