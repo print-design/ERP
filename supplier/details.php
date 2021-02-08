@@ -93,6 +93,24 @@ if(null !== filter_input(INPUT_POST, 'delete_variation_submit')) {
     $error_message = (new Executer("delete from film_brand_variation where id=$id"))->error;
 }
 
+// Обработка отправки формы удаления поставщика
+if(null !== filter_input(INPUT_POST, 'delete-brand-button')) {
+    $id = filter_input(INPUT_POST, 'id');
+    $error_message = (new Executer("delete from film_brand_variation where film_brand_id in (select id from film_brand where supplier_id = $id)"))->error;
+    
+    if(empty($error_message)) {
+        $error_message = (new Executer("delete from film_brand where supplier_id = $id"))->error;
+        
+        if(empty($error_message)) {
+            $error_message = (new Executer("delete from supplier where id = $id"))->error;
+            
+            if(empty($error_message)) {
+                header('Location: '.APPLICATION.'/supplier/');
+            }
+        }
+    }
+}
+
 // Получение объекта
 $row = (new Fetcher("select name from supplier where id=". filter_input(INPUT_GET, 'id')))->Fetch();
 $name = htmlentities($row['name']);
@@ -201,32 +219,40 @@ $name = htmlentities($row['name']);
                 </table>
                 <?php endforeach; ?>                
             </div>
-            <form method="post" class="form-inline" id="add-brand-form">
-                <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
-                <input type="hidden" id="scroll" name="scroll" />
-                <div class="form-group">
-                    <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
-                    <div class="invalid-feedback">Марка пленки обязательно</div>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
-                    <div class="invalid-feedback">Толщина обязательно</div>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 120px; margin-left: 12px;" required="required" />
-                    <div class="invalid-feedback">Удельный вес обязательно</div>
-                </div>
-                <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
-                <button class="btn btn-link" id="add-brand-cancel" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
-            </form>
-            <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px; padding-top: 7px; padding-bottom: 7px;">
-                <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
-                &nbsp;Добавить марку<br/>пленки
-            </button>
-            
-            <form>
-                <button class="btn btn-outline-danger" id="delete-brand-button" name="delete-brand-button">Удалить поставщика</button>
-            </form>
+            <table>
+                <tr>
+                    <td>
+                        <form method="post" class="form-inline" id="add-brand-form">
+                            <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                            <input type="hidden" id="scroll" name="scroll" />
+                            <div class="form-group">
+                                <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
+                                <div class="invalid-feedback">Марка пленки обязательно</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
+                                <div class="invalid-feedback">Толщина обязательно</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 120px; margin-left: 12px;" required="required" />
+                                <div class="invalid-feedback">Удельный вес обязательно</div>
+                            </div>
+                            <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                            <button class="btn btn-link" id="add-brand-cancel" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
+                        </form>
+                        <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px; padding-top: 8px; padding-bottom: 9px;">
+                            <div style="float:left; padding-top: 6px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                            &nbsp;Добавить марку<br/>пленки
+                        </button>
+                    </td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" id="id" name="id" value="<?= filter_input(INPUT_GET, 'id') ?>" />
+                            <button class="btn btn-outline-danger confirmable" id="delete-brand-button" name="delete-brand-button" style="margin-left: 35px; padding-left: 45px; padding-right: 45px;"><img src="<?=APPLICATION ?>/images/icons/trash-red.svg" style="vertical-align: top;" />&nbsp;&nbsp;&nbsp;Удалить поставщика</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
         <?php
         include '../include/footer.php';
