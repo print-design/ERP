@@ -52,18 +52,61 @@ if(!empty($status_id)) {
 <html>
     <head>
         <?php
-        include '../include/head.php';
+        //include '../include/head.php';
         ?>
+        <style>
+            @page {
+                size: portrait;
+            }
+            
+            @media print {
+                body {
+                    font-size: 12px;
+                    padding: 0;
+                    margin: 0;
+                    font-family: 'Times New Roman', Times, serif;
+                }
+                
+                h1 {
+                    font-size: 12px;
+                    font-family: 'Times New Roman', Times, serif;
+                }
+                
+                table tr td {
+                    font-size: 12px;
+                    font-family: 'Times New Roman', Times, serif;
+                    padding: 0;
+                }
+            }
+        </style>
     </head>
     <body class="print">
-        <div style="margin-left: 20px;">
-            <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Паллет №<?=$inner_id ?> от <?=$date ?></h1>
-            <table>
-                <tr>
-                    <td>
-                        <table class="table table-bordered" style="width: 400px;">
+        <div>
+            <h1>ID&nbsp;<?=$inner_id ?></h1>
+                        <table class="table">
                             <tbody>
-                                <tr><td colspan="2"><strong>Поставщик:</strong><br/><?=$supplier ?></td></tr>
+                                <tr>
+                                    <td><strong>Поставщик</strong></td>
+                                    <td><?=$supplier ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Кладовщик</strong></td>
+                                    <td>
+                                        <?php
+                                        echo filter_input(INPUT_COOKIE, LAST_NAME);
+                                        
+                                        if(!empty(filter_input(INPUT_COOKIE, LAST_NAME)) && !empty(filter_input(INPUT_COOKIE, FIRST_NAME))) {
+                                            echo ' ';
+                                        }
+                                        
+                                        echo filter_input(INPUT_COOKIE, FIRST_NAME);
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Дата прихода</strong></td>
+                                    <td><?= DateTime::createFromFormat('Y-m-d', $date)->format('d.F.Y') ?></td>
+                                </tr>
                                 <tr><td colspan="2"><strong>ID от поставщика:</strong><br/><?=$id_from_supplier ?></td></tr>
                                 <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
                                 <tr>
@@ -81,17 +124,15 @@ if(!empty($status_id)) {
                                 <tr><td colspan="2"><strong>Менеджер</strong><br/><?=$manager ?></td></tr>
                                 <tr><td colspan="2"><strong>Статус</strong><br/><?=$status ?></td></tr>
                                 <tr><td colspan="2"><strong>Комментарий</strong><br/><div style="white-space: pre-wrap;"><?= $comment ?></div></td></tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td style="vertical-align: top; padding-left: 50px;">
-                        <?php    
+                                <tr>
+                                    <td>
+                                        <?php    
                         include '../qr/qrlib.php';
-                        $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
+                        $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
                         $data = $_SERVER['HTTP_ORIGIN'].APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
                         $current_date_time = date("dmYHis");
                         $filename = "../temp/$current_date_time.png";
-                        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 10, 4, true);
+                        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 5, 2, true);
                         echo "<img src='$filename' />";
                         
                         // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
@@ -102,12 +143,13 @@ if(!empty($status_id)) {
                             }
                         }
                         ?>
-                    </td>
-                </tr>
-            </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
         </div>
         <script>
-            var css = '@page { size: landscape; margin: 8mm; }',
+            /*var css = '@page { size: portrait; margin: 80px; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
@@ -120,7 +162,7 @@ if(!empty($status_id)) {
                 style.appendChild(document.createTextNode(css));
             }
             
-            head.appendChild(style);
+            head.appendChild(style);*/
             
             window.print();
         </script>
