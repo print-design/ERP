@@ -122,6 +122,16 @@ li#nav-user a.dropdown-toggle::after {
     padding-left: 25px;
 }
 
+.btn {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
+.btn-dark {
+    background-color: #121232;
+}
+
 /*Второе меню*/
 .nav2 {
     font-size: 14px;
