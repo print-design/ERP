@@ -124,7 +124,7 @@ if(!empty($status_id)) {
                         </table>
         </div>
         <script>
-            var css = '@page { size: portrait; margin: 0px; padding: 0px; } body { font-size: 10px; }',
+            var css = '@page { size: 5cm 7cm; } body { font-size: 10px; } * { margin: 0; padding: 0; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
