@@ -31,13 +31,13 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <tr>
                             <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Паллеты</h1></td>
                             <td style='padding-left: 35px; padding-right: 30px;'>
-                                <a href="#" class="btn btn-dark disabled" id="btn-cut-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
+                                <a class="btn btn-dark disabled" id="btn-cut-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
                                     <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
                                     &nbsp;Заявка на<br/>раскрой
                                 </a>
                             </td>
                             <td>
-                                <a href="#" class="btn btn-outline-dark disabled" id="btn-reserve-request" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
+                                <a class="btn btn-outline-dark disabled" id="btn-reserve-request" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
                                     Заявка на<br/>резервирование
                                 </a>
                             </td>
@@ -151,7 +151,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     while ($row = $fetcher->Fetch()):
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkPallet" /></td>
+                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkPallet" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -279,11 +279,15 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                 if($(this).is(':checked')) {
                     $('.chkPallet').not($(this)).prop('checked', false);
                     $('#btn-cut-request').removeClass('disabled');
+                    $('#btn-cut-request').attr('href', 'cut_request.php?id=' + $(this).attr('data-id'));
                     $('#btn-reserve-request').removeClass('disabled');
+                    $('#btn-reserve-request').attr('href', 'reserve_request.php?id=' + $(this).attr('data-id'));
                 }
                 else {
                     $('#btn-cut-request').addClass('disabled');
+                    $('#btn-cut-request').removeAttr('href');
                     $('#btn-reserve-request').addClass('disabled');
+                    $('#btn-reserve-request').removeAttr('href');
                 }
             });
         </script>
