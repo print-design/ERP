@@ -54,31 +54,6 @@ if(!empty($status_id)) {
         <?php
         //include '../include/head.php';
         ?>
-        <style>
-            @page {
-                size: portrait;
-            }
-            
-            @media print {
-                body {
-                    font-size: 12px;
-                    padding: 0;
-                    margin: 0;
-                    font-family: 'Times New Roman', Times, serif;
-                }
-                
-                h1 {
-                    font-size: 12px;
-                    font-family: 'Times New Roman', Times, serif;
-                }
-                
-                table tr td {
-                    font-size: 12px;
-                    font-family: 'Times New Roman', Times, serif;
-                    padding: 0;
-                }
-            }
-        </style>
     </head>
     <body class="print">
         <div>
@@ -149,7 +124,7 @@ if(!empty($status_id)) {
                         </table>
         </div>
         <script>
-            /*var css = '@page { size: portrait; margin: 80px; }',
+            var css = '@page { size: portrait; margin: 0px; padding: 0px; } body { font-size: 10px; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
@@ -162,7 +137,7 @@ if(!empty($status_id)) {
                 style.appendChild(document.createTextNode(css));
             }
             
-            head.appendChild(style);*/
+            head.appendChild(style);
             
             window.print();
         </script>
