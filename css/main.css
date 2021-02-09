@@ -1,19 +1,19 @@
-a:link, a:visited {
+a:not(.btn):link, a:not(.btn):visited {
     color: #228AD6;
     text-decoration: none;
 }
 
-a:active, a:hover {
+a:not(.btn):active, a:not(.btn):hover {
     color: darkblue;
     text-decoration: underline;
 }
 
-a.black:link, a.black:visited, a.btn-outline-dark:link, a.btn-outline-dark:visited, .black a:link, .black a:visited, .btn-outline-dark a:link, .btn-outline-dark a:visited {
+a.black:link, a.black:visited, .black a:link, .black a:visited {
     color: black;
     text-decoration: none;
 }
 
-a.black:active, a.black:hover, a.btn-outline-dark:active, a.btn-outline-dark:hover, .black a:active, .black a:hover, .btn-outline-dark a:active, .btn-outline-dark a:hover {
+a.black:active, a.black:hover, .black a:active, .black a:hover {
     color: lightgray;
     text-decoration: underline;
 }
@@ -165,11 +165,6 @@ li#nav-user a.dropdown-toggle::after {
 table.table {
     border-bottom: solid 1px #dee2e6;
 }
-table.table button.btn-link {
-    padding: 0;
-    margin: 0;
-    border-top: 0;
-}
 
 table.table tr th {
     font-style: normal;
@@ -212,34 +207,6 @@ table.table.film-table tr td {
 table.table tr td button {
     padding: 0;
     margin: 0;
-}
-
-/*Кнопки*/
-a.btn, button.btn {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 600;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-right: 32px;
-    padding-left: 32px;
-}
-
-button.btn-dark {
-    background-color: #121232;
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 600;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    padding-right: 32px;
-    padding-left: 32px;
-}
-
-button.btn-outline-dark {
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 600;
 }
 
 /*Элементы страниц*/

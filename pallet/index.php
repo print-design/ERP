@@ -31,28 +31,28 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <tr>
                             <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Паллеты</h1></td>
                             <td style='padding-left: 35px; padding-right: 30px;'>
-                                <button class="btn btn-dark" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
+                                <a href="#" class="btn btn-dark disabled" id="btn-cut-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
                                     <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
                                     &nbsp;Заявка на<br/>раскрой
-                                </button>
+                                </a>
                             </td>
                             <td>
-                                <button class="btn btn-outline-dark" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
+                                <a href="#" class="btn btn-outline-dark disabled" id="btn-reserve-request" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
                                     Заявка на<br/>резервирование
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-right: 44px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
+                    <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-right: 44px; padding-top: 14px; padding-bottom: 14px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
                     <button class="btn btn-outline-dark" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th><input type="checkbox" class="form-check" id="chkMain" /></th>
+                        <th><!--input type="checkbox" class="form-check" id="chkMain" /--></th>
                         <th>Дата прихода</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
@@ -276,7 +276,15 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             });
             
             $('.chkPallet').change(function(){
-                $('#chkMain').prop('checked', false);
+                if($(this).is(':checked')) {
+                    $('.chkPallet').not($(this)).prop('checked', false);
+                    $('#btn-cut-request').removeClass('disabled');
+                    $('#btn-reserve-request').removeClass('disabled');
+                }
+                else {
+                    $('#btn-cut-request').addClass('disabled');
+                    $('#btn-reserve-request').addClass('disabled');
+                }
             });
         </script>
     </body>
