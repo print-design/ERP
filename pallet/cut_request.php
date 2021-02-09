@@ -61,26 +61,26 @@ $comment = $row['comment'];
                     <form method="post">
                         <div class="form-group">
                             <label for="length">Длина</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" />
+                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" required="required" />
                             <div class="invalid-feedback">Длина обязательно и не больше, чем длина паллета.</div>
                         </div>
                         <input type="hidden" class="stream_number" value="1"/>
                         <p>Первый ручей</p>
                         <div class="form-group">
                             <label for="width1">Ширина</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length1') ?>" />
+                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length1') ?>" required="required" />
                             <div class="invalid-feedback">Ширина обязательно.</div>
                         </div>
                         <div class="form-group">
                             <label for="request1">Под какой заказ режем?</label>
                             <textarea id="request1" name="request1" class="form-control" rows="5" style="width: 500px;"><?= filter_input(INPUT_POST, 'request1') ?></textarea>
                         </div>
-                        <button class="btn btn-link" style="margin-bottom: 50px;"><i class="fas fa-plus" style="font-size: 10px; vertical-align: top; margin-top: 8px;"></i>&nbsp;Добавить ручей</button>
+                        <button type="button" class="btn btn-link" id="add-stream-btn" style="margin-bottom: 50px;"><i class="fas fa-plus" style="font-size: 10px; vertical-align: top; margin-top: 3px;"></i>&nbsp;Добавить ручей</button>
                         <div class="form-group">
                             <label for="remainder">Остаток</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="remainder" name="remainder" value="<?= filter_input(INPUT_POST, 'remainder') ?>" />
+                            <input type="text" class="form-control" style="width: 200px;" id="remainder" name="remainder" value="<?= filter_input(INPUT_POST, 'remainder') ?>" disabled="disabled" />
                         </div>
-                        <button class="btn btn-dark" id="cut-request-submit" name="cut-request-submit" style="margin-top: 20px; padding-top: 14px; padding-bottom: 14px; padding-left: 50px; padding-right: 50px;">ОТПРАВИТЬ НА РАСКРОЙ</button>
+                        <button type="submit" class="btn btn-dark" id="cut-request-submit" name="cut-request-submit" style="margin-top: 20px; padding-top: 14px; padding-bottom: 14px; padding-left: 50px; padding-right: 50px;">ОТПРАВИТЬ НА РАСКРОЙ</button>
                     </form>                    
                 </div>
                 <div class="col-6">
@@ -91,5 +91,15 @@ $comment = $row['comment'];
         <?php
         include '../include/footer.php';
         ?>
+        <script>
+            max_stream = 0;
+            
+            $('#add-stream-btn').click(function(){
+                $('.stream_number').each(function(){
+                    max_stream = Math.max(parseInt(max_stream), parseInt($(this).val()));
+                    alert(max_stream);
+                });
+            });
+        </script>
     </body>
 </html>
