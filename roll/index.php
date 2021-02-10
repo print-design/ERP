@@ -43,7 +43,7 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th><input type="checkbox" class="form-check" id="chkMain" /></th>
+                        <th><!--input type="checkbox" class="form-check" id="chkMain" /--></th>
                         <th>Дата создания</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
@@ -282,7 +282,14 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
             });
             
             $('.chkRoll').change(function(){
-                $('#chkMain').prop('checked', false);
+                if($(this).is(':checked')) {
+                    $('.chkRoll').not($(this)).prop('checked', false);
+                    $('tr.selected').removeClass('selected');
+                    $(this).closest('tr').addClass('selected');
+                }
+                else {
+                    $(this).closest('tr').removeClass('selected');
+                }
             });
             
             $('.film_menu_trigger').click(function() {

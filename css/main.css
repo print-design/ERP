@@ -219,6 +219,10 @@ table.table tr td button {
     margin: 0;
 }
 
+table tr.selected {
+    background-color: rgba(34, 170, 214, 0.2);
+}
+
 /*Элементы страниц*/
 .backlink {
     margin-top: 26px;

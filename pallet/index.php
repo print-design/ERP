@@ -305,12 +305,15 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                     $('#btn-cut-request').attr('href', 'cut_request.php?inner_id=' + $(this).attr('data-inner-id'));
                     $('#btn-reserve-request').removeClass('disabled');
                     $('#btn-reserve-request').attr('href', 'reserve_request.php?inner_id=' + $(this).attr('data-inner-id'));
+                    $('tr.selected').removeClass('selected');
+                    $(this).closest('tr').addClass('selected');
                 }
                 else {
                     $('#btn-cut-request').addClass('disabled');
                     $('#btn-cut-request').removeAttr('href');
                     $('#btn-reserve-request').addClass('disabled');
                     $('#btn-reserve-request').removeAttr('href');
+                    $(this).closest('tr').removeClass('selected');
                 }
             });
             
