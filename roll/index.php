@@ -128,7 +128,7 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                     
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
                             . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
-                            . "rs.name status, r.comment "
+                            . "rs.name status, rs.colour, r.comment "
                             . "from roll r "
                             . "left join film_brand fb on r.film_brand_id = fb.id "
                             . "left join supplier s on r.supplier_id = s.id "
@@ -139,6 +139,11 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
+                    $colour_style = '';
+                    if(!empty($row['colour'])) {
+                    $colour = $row['colour'];
+                    $colour_style = " color: $colour";
+                    }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkRoll" /></td>
@@ -153,7 +158,7 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                         <td><?= $row['inner_id'] ?></td>
                         <td><?= $row['cell'] ?></td>
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
-                        <td><?= $row['status'] ?></td>
+                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($row['status']) ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td style="position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>

@@ -144,7 +144,7 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                     
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
-                            . "st.name status, p.comment "
+                            . "st.name status, st.colour, p.comment "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
@@ -155,6 +155,11 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
+                    $colour_style = '';
+                    if(!empty($row['colour'])) {
+                        $colour = $row['colour'];
+                        $colour_style = " color: $colour";
+                    }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkPallet" /></td>
@@ -170,7 +175,7 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                         <td><?= $row['rolls_number'] ?></td>
                         <td><?= $row['cell'] ?></td>
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
-                        <td><?= $row['status'] ?></td>
+                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($row['status']) ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td style="position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
