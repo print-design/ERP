@@ -167,10 +167,15 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['status'] ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td style="position: relative;">
-                            <a class="black" href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>"><i class="fas fa-ellipsis-h"></i></a>
+                            <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
-                                <div class="command">Просмотреть детали</div>
-                                <div class="command">Удалить</div>
+                                <div class="command"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command">
+                                    <form method="post">
+                                        <input type="hidden" value="<?=$row['id'] ?>" />
+                                        <button type="submit" class="btn btn-link confirmable" style="font-size: 14px;">Удалить</button>
+                                    </form>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -295,6 +300,11 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     $('#btn-reserve-request').addClass('disabled');
                     $('#btn-reserve-request').removeAttr('href');
                 }
+            });
+            
+            $('.film_menu_trigger').click(function() {
+                $('.film_menu').hide();
+                $(this).next('.film_menu').toggle();
             });
         </script>
     </body>
