@@ -303,8 +303,14 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             });
             
             $('.film_menu_trigger').click(function() {
-                $('.film_menu').hide();
-                $(this).next('.film_menu').toggle();
+                var menu = $(this).next('.film_menu');
+                $('.film_menu').not(menu).hide();
+                menu.slideToggle();
+            });
+            
+            $(document).click(function(e) {
+                if($(e.target).closest($('.film_menu')).length || $(e.target).closest($('.film_menu_trigger')).length) return;
+                $('.film_menu').slideUp();
             });
         </script>
     </body>
