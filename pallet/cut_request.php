@@ -110,7 +110,7 @@ $comment = $row['comment'];
                         '</div>' + 
                         '<div class="form-group">' + 
                         '<label for="request' + new_stream + '">Под какой заказ режем?</label>' + 
-                        '<textarea id="request1" name="request' + new_stream + '" class="form-control" rows="5" style="width: 500px;"></textarea>' + 
+                        '<textarea id="request' + new_stream + '" name="request' + new_stream + '" class="form-control" rows="5" style="width: 500px;"></textarea>' + 
                         '</div>';
                 
                 $('textarea#request' + max_stream).parent('.form-group').append(new_controls);
