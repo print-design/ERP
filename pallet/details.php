@@ -11,6 +11,31 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
     header('Location: '.APPLICATION.'/pallet/');
 }
 
+// Валидация формы
+define('ISINVALID', ' is-invalid');
+$form_valid = true;
+$error_message = '';
+
+$status_id_valid = '';
+
+// Обработка отправки формы
+if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        $status_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    
+    $error_message = (new Executer("update pallet set status_id = $status_id where inner_id = $inner_id"))->error;
+    
+    if(empty($error_message)) {
+        header('Location: '.APPLICATION.'/pallet/');
+    }
+}
+
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.inner_id, p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
@@ -33,7 +58,10 @@ $net_weight = $row['net_weight'];
 $rolls_number = $row['rolls_number'];
 $cell = $row['cell'];
 $manager_id = $row['manager_id'];
-$status_id = $row['status_id'];
+
+$status_id = filter_input(INPUT_POST, 'status_id');
+if(empty($status_id)) $status_id = $row['status_id'];
+
 $comment = $row['comment'];
 ?>
 <!DOCTYPE html>
@@ -58,7 +86,8 @@ $comment = $row['comment'];
             </div>
             <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о паллете № <?=$inner_id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">ID <?=$id_from_supplier ?></h2>
-            <form>
+            <form method="post">
+                <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                 <div style="width: 423px;">
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
@@ -168,7 +197,7 @@ $comment = $row['comment'];
                     </div>
                     <div class="form-group">
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" disabled="disabled">
+                        <select id="status_id" name="status_id" class="form-control" required="required">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s inner join pallet_status_level sl on sl.status_id = s.id order by s.name"))->result;
@@ -181,11 +210,13 @@ $comment = $row['comment'];
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Статус обязательно</div>
                     </div>
                     <div class="form-group">
                         <label for="comment">Комментарий</label>
                         <textarea id="comment" name="comment" rows="4" class="form-control" disabled="disabled"><?= htmlentities($comment) ?></textarea>
                     </div>
+                    <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
                 </div>
             </form>
         </div>
