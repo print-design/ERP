@@ -28,6 +28,7 @@ function Initials() {
             $pallets_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/pallets/index.php' ? ' disabled' : '';
             $rolls_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/rolls/index.php' ? ' disabled' : '';
             $cut_requests_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/cut_requests/index.php' ? ' disabled' : '';
+            $utilized_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/utilized/index.php' ? ' disabled' : '';
             $user_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/user/index.php' ? ' disabled' : '';
             $personal_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/personal/index.php' ? ' disabled' : '';
             if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
@@ -44,6 +45,13 @@ function Initials() {
             ?>
             <li class="nav-item">
                 <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_request/">Заявки</a>
+            </li>
+            <?php
+            endif;
+            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+            ?>
+            <li class="nav-item">
+                <a class="nav-link<?=$utilized_status ?>" href="<?=APPLICATION ?>/utilized/">Сработанная пленка</a>
             </li>
             <?php
             endif;
