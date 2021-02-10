@@ -5,6 +5,12 @@ include '../include/topscripts.php';
 if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
+
+// Обработка отправки формы
+if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
+    $id = filter_input(INPUT_POST, 'id');
+    $error_message = (new Executer("delete from roll where id = $id"))->error;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -155,8 +161,9 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                                 <div class="command"><a href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
                                 <div class="command">
                                     <form method="post">
-                                        <input type="hidden" value="<?=$row['id'] ?>" />
-                                        <button type="submit" class="btn btn-link confirmable" style="font-size: 14px;">Удалить</button>
+                                        <input type="hidden" id="id" name="id" value="<?=$row['id'] ?>" />
+                                        <input type="hidden" id="scroll" name="scroll" />
+                                        <button type="submit" id="delete-roll-submit" name="delete-roll-submit" class="btn btn-link confirmable" style="font-size: 14px;">Удалить</button>
                                     </form>
                                 </div>
                             </div>
@@ -283,6 +290,15 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                 if($(e.target).closest($('.film_menu')).length || $(e.target).closest($('.film_menu_trigger')).length) return;
                 $('.film_menu').slideUp();
             });
+            
+            // Прокрутка на прежнее место после отправки формы
+            $(window).on("scroll", function(){
+                $('input[name="scroll"]').val($(window).scrollTop());
+            });
+            
+            <?php if(!empty($_REQUEST['scroll'])): ?>
+                window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
+            <?php endif; ?>
         </script>
     </body>
 </html>
