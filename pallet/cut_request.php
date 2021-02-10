@@ -68,7 +68,7 @@ $comment = $row['comment'];
                         <p>Первый ручей</p>
                         <div class="form-group">
                             <label for="width1">Ширина</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length1') ?>" required="required" />
+                            <input type="text" class="form-control" style="width: 200px;" id="width1" name="width1" value="<?= filter_input(INPUT_POST, 'width1') ?>" required="required" />
                             <div class="invalid-feedback">Ширина обязательно.</div>
                         </div>
                         <div class="form-group">
@@ -92,13 +92,28 @@ $comment = $row['comment'];
         include '../include/footer.php';
         ?>
         <script>
-            max_stream = 0;
+            var max_stream = 0;
             
             $('#add-stream-btn').click(function(){
                 $('.stream_number').each(function(){
                     max_stream = Math.max(parseInt(max_stream), parseInt($(this).val()));
-                    alert(max_stream);
                 });
+                
+                new_stream = parseInt(max_stream) + 1;
+                
+                var new_controls = '<input type="hidden" class="stream_number" value="' + new_stream + '"/>' + 
+                        '<p style="margin-top:30px;">' + new_stream + '-й ручей</p>' + 
+                        '<div class="form-group">' + 
+                        '<label for="width' + new_stream + '">Ширина</label>' + 
+                        '<input type="text" class="form-control" style="width: 200px;" id="width' + new_stream + '" name="width' + new_stream + '" required="required" />' + 
+                        '<div class="invalid-feedback">Ширина обязательно.</div>' + 
+                        '</div>' + 
+                        '<div class="form-group">' + 
+                        '<label for="request' + new_stream + '">Под какой заказ режем?</label>' + 
+                        '<textarea id="request1" name="request' + new_stream + '" class="form-control" rows="5" style="width: 500px;"></textarea>' + 
+                        '</div>';
+                
+                $('textarea#request' + max_stream).parent('.form-group').append(new_controls);
             });
         </script>
     </body>
