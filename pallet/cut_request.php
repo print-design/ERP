@@ -102,7 +102,7 @@ $comment = $row['comment'];
                 new_stream = parseInt(max_stream) + 1;
                 
                 var new_controls = '<input type="hidden" class="stream_number" value="' + new_stream + '"/>' + 
-                        '<p style="margin-top:30px;">' + new_stream + '-й ручей</p>' + 
+                        '<p style="margin-top:30px;">' + GetOrdinal(new_stream) + ' ручей</p>' +
                         '<div class="form-group">' + 
                         '<label for="width' + new_stream + '">Ширина</label>' + 
                         '<input type="text" class="form-control" style="width: 200px;" id="width' + new_stream + '" name="width' + new_stream + '" required="required" />' + 
@@ -115,6 +115,34 @@ $comment = $row['comment'];
                 
                 $('textarea#request' + max_stream).parent('.form-group').append(new_controls);
             });
+            
+            // Формирование порядковых числительных
+            function GetOrdinal(param) {
+                switch(param) {
+                    case 1:
+                        return 'Первый';
+                    case 2:
+                        return 'Второй';
+                    case 3:
+                        return 'Третий';
+                    case 4:
+                        return 'Четвёртый';
+                    case 5:
+                        return 'Пятый';
+                    case 6:
+                        return 'Шестой';
+                    case 7:
+                        return 'Седьмой';
+                    case 8:
+                        return 'Восьмой';
+                    case 9:
+                        return 'Девятый';
+                    case 10:
+                        return 'Десятый';
+                    default:
+                        return param + '-й';
+            }
+    }
         </script>
     </body>
 </html>
