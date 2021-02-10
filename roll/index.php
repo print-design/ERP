@@ -62,7 +62,9 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                 </thead>
                 <tbody>
                     <?php
-                    $where = '';
+                    $utilized_status_id = 2; // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
+                    $where = "status_id is null or status_id <> $utilized_status_id";
+                    //$where = '';
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {

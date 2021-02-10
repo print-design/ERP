@@ -79,7 +79,7 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                 <tbody>
                     <?php
                     $utilized_status_id = 4; // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-                    $where = "status_id <> $utilized_status_id";
+                    $where = "status_id is null or status_id <> $utilized_status_id";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
