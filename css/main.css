@@ -248,3 +248,19 @@ input.form-control {
 select.form-control {
     border: solid 1px #A1A4B1;
 }
+
+/* Выпадающее меню списка паллетов и рулонов */
+.film_menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border: solid 1px #A1A4B1;
+    padding: 10px;
+    background-color: white;
+    z-index: 2;
+}
+
+.film_menu .command {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

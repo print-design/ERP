@@ -166,7 +166,13 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td><?= $row['status'] ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
-                        <td><a class="black" href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>"><i class="fas fa-ellipsis-h"></i></a></td>
+                        <td style="position: relative;">
+                            <a class="black" href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>"><i class="fas fa-ellipsis-h"></i></a>
+                            <div class="film_menu">
+                                <div class="command">Просмотреть детали</div>
+                                <div class="command">Удалить</div>
+                            </div>
+                        </td>
                     </tr>
                     <?php
                     endwhile;
