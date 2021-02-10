@@ -149,7 +149,18 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td><?= $row['status'] ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
-                        <td><a class="black" href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>"><i class="fas fa-ellipsis-h"></i></a></td>
+                        <td style="position: relative;">
+                            <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
+                            <div class="film_menu">
+                                <div class="command"><a href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command">
+                                    <form method="post">
+                                        <input type="hidden" value="<?=$row['id'] ?>" />
+                                        <button type="submit" class="btn btn-link confirmable" style="font-size: 14px;">Удалить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     <?php
                     endwhile;
@@ -260,6 +271,17 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
             
             $('.chkRoll').change(function(){
                 $('#chkMain').prop('checked', false);
+            });
+            
+            $('.film_menu_trigger').click(function() {
+                var menu = $(this).next('.film_menu');
+                $('.film_menu').not(menu).hide();
+                menu.slideToggle();
+            });
+            
+            $(document).click(function(e) {
+                if($(e.target).closest($('.film_menu')).length || $(e.target).closest($('.film_menu_trigger')).length) return;
+                $('.film_menu').slideUp();
             });
         </script>
     </body>
