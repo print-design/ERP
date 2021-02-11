@@ -85,51 +85,36 @@ $utilized_status_id = 4;
                 </thead>
                 <tbody>
                     <?php
-                    $where = "(status_id is null or status_id <> $utilized_status_id)";
+                    $where = "";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "film_brand_id = $film_brand_id";
+                        $where .= " and p.film_brand_id = $film_brand_id";
                     }
                     
                     $thickness_from = filter_input(INPUT_GET, 'thickness_from');
                     if(!empty($thickness_from)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "thickness >= ".$thickness_from;
+                        $where .= " and p.thickness >= ".$thickness_from;
                     }
                     
                     $thickness_to = filter_input(INPUT_GET, 'thickness_to');
                     if(!empty($thickness_to)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "thickness <= $thickness_to";
+                        $where .= " and p.thickness <= $thickness_to";
                     }
                     
                     $width_from = filter_input(INPUT_GET, 'width_from');
                     if(!empty($width_from)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "width >= $width_from";
+                        $where .= " and p.width >= $width_from";
                     }
                     
                     $width_to = filter_input(INPUT_GET, 'width_to');
                     if(!empty($width_to)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "width <= $width_to";
+                        $where .= " and p.width <= $width_to";
                     }
                     
                     $arrStatuses = array();
                     
-                    $sql = "select distinct ps.id, ps.name, ps.colour from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id where ps.id <> $utilized_status_id";
+                    $sql = "select distinct ps.id, ps.name, ps.colour from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id";
                     $grabber = (new Grabber($sql));
                     $error_message = $grabber->error;
                     $statuses = $grabber->result;
@@ -153,19 +138,16 @@ $utilized_status_id = 4;
                         $where .= "status_id in ($strStatuses)";
                     }
                     
-                    if(!empty($where)) {
-                        $where = "where $where ";
-                    }
-                    
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
-                            . "(select ps.id from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id where psh.pallet_id = p.id order by psh.id desc limit 0, 1) status_id, p.comment "
+                            . "psh.status_id status_id, p.comment "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
                             . "left join user u on p.storekeeper_id = u.id "
-                            . $where
-                            . "order by p.id desc limit $pager_skip, $pager_take";
+                            . "left join pallet_status_history psh on psh.pallet_id = p.id "
+                            . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0$where "
+                            . "order by p.id desc limit 0, 30";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):

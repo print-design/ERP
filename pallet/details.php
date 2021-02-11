@@ -68,9 +68,6 @@ $status_id = filter_input(INPUT_POST, 'status_id');
 if(empty($status_id)) $status_id = $row['status_id'];
 
 $comment = $row['comment'];
-
-// СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-$utilized_status_id = 4; 
 ?>
 <!DOCTYPE html>
 <html>
@@ -209,7 +206,7 @@ $utilized_status_id = 4;
                         <select id="status_id" name="status_id" class="form-control" required="required">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
-                            $statuses = (new Grabber("select s.id, s.name from pallet_status s where s.id <> $utilized_status_id order by s.name"))->result;
+                            $statuses = (new Grabber("select s.id, s.name from pallet_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
                                 $id = $status['id'];
                                 $name = $status['name'];
