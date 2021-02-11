@@ -9,7 +9,11 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
     $id = filter_input(INPUT_POST, 'id');
-    $error_message = (new Executer("delete from roll where id = $id"))->error;
+    $error_message = (new Executer("delete from roll_status_history where roll_id = $id"))->error;
+    
+    if(empty($error_message)) {
+        $error_message = (new Executer("delete from roll where id = $id"))->error;
+    }
 }
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
@@ -104,6 +108,11 @@ $utilized_status_id = 2;
                         }
                     }
                     
+                    $statuses1 = array();
+                    foreach ($statuses as $status) {
+                        $statuses1[$status['id']] = $status;
+                    }
+                    
                     $strStatuses = implode(", ", $arrStatuses);
                     
                     if(!empty($strStatuses)) {
@@ -134,11 +143,11 @@ $utilized_status_id = 2;
                     $colour_style = '';
                     if(!empty($statuses1[$row['status_id']]['colour'])) {
                         $colour = $statuses1[$row['status_id']]['colour'];
-                        
+                        $colour_style = " color: $colour";
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkRoll" /></td>
+                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkRoll" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -160,7 +169,7 @@ $utilized_status_id = 2;
                                     <form method="post">
                                         <input type="hidden" id="id" name="id" value="<?=$row['id'] ?>" />
                                         <input type="hidden" id="scroll" name="scroll" />
-                                        <button type="submit" id="delete-roll-submit" name="delete-roll-submit" class="btn btn-link confirmable" style="font-size: 14px;">Удалить</button>
+                                        <button type="submit" class="btn btn-link confirmable" id="delete-roll-submit" name="delete-roll-submit" style="font-size: 14px;">Удалить</button>
                                     </form>
                                 </div>
                             </div>
