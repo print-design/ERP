@@ -170,6 +170,11 @@ $utilized_status_id = 4;
                     
                     while ($row = $fetcher->Fetch()):
 
+                    $status = '';
+                    if(!empty($statuses1[$row['status_id']]['name'])) {
+                        $status = $statuses1[$row['status_id']]['name'];
+                    }
+
                     $colour_style = '';
                     if(!empty($statuses1[$row['status_id']]['colour'])) {
                         $colour = $statuses1[$row['status_id']]['colour'];
@@ -190,7 +195,7 @@ $utilized_status_id = 4;
                         <td><?= $row['rolls_number'] ?></td>
                         <td><?= $row['cell'] ?></td>
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
-                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($statuses1[$row['status_id']]['name']) ?></td>
+                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td style="position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
