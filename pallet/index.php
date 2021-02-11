@@ -86,6 +86,7 @@ $utilized_status_id = 4;
                 <tbody>
                     <?php
                     $where = "";
+                    $join_history = "left";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
@@ -114,12 +115,12 @@ $utilized_status_id = 4;
                     
                     $arrStatuses = array();
                     
-                    $sql = "select distinct ps.id, ps.name, ps.colour from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id";
+                    $sql = "select distinct id, name, colour from pallet_status";
                     $grabber = (new Grabber($sql));
                     $error_message = $grabber->error;
                     $statuses = $grabber->result;
                     foreach ($statuses as $status) {
-                        if(filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
+                        if(!empty(filter_input(INPUT_GET, 'chk'.$status['id'])) && filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
                             array_push($arrStatuses, $status['id']);
                         }
                     }
@@ -132,10 +133,7 @@ $utilized_status_id = 4;
                     $strStatuses = implode(", ", $arrStatuses);
                     
                     if(!empty($strStatuses)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "status_id in ($strStatuses)";
+                        $where .= " and psh.status_id in ($strStatuses)";
                     }
                     
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
@@ -145,7 +143,7 @@ $utilized_status_id = 4;
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
                             . "left join user u on p.storekeeper_id = u.id "
-                            . "left join pallet_status_history psh on psh.pallet_id = p.id "
+                            . "$join_history join pallet_status_history psh on psh.pallet_id = p.id "
                             . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0$where "
                             . "order by p.id desc limit 0, 30";
                     $fetcher = new Fetcher($sql);
