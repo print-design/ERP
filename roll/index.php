@@ -11,6 +11,9 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $error_message = (new Executer("delete from roll where id = $id"))->error;
 }
+
+// СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
+$utilized_status_id = 2;
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,55 +65,41 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                 </thead>
                 <tbody>
                     <?php
-                    $utilized_status_id = 2; // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
-                    $where = "status_id is null or status_id <> $utilized_status_id";
-                    //$where = '';
+                    $where = "";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "film_brand_id = $film_brand_id";
+                        $where .= " and p.film_brand_id = $film_brand_id";
                     }
                     
                     $thickness_from = filter_input(INPUT_GET, 'thickness_from');
                     if(!empty($thickness_from)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "thickness >= ".$thickness_from;
+                        $where .= " and p.thickness >= ".$thickness_from;
                     }
                     
                     $thickness_to = filter_input(INPUT_GET, 'thickness_to');
                     if(!empty($thickness_to)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "thickness <= $thickness_to";
+                        $where .= " and p.thickness <= $thickness_to";
                     }
                     
                     $width_from = filter_input(INPUT_GET, 'width_from');
                     if(!empty($width_from)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "width >= $width_from";
+                        $where .= " and p.width >= $width_from";
                     }
                     
                     $width_to = filter_input(INPUT_GET, 'width_to');
                     if(!empty($width_to)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "width <= $width_to";
+                        $where .= " and p.width <= $width_to";
                     }
                     
                     $arrStatuses = array();
                     
-                    $statuses = (new Grabber("select distinct rs.id, rs.name from roll r inner join roll_status rs on p.status_id = rs.id"))->result;
+                    $sql = "select distinct id, name, colour from roll_status";
+                    $grabber = (new Grabber($sql));
+                    $error_message = $grabber->error;
+                    $statuses = $grabber->result;
                     foreach ($statuses as $status) {
-                        if(filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
+                        if(!empty(filter_input(INPUT_GET, 'chk'.$status['id'])) && filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
                             array_push($arrStatuses, $status['id']);
                         }
                     }
@@ -118,33 +107,34 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                     $strStatuses = implode(", ", $arrStatuses);
                     
                     if(!empty($strStatuses)) {
-                        if(!empty($where)) {
-                            $where = "$where and ";
-                        }
-                        $where .= "status_id in ($strStatuses)";
-                    }
-                    
-                    if(!empty($where)) {
-                        $where = "where $where ";
+                        $where .= " and rsh.status_id in ($strStatuses)";
                     }
                     
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
                             . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
-                            . "rs.name status, rs.colour, r.comment "
+                            . "rsh.status_id status_id, r.comment "
                             . "from roll r "
                             . "left join film_brand fb on r.film_brand_id = fb.id "
                             . "left join supplier s on r.supplier_id = s.id "
-                            . "left join user u on r.manager_id = u.id "
-                            . "left join roll_status rs on r.status_id = rs.id "
-                            . $where
+                            . "left join user u on r.storekeeper_id = u.id "
+                            . "left join roll_status_history rsh on rsh.roll_id = r.id "
+                            . "where (select count(rsh1.id) from roll_status_history rsh1 where rsh1.id > rsh.id and rsh1.roll_id = rsh.roll_id) = 0 "
+                            . "and (rsh.status_id is null or rsh.status_id <> $utilized_status_id) "
+                            . "$where "
                             . "order by r.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
+                        
+                    $status = '';
+                    if(!empty($statuses1[$row['status_id']]['name'])) {
+                        $status = $statuses1[$row['status_id']]['name'];
+                    }
+
                     $colour_style = '';
-                    if(!empty($row['colour'])) {
-                    $colour = $row['colour'];
-                    $colour_style = " color: $colour";
+                    if(!empty($statuses1[$row['status_id']]['colour'])) {
+                        $colour = $statuses1[$row['status_id']]['colour'];
+                        
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
@@ -160,7 +150,7 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                         <td><?= $row['inner_id'] ?></td>
                         <td><?= $row['cell'] ?></td>
                         <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
-                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($row['status']) ?></td>
+                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
                         <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
                         <td style="position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
@@ -193,7 +183,7 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
                     <form method="get">
                         <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px;">Статус</h2>
                         <?php
-                        $statuses = (new Grabber("select distinct rs.id, rs.name from roll r inner join roll_status rs on r.status_id = rs.id"))->result;
+                        $statuses = (new Grabber("select distinct rs.id, rs.name from roll_status_history rsh inner join roll_status rs on rsh.status_id = rs.id where rs.id <> $utilized_status_id order by rs.name"))->result;
                         foreach ($statuses as $status):
                         ?>
                         <div class="form-group form-check">

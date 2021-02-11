@@ -146,7 +146,7 @@ $utilized_status_id = 4;
                             . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
                             . "and (psh.status_id is null or psh.status_id <> $utilized_status_id) "
                             . "$where "
-                            . "order by p.id desc limit 0, 30";
+                            . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
