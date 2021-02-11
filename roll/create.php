@@ -105,14 +105,19 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
 }
 
 // Получение данных
-$inner_id = 0;
-$row = (new Fetcher("select id from new_roll_id union select inner_id from roll order by id desc limit 1"))->Fetch();
-if(!empty($row)) {
-    $inner_id = intval($row['id']);
+if(empty($error_message)) {
+    $inner_id = 0;
+    $row = (new Fetcher("select id from new_roll_id union select inner_id from roll order by id desc limit 1"))->Fetch();
+    if(!empty($row)) {
+        $inner_id = intval($row['id']);
+    }
+    $inner_id++;
+    
+    $error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))->error;
 }
-$inner_id++;
-
-$error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))->error;
+else {
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -128,7 +133,7 @@ $error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))
         <div class="container-fluid" style="padding-left: 40px;">
             <?php
             if(!empty($error_message)) {
-                echo "<div class='alert alert-danger>$error_message</div>";
+                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
             <div class="backlink" style="margin-bottom: 56px;">

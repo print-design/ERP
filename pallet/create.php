@@ -97,8 +97,8 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, manager_id, status_id, comment, inner_id, date, storekeeper_id) "
-                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
+        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, status_id, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
         
         if(empty($error_message)) {
@@ -112,14 +112,19 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
 }
 
 // Получение данных
-$inner_id = 0;
-$row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();
-if(!empty($row)) {
-    $inner_id = intval($row['id']);
+if(empty($error_message)) {
+    $inner_id = 0;
+    $row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();
+    if(!empty($row)) {
+        $inner_id = intval($row['id']);
+    }
+    $inner_id++;
+    
+    $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)"))->error;
 }
-$inner_id++;
-
-$error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)"))->error;
+else {
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -135,7 +140,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
         <div class="container-fluid" style="padding-left: 40px;">
             <?php
             if(!empty($error_message)) {
-                echo "<div class='alert alert-danger>$error_message</div>";
+                echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
             <div class="backlink" style="margin-bottom: 56px;">
@@ -290,7 +295,7 @@ $error_message = (new Executer("insert into new_pallet_id(id) value($inner_id)")
                     </div>
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
-                    <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px;">СОЗДАТЬ ПАЛЛЕТ</button>
+                    <button type="submit" id="create-pallet-submit" name="create-pallet-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">СОЗДАТЬ ПАЛЛЕТ</button>
                     <button type="submit" formaction="<?=APPLICATION ?>/pallet/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
                 </div>
             </form>

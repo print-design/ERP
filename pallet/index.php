@@ -9,8 +9,15 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
     $id = filter_input(INPUT_POST, 'id');
-    $error_message = (new Executer("delete from pallet where id = $id"))->error;
+    $error_message = (new Executer("delete from pallet_status_history where pallet_id = $id"))->error;
+    
+    if(empty($error_message)) {
+        $error_message = (new Executer("delete from pallet where id = $id"))->error;
+    }
 }
+
+// СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
+$utilized_status_id = 4; 
 ?>
 <!DOCTYPE html>
 <html>
@@ -78,7 +85,6 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                 </thead>
                 <tbody>
                     <?php
-                    $utilized_status_id = 4; // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
                     $where = "status_id is null or status_id <> $utilized_status_id";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
@@ -123,7 +129,7 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                     
                     $arrStatuses = array();
                     
-                    $statuses = (new Grabber("select distinct ps.id, ps.name from pallet p inner join pallet_status ps on p.status_id = ps.id"))->result;
+                    $statuses = (new Grabber("select distinct ps.id, ps.name, ps.colour from pallet p inner join pallet_status ps on p.status_id = ps.id"))->result;
                     foreach ($statuses as $status) {
                         if(filter_input(INPUT_GET, 'chk'.$status['id']) == 'on') {
                             array_push($arrStatuses, $status['id']);
@@ -145,12 +151,11 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
                     
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
-                            . "st.name status, st.colour, p.comment "
+                            . "(select ps.name from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id where psh.pallet_id = p.id order by date desc limit 0, 1) status, p.comment "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
-                            . "left join user u on p.manager_id = u.id "
-                            . "left join pallet_status st on p.status_id = st.id "
+                            . "left join user u on p.storekeeper_id = u.id "
                             . $where
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
