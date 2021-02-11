@@ -85,7 +85,7 @@ $utilized_status_id = 4;
                 </thead>
                 <tbody>
                     <?php
-                    $where = "status_id is null or status_id <> $utilized_status_id";
+                    $where = "(status_id is null or status_id <> $utilized_status_id)";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
@@ -228,7 +228,7 @@ $utilized_status_id = 4;
                     <form method="get">
                         <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 24px;">Статус</h2>
                         <?php
-                        $statuses = (new Grabber("select distinct ps.id, ps.name from pallet p inner join pallet_status ps on p.status_id = ps.id"))->result;
+                        $statuses = (new Grabber("select distinct ps.id, ps.name from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id order by ps.name"))->result;
                         foreach ($statuses as $status):
                         ?>
                         <div class="form-group form-check">
