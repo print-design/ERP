@@ -43,7 +43,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.id, p.inner_id, p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, "
-        . "(select psh.status_id from pallet_status_history psh where pallet_id = p.id order by date desc limit 0, 1) status_id, "
+        . "(select psh.status_id from pallet_status_history psh where pallet_id = p.id order by psh.id desc limit 0, 1) status_id, "
         . "p.comment "
         . "from pallet p inner join user u on p.storekeeper_id = u.id "
         . "where p.inner_id=$inner_id";

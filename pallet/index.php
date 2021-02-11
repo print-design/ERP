@@ -159,7 +159,7 @@ $utilized_status_id = 4;
                     
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
-                            . "(select ps.id from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id where psh.pallet_id = p.id order by date desc limit 0, 1) status_id, p.comment "
+                            . "(select ps.id from pallet_status_history psh inner join pallet_status ps on psh.status_id = ps.id where psh.pallet_id = p.id order by psh.id desc limit 0, 1) status_id, p.comment "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
