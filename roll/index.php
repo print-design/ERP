@@ -50,7 +50,7 @@ $utilized_status_id = 2;
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th><!--input type="checkbox" class="form-check" id="chkMain" /--></th>
+                        <th></th>
                         <th>Дата создания</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
@@ -73,27 +73,27 @@ $utilized_status_id = 2;
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
-                        $where .= " and p.film_brand_id = $film_brand_id";
+                        $where .= " and r.film_brand_id = $film_brand_id";
                     }
                     
                     $thickness_from = filter_input(INPUT_GET, 'thickness_from');
                     if(!empty($thickness_from)) {
-                        $where .= " and p.thickness >= ".$thickness_from;
+                        $where .= " and r.thickness >= ".$thickness_from;
                     }
                     
                     $thickness_to = filter_input(INPUT_GET, 'thickness_to');
                     if(!empty($thickness_to)) {
-                        $where .= " and p.thickness <= $thickness_to";
+                        $where .= " and r.thickness <= $thickness_to";
                     }
                     
                     $width_from = filter_input(INPUT_GET, 'width_from');
                     if(!empty($width_from)) {
-                        $where .= " and p.width >= $width_from";
+                        $where .= " and r.width >= $width_from";
                     }
                     
                     $width_to = filter_input(INPUT_GET, 'width_to');
                     if(!empty($width_to)) {
-                        $where .= " and p.width <= $width_to";
+                        $where .= " and r.width <= $width_to";
                     }
                     
                     $arrStatuses = array();

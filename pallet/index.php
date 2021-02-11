@@ -65,7 +65,7 @@ $utilized_status_id = 4;
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th><!--input type="checkbox" class="form-check" id="chkMain" /--></th>
+                        <th></th>
                         <th>Дата прихода</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
