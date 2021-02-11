@@ -20,7 +20,6 @@ $length_valid = '';
 $net_weight_valid = '';
 $rolls_number_valid = '';
 $cell_valid = '';
-$manager_id_valid = '';
 $status_id_valid = '';
 
 // Обработка отправки формы
@@ -114,7 +113,7 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
 // Получение данных
 if(empty($error_message)) {
     $inner_id = 0;
-    $row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1;"))->Fetch();
+    $row = (new Fetcher("select id from new_pallet_id union select inner_id id from pallet order by id desc limit 1"))->Fetch();
     if(!empty($row)) {
         $inner_id = intval($row['id']);
     }

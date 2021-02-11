@@ -43,7 +43,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.id, p.inner_id, p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, "
-        . "(select psh.status_id from pallet_status_history psh where pallet_id = p.id order by psh.id desc limit 0, 1) status_id, "
+        . "(select psh.status_id from pallet_status_history psh where psh.pallet_id = p.id order by psh.id desc limit 0, 1) status_id, "
         . "p.comment "
         . "from pallet p inner join user u on p.storekeeper_id = u.id "
         . "where p.inner_id=$inner_id";
@@ -188,17 +188,6 @@ $comment = $row['comment'];
                         <label for="manager_id">Менеджер</label>
                         <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
                             <option value="">Выберите менеджера</option>
-                            <?php
-                            $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
-                            foreach ($managers as $manager) {
-                                $id = $manager['id'];
-                                $first_name = $manager['first_name'];
-                                $last_name = $manager['last_name'];
-                                $selected = '';
-                                if($manager_id == $manager['id']) $selected = " selected='selected'";
-                                echo "<option value='$id'$selected>$last_name $first_name</option>";
-                            }
-                            ?>
                         </select>
                     </div>
                     <div class="form-group">

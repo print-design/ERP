@@ -19,7 +19,6 @@ $thickness_valid = '';
 $length_valid = '';
 $net_weight_valid = '';
 $cell_valid = '';
-$manager_id_valid = '';
 $status_id_valid = '';
 
 // Обработка отправки формы
@@ -90,15 +89,15 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, manager_id, status_id, comment, inner_id, date, storekeeper_id) "
-                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', $manager_id, $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
+        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, status_id, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
         
         if(empty($error_message)) {
             $error_message = (new Executer("delete from new_roll_id where id=$inner_id"))->error;
             
             if(empty($error_message)) {
-                //header('Location: '.APPLICATION."/roll/");
+                header('Location: '.APPLICATION."/roll/");
             }
         }
     }
@@ -275,7 +274,7 @@ else {
                     </div>
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
-                    <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px;">СОЗДАТЬ РУЛОН</button>
+                    <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">СОЗДАТЬ РУЛОН</button>
                     <button type="submit" formaction="<?=APPLICATION ?>/roll/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
                 </div>
             </form>

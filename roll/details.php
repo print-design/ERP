@@ -26,10 +26,13 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $form_valid = false;
     }
     
+    $id = filter_input(INPUT_POST, 'id');
+    $date = date('Y-m-d');
     $inner_id = filter_input(INPUT_POST, 'inner_id');
     $status_id = filter_input(INPUT_POST, 'status_id');
+    $user_id = GetUserId();
     
-    $error_message = (new Executer("update roll set status_id = $status_id where inner_id = $inner_id"))->error;
+    $error_message = (new Executer("insert into roll_status_history (roll_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
     
     if(empty($error_message)) {
         header('Location: '.APPLICATION.'/roll/');
@@ -38,12 +41,15 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
 
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
-$sql = "select r.inner_id, r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
-        . "r.net_weight, r.cell, r.manager_id, r.status_id, r.comment "
+$sql = "select r.id, r.inner_id, r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
+        . "r.net_weight, r.cell, "
+        . "(select rsh.status_id from roll_status_history rsh where rsh.roll_id = r.id order by rsh.id desc limit 0, 1) status_id, "
+        . "r.comment "
         . "from roll r inner join user u on r.storekeeper_id = u.id "
         . "where r.inner_id=$inner_id";
 
 $row = (new Fetcher($sql))->Fetch();
+$id = $row['id'];
 $inner_id = $row['inner_id'];
 $date = $row['date'];
 $storekeeper_id = $row['storekeeper_id'];
@@ -56,7 +62,6 @@ $thickness = $row['thickness'];
 $length = $row['length'];
 $net_weight = $row['net_weight'];
 $cell = $row['cell'];
-$manager_id = $row['manager_id'];
 
 $status_id = filter_input(INPUT_POST, 'status_id');
 if(empty($status_id)) $status_id = $row['status_id'];
@@ -86,6 +91,7 @@ $comment = $row['comment'];
             <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о рулоне № <?=$inner_id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">ID <?=$id_from_supplier ?></h2>
             <form method="post">
+                <input type="hidden" id="id" name="id" value="<?=$id ?>" />
                 <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                 <div style="width: 423px;">
                     <div class="form-group">
@@ -169,17 +175,6 @@ $comment = $row['comment'];
                         <label for="manager_id">Менеджер</label>
                         <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
                             <option value="">Выберите менеджера</option>
-                            <?php
-                            $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
-                            foreach ($managers as $manager) {
-                                $id = $manager['id'];
-                                $first_name = $manager['first_name'];
-                                $last_name = $manager['last_name'];
-                                $selected = '';
-                                if($manager_id == $manager['id']) $selected = " selected='selected'";
-                                echo "<option value='$id'$selected>$last_name $first_name</option>";
-                            }
-                            ?>
                         </select>
                     </div>
                     <div class="form-group">
