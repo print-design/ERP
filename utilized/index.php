@@ -203,6 +203,40 @@ $utilized_status_roll_id = 2;
                     ?>
                 </tbody>
             </table>
+            <?php
+            include '../include/pager_bottom.php';
+            ?>
+        </div>
+        <div class="modal fade" id="filterModal">
+            <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
+                <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 32px; top: 55px;">&times;</button>
+                <h1 style="margin-top: 53px; margin-bottom: 20px; font-size: 32px; line-height: 48px; font-weight: 600;">Фильтр</h1>
+                <form method="get">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="chkPallet" name="chkPallet"<?= filter_input(INPUT_GET, 'chkPallet') == 'on' ? " checked='checked'" : "" ?> />
+                        <label class="form-check-label" for="chkPallet">Паллет</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="chkRoll" name="chkRoll"<?= filter_input(INPUT_GET, 'chkRoll') == 'on' ? " checked='checked'" : "" ?> />
+                        <label class="form-check-label" for="chkRoll">Рулон</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="film_brand_id" name="film_brand_id" class="form-control" style="margin-top: 30px; margin-bottom: 30px;">
+                            <option value="">МАРКА ПЛЕНКИ</option>
+                            <?php
+                            $film_brands = (new Grabber("select distinct id, name from (select fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id union select fb.id, fb.name from roll r inner join film_brand fb on r.film_brand_id = fb.id) order by name"))->result;
+                            foreach ($film_brands as $film_brand) {
+                                $id = $film_brand['id'];
+                                $name = $film_brand['name'];
+                                $selected = '';
+                                if(filter_input(INPUT_GET, 'film_brand_id') == $film_brand['id']) $selected = " selected='selected'";
+                                echo "<option value='$id'$selected>$name</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </form>
+            </div>
         </div>
         <?php
         include '../include/footer.php';
