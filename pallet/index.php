@@ -85,7 +85,7 @@ $utilized_status_id = 4;
                 </thead>
                 <tbody>
                     <?php
-                    $where = "";
+                    $where = "(psh.status_id is null or psh.status_id <> $utilized_status_id)";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
@@ -135,6 +135,10 @@ $utilized_status_id = 4;
                         $where .= " and psh.status_id in ($strStatuses)";
                     }
                     
+                    if(!empty($where)) {
+                        $where = "where $where";
+                    }
+                    
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
                             . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
                             . "psh.status_id status_id, p.comment "
@@ -143,9 +147,6 @@ $utilized_status_id = 4;
                             . "left join supplier s on p.supplier_id = s.id "
                             . "left join user u on p.storekeeper_id = u.id "
                             . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
-                            //. "left join pallet_status_history psh on psh.pallet_id = p.id "
-                            //. "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
-                            //. "and (psh.status_id is null or psh.status_id <> $utilized_status_id) "
                             . "$where "
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
