@@ -141,7 +141,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                     </button>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-dark" id="supplier_create_submit" name="supplier_create_submit" style="padding-left: 58px; padding-right: 62px;">Создать поставщика</button>
+                    <button type="submit" class="btn btn-dark" id="supplier_create_submit" name="supplier_create_submit" style="padding-left: 58px; padding-right: 62px; padding-top: 14px; padding-bottom: 14px;">Создать поставщика</button>
                 </div>
             </form>
         </div>

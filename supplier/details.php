@@ -248,7 +248,7 @@ $name = htmlentities($row['name']);
                     <td>
                         <form method="post">
                             <input type="hidden" id="id" name="id" value="<?= filter_input(INPUT_GET, 'id') ?>" />
-                            <button class="btn btn-outline-danger confirmable" id="delete-brand-button" name="delete-brand-button" style="margin-left: 35px; padding-left: 45px; padding-right: 45px;"><img src="<?=APPLICATION ?>/images/icons/trash-red.svg" style="vertical-align: top;" />&nbsp;&nbsp;&nbsp;Удалить поставщика</button>
+                            <button class="btn btn-outline-danger confirmable" id="delete-brand-button" name="delete-brand-button" style="margin-left: 35px; padding-left: 45px; padding-right: 45px; padding-top: 14px; padding-bottom: 14px;"><img src="<?=APPLICATION ?>/images/icons/trash-red.svg" style="vertical-align: top;" />&nbsp;&nbsp;&nbsp;Удалить поставщика</button>
                         </form>
                     </td>
                 </tr>

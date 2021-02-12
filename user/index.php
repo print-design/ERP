@@ -39,7 +39,7 @@ if(null !== filter_input(INPUT_POST, 'delete_user_submit')) {
                     </div>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" title="Добавить пользователя" class="btn btn-outline-dark">
+                    <a href="create.php" title="Добавить пользователя" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px;">
                         <i class="fas fa-plus" style="font-size: 12px;"></i>&nbsp;&nbsp;Добавить сотрудника
                     </a>
                 </div>
