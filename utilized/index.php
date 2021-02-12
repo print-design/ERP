@@ -92,6 +92,85 @@ $utilized_status_roll_id = 2;
                     $where_pallet = "psh.status_id = $utilized_status_pallet_id";
                     $where_roll = "rsh.status_id = $utilized_status_roll_id";
                     
+                    if(!empty(filter_input(INPUT_GET, 'chkPallet')) && filter_input(INPUT_GET, 'chkPallet') == 'on' && empty(filter_input(INPUT_GET, 'chkRoll'))) {
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "false";
+                    }
+                    
+                    if(!empty(filter_input(INPUT_GET, 'chkRoll')) && filter_input(INPUT_GET, 'chkRoll') == 'on' && empty(filter_input(INPUT_GET, 'chkPallet'))) {
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "false";
+                    }
+                    
+                    $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
+                    if(!empty($film_brand_id)) {
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "p.film_brand_id = $film_brand_id";
+                        
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "r.film_brand_id = $film_brand_id";
+                    }
+                    
+                    $thickness_from = filter_input(INPUT_GET, 'thickness_from');
+                    if(!empty($thickness_from)) {
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "p.thickness >= $thickness_from";
+                        
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "r.thickness >= $thickness_from";
+                    }
+                    
+                    $thickness_to = filter_input(INPUT_GET, 'thickness_to');
+                    if(!empty($thickness_to)) {
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "p.thickness <= $thickness_to";
+                        
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "r.thickness <= $thickness_to";
+                    }
+                    
+                    $width_from = filter_input(INPUT_GET, 'width_from');
+                    if(!empty($width_from)){
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "p.width >= $width_from";
+                        
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "r.width >= $width_from";
+                    }
+                    
+                    $width_to = filter_input(INPUT_GET, 'width_to');
+                    if(!empty($width_to)) {
+                        if(!empty($where_pallet)) {
+                            $where_pallet .= " and ";
+                        }
+                        $where_pallet .= "p.width <= $width_to";
+                        
+                        if(!empty($where_roll)) {
+                            $where_roll .= " and ";
+                        }
+                        $where_roll .= "r.width <= $width_to";
+                    }
+                    
                     $sql = "select distinct id, name, colour from pallet_status";
                     $grabber = (new Grabber($sql));
                     $error_message = $grabber->error;
