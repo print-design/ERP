@@ -167,6 +167,9 @@ $utilized_status_id = 2;
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
                                 <div class="command"><a href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <?php
+                                if(IsInRole(array('admin', 'dev', 'technologist'))):
+                                ?>
                                 <div class="command">
                                     <form method="post">
                                         <input type="hidden" id="id" name="id" value="<?=$row['id'] ?>" />
@@ -174,6 +177,9 @@ $utilized_status_id = 2;
                                         <button type="submit" class="btn btn-link confirmable" id="delete-roll-submit" name="delete-roll-submit" style="font-size: 14px;">Удалить</button>
                                     </form>
                                 </div>
+                                <?php
+                                endif;
+                                ?>
                             </div>
                         </td>
                     </tr>
