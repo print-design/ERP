@@ -90,23 +90,37 @@ $utilized_status_roll_id = 2;
                 <tbody>
                     <?php
                     $where_pallet = "psh.status_id = $utilized_status_pallet_id";
-                    $where_roll = "";
+                    $where_roll = "rsh.status_id = $utilized_status_roll_id";
                     
                     $sql = "select distinct id, name, colour from pallet_status";
                     $grabber = (new Grabber($sql));
                     $error_message = $grabber->error;
-                    $statuses = $grabber->result;
+                    $pallet_statuses = $grabber->result;
                     
-                    $statuses1 = array();
-                    foreach ($statuses as $status) {
-                        $statuses1[$status['id']] = $status;
+                    $sql = "select distinct id, name, colour from roll_status";
+                    $grabber = (new Grabber($sql));
+                    $error_message = $grabber->error;
+                    $roll_statuses = $grabber->result;
+                    
+                    $pallet_statuses1 = array();
+                    foreach ($pallet_statuses as $status) {
+                        $pallet_statuses1[$status['id']] = $status;
+                    }
+                    
+                    $roll_statuses1 = array();
+                    foreach ($roll_statuses as $status) {
+                        $roll_statuses1[$status['id']] = $status;
                     }
                     
                     if(!empty($where_pallet)) {
                         $where_pallet = " where $where_pallet";
                     }
                     
-                    $sql = "select p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
+                    if(!empty($where_roll)) {
+                        $where_roll = " where $where_roll";
+                    }
+                    
+                    $sql = "select 'pallet' type, p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
                             . "s.name supplier, p.id_from_supplier id_from_supplier, p.inner_id inner_id, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "psh.status_id status_id, p.comment comment "
                             . "from pallet p "
@@ -115,20 +129,43 @@ $utilized_status_roll_id = 2;
                             . "left join user u on p.storekeeper_id = u.id "
                             . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
                             . "$where_pallet "
-                            . "order by p.id desc limit $pager_skip, $pager_take";
+                            . "union "
+                            . "select 'roll' type, r.id id, rsh.date date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
+                            . "s.name supplier, r.id_from_supplier id_from_supplier, r.inner_id inner_id, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
+                            . "rsh.status_id status_id, r.comment comment "
+                            . "from roll r "
+                            . "left join film_brand fb on r.film_brand_id = fb.id "
+                            . "left join supplier s on r.supplier_id = s.id "
+                            . "left join user u on r.storekeeper_id = u.id "
+                            . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
+                            . "$where_roll "
+                            . "order by id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
-                        
+
                     $status = '';
-                    if(!empty($statuses1[$row['status_id']]['name'])) {
-                        $status = $statuses1[$row['status_id']]['name'];
-                    }
-                    
                     $colour_style = '';
-                    if(!empty($statuses1[$row['status_id']]['colour'])) {
-                        $colour = $statuses1[$row['status_id']]['colour'];
-                        $colour_style = " color: $colour";
+                    
+                    if($row['type'] == 'pallet') {
+                        if(!empty($pallet_statuses1[$row['status_id']]['name'])) {
+                            $status = $pallet_statuses1[$row['status_id']]['name'];
+                        }
+                        
+                        if(!empty($pallet_statuses1[$row['status_id']]['colour'])) {
+                            $colour = $pallet_statuses1[$row['status_id']]['colour'];
+                            $colour_style = " color: $colour";
+                        }
+                    }
+                    elseif ($row['type'] == 'roll') {
+                        if(!empty($roll_statuses1[$row['status_id']]['name'])) {
+                            $status = $roll_statuses1[$row['status_id']]['name'];
+                        }
+                        
+                        if(!empty($roll_statuses1[$row['status_id']]['colour'])) {
+                            $colour = $roll_statuses1[$row['status_id']]['colour'];
+                            $colour_style = " color: $colour";
+                        }
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
