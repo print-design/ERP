@@ -89,7 +89,8 @@ $utilized_status_roll_id = 2;
                 </thead>
                 <tbody>
                     <?php
-                    $where = "";
+                    $where_pallet = "";
+                    $where_roll = "";
                     
                     $sql = "select distinct id, name, colour from pallet_status";
                     $grabber = (new Grabber($sql));
@@ -101,9 +102,9 @@ $utilized_status_roll_id = 2;
                         $statuses1[$status['id']] = $status;
                     }
                     
-                    $sql = "select p.id, psh.date date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
-                            . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, u.first_name, u.last_name, "
-                            . "psh.status_id status_id, p.comment "
+                    $sql = "select p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
+                            . "s.name supplier, p.id_from_supplier id_from_supplier, p.inner_id inner_id, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
+                            . "psh.status_id status_id, p.comment comment "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
@@ -111,7 +112,19 @@ $utilized_status_roll_id = 2;
                             . "left join pallet_status_history psh on psh.pallet_id = p.id "
                             . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
                             . "and (psh.status_id = $utilized_status_pallet_id) "
-                            . "$where "
+                            . "$where_pallet "
+                            . "union "
+                            . "select r.id id, rsh.date date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
+                            . "s.name supplier, r.id_from_supplier id_from_supplier, r.inner_id inner_ id, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
+                            . "rsh.status_id status_id, p.comment comment "
+                            . "from roll r "
+                            . "left join film_brand fb on r.film_brand_id = fb.id "
+                            . "left join supplier s on r.supplier_id = s.id "
+                            . "left join user u on r.storekeeper_id = u.id "
+                            . "left join roll_status_history rsh on rsh.roll_id = r.id "
+                            . "where (select count(rsh1.id) from roll_status_history rsh1 where rsh1.id > rsh.id and rsh1.roll_id = rsh.roll_id) = 0 "
+                            . "and (rsh.status_id = $utilized_status_roll_id) "
+                            . "$where_roll "
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
