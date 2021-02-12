@@ -38,7 +38,15 @@ if(null !== filter_input(INPUT_POST, 'delete-film-submit')) {
 $utilized_status_pallet_id = 4;
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
-$utilized_status_roll_id = 2;
+$utilized_status_roll_id = 2;+
+
+// Получение общей массы сработанной пленки
+$total_weight = 0;
+$pallet_row = (new Fetcher("select sum(p.net_weight) total_weight from pallet p left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id where psh.status_id = $utilized_status_pallet_id"))->Fetch();
+$pallet_total_weight = $pallet_row['total_weight'];
+$roll_row = (new Fetcher("select sum(r.net_weight) total_weight from roll r left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id where rsh.status_id = $utilized_status_roll_id"))->Fetch();
+$roll_total_weight = $roll_row['total_weight'];
+$total_weight = intval($pallet_total_weight) + intval($roll_total_weight);
 ?>
 <!DOCTYPE html>
 <html>
@@ -61,7 +69,12 @@ $utilized_status_roll_id = 2;
             ?>
             <div class="d-flex justify-content-between mb-auto">
                 <div class="p-1">
-                    <h1>Сработанная пленка</h1>
+                    <table>
+                        <tr>
+                            <td><h1>Сработанная пленка</h1></td>
+                            <td style="padding-left: 20px; padding-right: 20px; font-weight: bold;">(<?= number_format($total_weight, 0, ',', ' ') ?> кг)</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="p-1">
                     <button class="btn btn-outline-dark" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>

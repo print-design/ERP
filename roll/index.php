@@ -18,6 +18,10 @@ if(null !== filter_input(INPUT_POST, 'delete-roll-submit')) {
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
 $utilized_status_id = 2;
+
+// Получение общей массы паллетов
+$row = (new Fetcher("select sum(r.net_weight) total_weight from roll r left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id where rsh.status_id is null or rsh.status_id <> $utilized_status_id"))->Fetch();
+$total_weight = $row['total_weight'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +44,12 @@ $utilized_status_id = 2;
             ?>
             <div class="d-flex justify-content-between mb-auto">
                 <div class="p-1">
-                    <h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Рулоны</h1>
+                    <table>
+                        <tr>
+                            <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Рулоны</h1></td>
+                            <td style="padding-left: 20px; padding-right: 20px; font-weight: bold;">(<?= number_format($total_weight, 0, ',', ' ') ?> кг)</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="p-1">
                     <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-top: 14px; padding-bottom: 14px; padding-right: 44px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый ролик</a>
