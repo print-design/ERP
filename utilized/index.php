@@ -35,10 +35,10 @@ if(null !== filter_input(INPUT_POST, 'delete-utilized-submit')) {
 }
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-$utilized_status_id = 4;
+$utilized_status_pallet_id = 4;
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
-$utilized_status_id = 2;
+$utilized_status_roll_id = 2;
 ?>
 <!DOCTYPE html>
 <html>
@@ -110,7 +110,7 @@ $utilized_status_id = 2;
                             . "left join user u on p.storekeeper_id = u.id "
                             . "left join pallet_status_history psh on psh.pallet_id = p.id "
                             . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
-                            //. "and (psh.status_id = $utilized_status_id) "
+                            . "and (psh.status_id = $utilized_status_pallet_id) "
                             . "$where "
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
