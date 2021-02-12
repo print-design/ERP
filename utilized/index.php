@@ -7,7 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 }
 
 // Обработка отправки формы
-if(null !== filter_input(INPUT_POST, 'delete-utilized-submit')) {
+if(null !== filter_input(INPUT_POST, 'delete-film-submit')) {
     $id = filter_input(INPUT_POST, 'id');
     $type = filter_input(INPUT_POST, 'type');
     
@@ -186,11 +186,12 @@ $utilized_status_roll_id = 2;
                         <td style="position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
-                                <div class="command"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command"><a href="<?=APPLICATION ?>/<?=$row['type'] ?>/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
                                 <div class="command">
                                     <form method="post">
                                         <input type="hidden" id="id" name="id" value="<?=$row['id'] ?>" />
                                         <input type="hidden" id="scroll" name="scroll" />
+                                        <input type="hidden" id="type" name="type" value="<?=$row['type'] ?>" />
                                         <button type="submit" class="btn btn-link confirmable" id="delete-film-submit" name="delete-film-submit" style="font-size: 14px;">Удалить</button>
                                     </form>
                                 </div>
