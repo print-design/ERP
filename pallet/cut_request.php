@@ -14,7 +14,7 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
-        . "p.net_weight, p.rolls_number, p.cell, p.manager_id, p.status_id, p.comment "
+        . "p.net_weight, p.rolls_number, p.cell, p.status_id, p.comment "
         . "from pallet p "
         . "where p.inner_id=$inner_id";
 
@@ -31,7 +31,6 @@ $length = $row['length'];
 $net_weight = $row['net_weight'];
 $rolls_number = $row['rolls_number'];
 $cell = $row['cell'];
-$manager_id = $row['manager_id'];
 $status_id = $row['status_id'];
 $comment = $row['comment'];
 ?>
