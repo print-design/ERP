@@ -142,9 +142,10 @@ $utilized_status_id = 4;
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
                             . "left join user u on p.storekeeper_id = u.id "
-                            . "left join pallet_status_history psh on psh.pallet_id = p.id "
-                            . "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
-                            . "and (psh.status_id is null or psh.status_id <> $utilized_status_id) "
+                            . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
+                            //. "left join pallet_status_history psh on psh.pallet_id = p.id "
+                            //. "where (select count(psh1.id) from pallet_status_history psh1 where psh1.id > psh.id and psh1.pallet_id = psh.pallet_id) = 0 "
+                            //. "and (psh.status_id is null or psh.status_id <> $utilized_status_id) "
                             . "$where "
                             . "order by p.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
