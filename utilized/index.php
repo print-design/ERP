@@ -208,34 +208,66 @@ $utilized_status_roll_id = 2;
             ?>
         </div>
         <div class="modal fade" id="filterModal">
-            <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
-                <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 32px; top: 55px;">&times;</button>
-                <h1 style="margin-top: 53px; margin-bottom: 20px; font-size: 32px; line-height: 48px; font-weight: 600;">Фильтр</h1>
-                <form method="get">
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="chkPallet" name="chkPallet"<?= filter_input(INPUT_GET, 'chkPallet') == 'on' ? " checked='checked'" : "" ?> />
-                        <label class="form-check-label" for="chkPallet">Паллет</label>
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="chkRoll" name="chkRoll"<?= filter_input(INPUT_GET, 'chkRoll') == 'on' ? " checked='checked'" : "" ?> />
-                        <label class="form-check-label" for="chkRoll">Рулон</label>
-                    </div>
-                    <div class="form-group">
-                        <select id="film_brand_id" name="film_brand_id" class="form-control" style="margin-top: 30px; margin-bottom: 30px;">
-                            <option value="">МАРКА ПЛЕНКИ</option>
-                            <?php
-                            $film_brands = (new Grabber("select distinct id, name from (select fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id union select fb.id, fb.name from roll r inner join film_brand fb on r.film_brand_id = fb.id) order by name"))->result;
-                            foreach ($film_brands as $film_brand) {
-                                $id = $film_brand['id'];
-                                $name = $film_brand['name'];
-                                $selected = '';
-                                if(filter_input(INPUT_GET, 'film_brand_id') == $film_brand['id']) $selected = " selected='selected'";
-                                echo "<option value='$id'$selected>$name</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </form>
+            <div class="modal-dialog">
+                <div class="modal-content" style="width: 535px; padding-left: 35px; padding-right: 35px;">
+                    <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 32px; top: 55px;">&times;</button>
+                    <h1 style="margin-top: 53px; margin-bottom: 20px; font-size: 32px; line-height: 48px; font-weight: 600;">Фильтр</h1>
+                    <form method="get">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkPallet" name="chkPallet"<?= filter_input(INPUT_GET, 'chkPallet') == 'on' ? " checked='checked'" : "" ?> />
+                            <label class="form-check-label" for="chkPallet">Паллет</label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="chkRoll" name="chkRoll"<?= filter_input(INPUT_GET, 'chkRoll') == 'on' ? " checked='checked'" : "" ?> />
+                            <label class="form-check-label" for="chkRoll">Рулон</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="film_brand_id" name="film_brand_id" class="form-control" style="margin-top: 30px; margin-bottom: 30px;">
+                                <option value="">МАРКА ПЛЕНКИ</option>
+                                    <?php
+                                    $film_brands = (new Grabber("select fb.id, fb.name from pallet p inner join film_brand fb on p.film_brand_id = fb.id union distinct select fb.id id, fb.name name1 from roll r inner join film_brand fb on r.film_brand_id = fb.id order by name"))->result;
+                                    foreach ($film_brands as $film_brand) {
+                                        $id = $film_brand['id'];
+                                        $name = $film_brand['name'];
+                                        $selected = '';
+                                        if(filter_input(INPUT_GET, 'film_brand_id') == $film_brand['id']) $selected = " selected='selected'";
+                                        echo "<option value='$id'$selected>$name</option>";
+                                    }
+                                    ?>
+                            </select>
+                        </div>
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600;">Толщина</h2>
+                        <div id="width_slider" style="width: 465px;">
+                            <div id="width_slider_values" style="height: 50px; position: relative; font-size: 14px; line-height: 18px;">
+                                <div style="position: absolute; bottom: 10px; left: 0;">8 мкм</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 10 / 72) + 6 ?>px;">20</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 20 / 72) + 6 ?>px;">30</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 30 / 72) + 6 ?>px;">40</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 40 / 72) + 6 ?>px;">50</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 50 / 72) + 6 ?>px;">60</div>
+                                <div style="position: absolute; bottom: 10px;  left: <?=(465 * 60 / 72) + 6 ?>px;">70</div>
+                                <div style="position: absolute; bottom: 10px; right: -7px;">80</div>
+                                <div style="position: absolute; bottom: 10px; right: -34px;">мкм</div>
+                            </div>
+                            <div id="slider-range"></div>
+                        </div>
+                        <input type="hidden" id="thickness_from" name="thickness_from" />
+                        <input type="hidden" id="thickness_to" name="thickness_to" />
+                        <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-top: 43px; margin-bottom: 18px;">Ширина</h2>
+                        <div class="row">
+                            <div class="col-5 form-group">
+                                <label for="width_from">От</label>
+                                <input type="number" min="1" id="width_from" name="width_from" class="form-control" value="<?= filter_input(INPUT_GET, 'width_from') ?>" />
+                            </div>
+                            <div class="col-2 text-center" style="padding-top: 30px;"><strong>&ndash;</strong></div>
+                            <div class="col-5 form-group">
+                                <label for="width_to">До</label>
+                                <input type="number" min="1" id="width_to" name="width_to" class="form-control" value="<?= filter_input(INPUT_GET, 'width_to') ?>" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark" id="filter_submit" name="filter_submit" style="margin-top: 20px; margin-bottom: 35px;">Применить</button>
+                    </form>
+                </div>
             </div>
         </div>
         <?php
@@ -243,6 +275,51 @@ $utilized_status_roll_id = 2;
         ?>
         <script src="<?=APPLICATION ?>/js/jquery-ui.js"></script>
         <script>
+            var slider_start_from = <?= null === filter_input(INPUT_GET, 'thickness_from') ? "20" : filter_input(INPUT_GET, 'thickness_from') ?>;
+            var slider_start_to = <?= null === filter_input(INPUT_GET, 'thickness_to') ? "50" : filter_input(INPUT_GET, 'thickness_to') ?>;
+            
+            $( "#slider-range" ).slider({
+                range: true,
+                min: 8,
+                max: 80,
+                values: [slider_start_from, slider_start_to],
+                slide: function(event, ui) {
+                    $("#thickness_from").val(ui.values[0]);
+                    $("#thickness_to").val(ui.values[1]);
+                }
+            });
+            
+            $("#thickness_from").val(slider_start_from);
+            $("#thickness_to").val(slider_start_to);
+            
+            $('#chkMain').change(function(){
+                if($(this).is(':checked')) {
+                    $('.chkPallet').prop('checked', true);
+                }
+                else {
+                    $('.chkPallet').prop('checked', false);
+                }
+            });
+            
+            $('.chkPallet').change(function(){
+                if($(this).is(':checked')) {
+                    $('.chkPallet').not($(this)).prop('checked', false);
+                    $('#btn-cut-request').removeClass('disabled');
+                    $('#btn-cut-request').attr('href', 'cut_request.php?inner_id=' + $(this).attr('data-inner-id'));
+                    $('#btn-reserve-request').removeClass('disabled');
+                    $('#btn-reserve-request').attr('href', 'reserve_request.php?inner_id=' + $(this).attr('data-inner-id'));
+                    $('tr.selected').removeClass('selected');
+                    $(this).closest('tr').addClass('selected');
+                }
+                else {
+                    $('#btn-cut-request').addClass('disabled');
+                    $('#btn-cut-request').removeAttr('href');
+                    $('#btn-reserve-request').addClass('disabled');
+                    $('#btn-reserve-request').removeAttr('href');
+                    $(this).closest('tr').removeClass('selected');
+                }
+            });
+            
             $('.film_menu_trigger').click(function() {
                 var menu = $(this).next('.film_menu');
                 $('.film_menu').not(menu).hide();
