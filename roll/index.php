@@ -69,7 +69,7 @@ $utilized_status_id = 2;
                 </thead>
                 <tbody>
                     <?php
-                    $where = "";
+                    $where = "(rsh.status_id is null or rsh.status_id <> $utilized_status_id)";
                     
                     $film_brand_id = filter_input(INPUT_GET, 'film_brand_id');
                     if(!empty($film_brand_id)) {
@@ -119,6 +119,10 @@ $utilized_status_id = 2;
                         $where .= " and rsh.status_id in ($strStatuses)";
                     }
                     
+                    if(!empty($where)) {
+                        $where = "where $where";
+                    }
+                    
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
                             . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
                             . "rsh.status_id status_id, r.comment "
@@ -126,9 +130,7 @@ $utilized_status_id = 2;
                             . "left join film_brand fb on r.film_brand_id = fb.id "
                             . "left join supplier s on r.supplier_id = s.id "
                             . "left join user u on r.storekeeper_id = u.id "
-                            . "left join roll_status_history rsh on rsh.roll_id = r.id "
-                            . "where (select count(rsh1.id) from roll_status_history rsh1 where rsh1.id > rsh.id and rsh1.roll_id = rsh.roll_id) = 0 "
-                            . "and (rsh.status_id is null or rsh.status_id <> $utilized_status_id) "
+                            . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
                             . "$where "
                             . "order by r.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
