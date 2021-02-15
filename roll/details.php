@@ -67,6 +67,9 @@ $status_id = filter_input(INPUT_POST, 'status_id');
 if(empty($status_id)) $status_id = $row['status_id'];
 
 $comment = $row['comment'];
+
+// СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
+$utilized_status_id = 2;
 ?>
 <!DOCTYPE html>
 <html>
@@ -184,11 +187,13 @@ $comment = $row['comment'];
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from roll_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
-                                $id = $status['id'];
-                                $name = $status['name'];
-                                $selected = '';
-                                if($status_id == $status['id']) $selected = " selected='selected'";
-                                echo "<option value='$id'$selected>$name</option>";
+                                if(!(empty($status_id) && $status['id'] == $utilized_status_id)) {
+                                    $id = $status['id'];
+                                    $name = $status['name'];
+                                    $selected = '';
+                                    if($status_id == $status['id']) $selected = " selected='selected'";
+                                    echo "<option value='$id'$selected>$name</option>";
+                                }
                             }
                             ?>
                         </select>
