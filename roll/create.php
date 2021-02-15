@@ -187,7 +187,11 @@ else {
                         </select>
                         <div class="invalid-feedback">Марка пленки обязательно</div>
                     </div>
-                    <div class="row">
+                    <div class="form-group">
+                        <input type="checkbox" id="cacluldate_by_diameter" name="cacluldate_by_diameter" />
+                        <label class="form-check-label" for="cacluldate_by_diameter">Рассчитать по диаметру</label>
+                    </div>
+                    <div class="row" id="width_thickness">
                         <div class="col-6 form-group">
                             <label for="width">Ширина</label>
                             <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only" placeholder="Введите ширину" required="required" />
@@ -211,6 +215,20 @@ else {
                                 ?>
                             </select>
                             <div class="invalid-feedback">Толщина обязательно</div>
+                        </div>
+                    </div>
+                    <div class="row" id="shpulya_diameter">
+                        <div class="col-6 form-group">
+                            <label for="shpulya">Шпуля</label>
+                            <select id="shpulya" name="shpulya" class="form-control">
+                                <option value="">Выберите шпулю</option>
+                                <option value="76">76</option>
+                                <option value="152">152</option>
+                            </select>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="diameter">Диаметр, мм.</label>
+                            <input type="text" id="diameter" name="diameter" class="form-control int-only" />
                         </div>
                     </div>
                     <div class="row">
@@ -310,6 +328,20 @@ else {
                             .fail(function() {
                                 alert('Ошибка при выборе марки пленки');
                             });
+                }
+            });
+            
+            $('#cacluldate_by_diameter').prop('checked', false);
+            $('#shpulya_diameter').hide();
+            
+            $('#cacluldate_by_diameter').change(function(e){
+                if(e.target.checked) {
+                    $('#shpulya_diameter').show();
+                    $('#width_thickness').hide();
+                }
+                else {
+                    $('#shpulya_diameter').hide();
+                    $('#width_thickness').show();
                 }
             });
         </script>
