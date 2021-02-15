@@ -96,8 +96,8 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, status_id, comment, inner_id, date, storekeeper_id) "
-                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
+        $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
         
         if(empty($error_message)) {
