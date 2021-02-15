@@ -11,6 +11,11 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
     header('Location: '.APPLICATION.'/pallet/');
 }
 
+// Обработка отправки формы
+if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
+    print_r($_POST);
+}
+
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, "
