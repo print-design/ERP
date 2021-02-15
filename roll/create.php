@@ -89,8 +89,8 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, status_id, comment, inner_id, date, storekeeper_id) "
-                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', $status_id, '$comment', '$inner_id', '$date', '$storekeeper_id')";
+        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
+                . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $error_message = (new Executer($sql))->error;
         
         if(empty($error_message)) {
