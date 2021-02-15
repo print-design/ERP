@@ -13,10 +13,12 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
 
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
-$sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
+$sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, "
+        . "p.film_brand_id, fb.name film_brand, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, psh.status_id status_id, s.name status, s.colour colour, p.comment "
         . "from pallet p "
         . "left join supplier sp on p.supplier_id = sp.id "
+        . "left join film_brand fb on p.film_brand_id = fb.id "
         . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
         . "left join pallet_status s on psh.status_id = s.id "
         . "where p.inner_id=$inner_id";
@@ -32,6 +34,7 @@ $supplier_id = $row['supplier_id'];
 $supplier = $row['supplier'];
 $id_from_supplier = $row['id_from_supplier'];
 $film_brand_id = $row['film_brand_id'];
+$film_brand = $row['film_brand'];
 $width = $row['width'];
 $thickness = $row['thickness'];
 $length = $row['length'];
@@ -104,7 +107,17 @@ $comment = $row['comment'];
                     Статус: <span<?=$colour_style ?>"><?= mb_strtoupper($status) ?></span><br />
                     ID: <?=$inner_id ?><br/>
                     Дата: <?= DateTime::createFromFormat('Y-m-d', $date)->format('d.m.Y') ?><br />
-                    Поставщик: <?=$supplier ?>
+                    Поставщик: <?=$supplier ?><br />
+                    Марка пленки: <?=$film_brand ?><br />
+                    Толщина: <?=$thickness ?> мкм<br />
+                    Ширина: <?=$width ?><br />
+                    Масса нетто: <?=$net_weight ?> кг<br />
+                    Длина: <?= number_format($length, 0, ',', ' ') ?><br />
+                    Ячейка на складе: <?=$cell ?><br />
+                    Количество рулонов: <?=$rolls_number ?><br />
+                    <br />
+                    <strong>Комментарий:</strong><br />
+                    <i><?=$comment ?></i>
                 </div>
             </div>
         </div>
