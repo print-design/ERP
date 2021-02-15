@@ -96,6 +96,21 @@ $comment = $row['comment'];
                             <label for="remainder">Остаток</label>
                             <input type="text" class="form-control" style="width: 200px;" id="remainder" name="remainder" value="<?= filter_input(INPUT_POST, 'remainder') ?>" disabled="disabled" />
                         </div>
+                        <?php
+                        // Добавляем другие ручьи
+                        $keys = array_keys($_POST);
+                        $sorted_keys = sort($keys);
+                        
+                        foreach ($keys as $key) {
+                            echo '<br />';
+                            if(substr($key, 0, strlen('width')) == 'width') {
+                                $stream_number = substr($key, strlen('width'));
+                                if(!empty(intval($stream_number))) {
+                                    echo $stream_number;
+                                }
+                            }
+                        }
+                        ?>
                         <button type="submit" class="btn btn-dark" id="cut-request-submit" name="cut-request-submit" style="margin-top: 20px; padding-top: 14px; padding-bottom: 14px; padding-left: 50px; padding-right: 50px;">ОТПРАВИТЬ НА РАСКРОЙ</button>
                     </form>                    
                 </div>
