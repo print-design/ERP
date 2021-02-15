@@ -191,14 +191,19 @@ else {
                         <input type="checkbox" id="cacluldate_by_diameter" name="cacluldate_by_diameter" />
                         <label class="form-check-label" for="cacluldate_by_diameter">Рассчитать по диаметру</label>
                     </div>
-                    <div class="row" id="width_thickness">
+                    <div class="row">
                         <div class="col-6 form-group">
-                            <label for="width">Ширина</label>
+                            <label for="width" id="label_width">Ширина</label>
                             <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only" placeholder="Введите ширину" required="required" />
                             <div class="invalid-feedback">Ширина обязательно</div>
+                            <select id="shpulya" name="shpulya" class="form-control">
+                                <option value="">Выберите шпулю</option>
+                                <option value="76">76</option>
+                                <option value="152">152</option>
+                            </select>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="thickness">Толщина</label>
+                            <label for="thickness" id="label_thickness">Толщина</label>
                             <select id="thickness" name="thickness" class="form-control" required="required">
                                 <option value="">Выберите толщину</option>
                                 <?php
@@ -215,19 +220,6 @@ else {
                                 ?>
                             </select>
                             <div class="invalid-feedback">Толщина обязательно</div>
-                        </div>
-                    </div>
-                    <div class="row" id="shpulya_diameter">
-                        <div class="col-6 form-group">
-                            <label for="shpulya">Шпуля</label>
-                            <select id="shpulya" name="shpulya" class="form-control">
-                                <option value="">Выберите шпулю</option>
-                                <option value="76">76</option>
-                                <option value="152">152</option>
-                            </select>
-                        </div>
-                        <div class="col-6 form-group">
-                            <label for="diameter">Диаметр, мм.</label>
                             <input type="text" id="diameter" name="diameter" class="form-control int-only" />
                         </div>
                     </div>
@@ -332,16 +324,29 @@ else {
             });
             
             $('#cacluldate_by_diameter').prop('checked', false);
-            $('#shpulya_diameter').hide();
+            $('#shpulya').hide();
+            $('#diameter').hide();
+            $('#label_width').text("Ширина");
+            $('#label_thickness').text("Толщина");
             
             $('#cacluldate_by_diameter').change(function(e){
                 if(e.target.checked) {
-                    $('#shpulya_diameter').show();
-                    $('#width_thickness').hide();
+                    $('#width').prop('type', 'hidden');
+                    $('#thickness').css('visibility', 'hidden');
+                    $('#thickness').css('position', 'absolute');
+                    $('#label_width').text("Шпуля");
+                    $('#label_thickness').text("Диаметр, мм.");
+                    $('#shpulya').show();
+                    $('#diameter').show();
                 }
                 else {
-                    $('#shpulya_diameter').hide();
-                    $('#width_thickness').show();
+                    $('#width').prop('type', 'text');
+                    $('#thickness').css('visibility', 'visible');
+                    $('#thickness').css('position', 'relative');
+                    $('#label_width').text("Ширина");
+                    $('#label_thickness').text("Толщина");
+                    $('#shpulya').hide();
+                    $('#diameter').hide();
                 }
             });
         </script>
