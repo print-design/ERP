@@ -72,14 +72,14 @@ $comment = $row['comment'];
                     <form method="post">
                         <div class="form-group">
                             <label for="length">Длина</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" required="required" />
+                            <input type="text" class="form-control int-only" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" required="required" />
                             <div class="invalid-feedback">Длина обязательно и не больше, чем длина паллета.</div>
                         </div>
                         <input type="hidden" class="stream_number" value="1"/>
                         <p>Первый ручей</p>
                         <div class="form-group">
                             <label for="width1">Ширина</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="width1" name="width1" value="<?= filter_input(INPUT_POST, 'width1') ?>" required="required" />
+                            <input type="text" class="form-control int-only" style="width: 200px;" id="width1" name="width1" value="<?= filter_input(INPUT_POST, 'width1') ?>" required="required" />
                             <div class="invalid-feedback">Ширина обязательно.</div>
                         </div>
                         <div class="form-group">
@@ -125,6 +125,10 @@ $comment = $row['comment'];
         include '../include/footer.php';
         ?>
         <script>
+            $('#width1').keyup(function(){
+                $('#remainder').val(GetWidthRemainder());
+            });
+            
             var max_stream = 0;
             
             $('#add-stream-btn').click(function(){
@@ -138,7 +142,7 @@ $comment = $row['comment'];
                         '<p style="margin-top:30px;">' + GetOrdinal(new_stream) + ' ручей</p>' +
                         '<div class="form-group">' + 
                         '<label for="width' + new_stream + '">Ширина</label>' + 
-                        '<input type="text" class="form-control" style="width: 200px;" id="width' + new_stream + '" name="width' + new_stream + '" required="required" />' + 
+                        '<input type="text" class="form-control int-only" style="width: 200px;" id="width' + new_stream + '" name="width' + new_stream + '" required="required" />' + 
                         '<div class="invalid-feedback">Ширина обязательно.</div>' + 
                         '</div>' + 
                         '<div class="form-group">' + 
@@ -147,7 +151,34 @@ $comment = $row['comment'];
                         '</div>';
                 
                 $('textarea#request' + max_stream).parent('.form-group').append(new_controls);
+                stream_widths.push('width' + new_stream);
+                $('#width' + new_stream).keyup(function(){
+                    $('#remainder').val(GetWidthRemainder());
+                });
             });
+            
+            var stream_widths = ['width1'];
+            
+            $('#remainder').val(GetWidthRemainder());
+            
+            // Подсчёт остатка ширины
+            function GetWidthRemainder() {
+                var result = 0;
+                var parsed = parseInt(<?=$width ?>);
+                if(!isNaN(parsed)) {
+                    result = parsed;
+                }
+                
+                $.each(stream_widths, function(index, value) {
+                    parsed = parseInt($('#' + value).val());
+                    
+                    if(!isNaN(parsed)) {
+                        result = result - parsed;
+                    }
+                });
+                
+                return result;
+            }
             
             // Формирование порядковых числительных
             function GetOrdinal(param) {
@@ -175,7 +206,7 @@ $comment = $row['comment'];
                     default:
                         return param + '-й';
             }
-    }
+        }
         </script>
     </body>
 </html>
