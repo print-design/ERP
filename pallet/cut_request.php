@@ -13,16 +13,23 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
 
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
-$sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
-        . "p.net_weight, p.rolls_number, p.cell, p.status_id, p.comment "
+$sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, p.film_brand_id, p.width, p.thickness, p.length, "
+        . "p.net_weight, p.rolls_number, p.cell, psh.status_id status_id, s.name status, s.colour colour, p.comment "
         . "from pallet p "
+        . "left join supplier sp on p.supplier_id = sp.id "
+        . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
+        . "left join pallet_status s on psh.status_id = s.id "
         . "where p.inner_id=$inner_id";
 
-$row = (new Fetcher($sql))->Fetch();
+$fetcher = (new Fetcher($sql));
+$row = $fetcher->Fetch();
+$error_message = $fetcher->error;
+
 $inner_id = $row['inner_id'];
 $date = $row['date'];
 $storekeeper_id = $row['storekeeper_id'];
 $supplier_id = $row['supplier_id'];
+$supplier = $row['supplier'];
 $id_from_supplier = $row['id_from_supplier'];
 $film_brand_id = $row['film_brand_id'];
 $width = $row['width'];
@@ -32,6 +39,8 @@ $net_weight = $row['net_weight'];
 $rolls_number = $row['rolls_number'];
 $cell = $row['cell'];
 $status_id = $row['status_id'];
+$status = $row['status'];
+$colour = $row['colour'];
 $comment = $row['comment'];
 ?>
 <!DOCTYPE html>
@@ -84,6 +93,18 @@ $comment = $row['comment'];
                 </div>
                 <div class="col-6">
                     <h1>Паллет №<?=$inner_id ?></h1>
+                    <p><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?>">К информации о паллете&nbsp;></a></p>
+                    <br/>
+                    <?php
+                    $colour_style = '';
+                    if(!empty($colour)) {
+                        $colour_style = " style='color: $colour;'";
+                    }
+                    ?>
+                    Статус: <span<?=$colour_style ?>"><?= mb_strtoupper($status) ?></span><br />
+                    ID: <?=$inner_id ?><br/>
+                    Дата: <?= DateTime::createFromFormat('Y-m-d', $date)->format('d.m.Y') ?><br />
+                    Поставщик: <?=$supplier ?>
                 </div>
             </div>
         </div>
