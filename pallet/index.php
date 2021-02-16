@@ -170,7 +170,7 @@ $total_weight = $row['total_weight'];
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkPallet" /></td>
+                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkPallet" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -316,7 +316,7 @@ $total_weight = $row['total_weight'];
                 if($(this).is(':checked')) {
                     $('.chkPallet').not($(this)).prop('checked', false);
                     $('#btn-cut-request').removeClass('disabled');
-                    $('#btn-cut-request').attr('href', 'cut_request.php?inner_id=' + $(this).attr('data-inner-id'));
+                    $('#btn-cut-request').attr('href', 'cut_request.php?id=' + $(this).attr('data-id'));
                     $('#btn-reserve-request').removeClass('disabled');
                     $('#btn-reserve-request').attr('href', 'reserve_request.php?inner_id=' + $(this).attr('data-inner-id'));
                     $('tr.selected').removeClass('selected');

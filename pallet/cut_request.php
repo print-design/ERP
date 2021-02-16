@@ -7,7 +7,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 }
 
 // Если не задано значение inner_id, перенаправляем на список
-if(empty(filter_input(INPUT_GET, 'inner_id'))) {
+if(empty(filter_input(INPUT_GET, 'id'))) {
     header('Location: '.APPLICATION.'/pallet/');
 }
 
@@ -42,11 +42,19 @@ if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
             }
         }
     }
+    
+    if(count($streams) > 0) {
+        $error_message = (new Executer("insert into "))->error;
+        
+        if(empty($error_message)) {
+            //
+        }
+    }
 }
 
 // Получение данных
-$inner_id = filter_input(INPUT_GET, 'inner_id');
-$sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, "
+$id = filter_input(INPUT_GET, 'id');
+$sql = "select p.id, p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supplier, p.id_from_supplier, "
         . "p.film_brand_id, fb.name film_brand, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, psh.status_id status_id, s.name status, s.colour colour, p.comment "
         . "from pallet p "
@@ -54,12 +62,13 @@ $sql = "select p.inner_id, p.date, p.storekeeper_id, p.supplier_id, sp.name supp
         . "left join film_brand fb on p.film_brand_id = fb.id "
         . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
         . "left join pallet_status s on psh.status_id = s.id "
-        . "where p.inner_id=$inner_id";
+        . "where p.id=$id";
 
 $fetcher = (new Fetcher($sql));
 $row = $fetcher->Fetch();
 $error_message = $fetcher->error;
 
+$id = $row['id'];
 $inner_id = $row['inner_id'];
 $date = $row['date'];
 $storekeeper_id = $row['storekeeper_id'];
@@ -131,6 +140,7 @@ function GetOrdinal($param) {
                 <div class="col-6">
                     <h1>Заявка на раскрой паллета</h1>
                     <form method="post">
+                        <input type="hidden" id="pallet_id" name="pallet_id" value="<?= filter_input(INPUT_POST, 'id') ?>" />
                         <div class="form-group">
                             <label for="length">Длина</label>
                             <input type="text" class="form-control int-only" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" required="required" />
