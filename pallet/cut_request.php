@@ -130,7 +130,7 @@ function GetOrdinal($param) {
                                 if(!empty(intval($stream_number)) && intval($stream_number) > 1):
                                 ?>
                         <input type="hidden" class="stream_number" value="<?=$stream_number ?>"/>
-                        <p><?= GetOrdinal($stream_number) ?> ручей</p>
+                        <p style="margin-top: 30px;"><?= GetOrdinal($stream_number) ?> ручей</p>
                         <div class="form-group">
                             <label for="width<?=$stream_number ?>">Ширина</label>
                             <input type="text" class="form-control int-only" style="width: 200px;" id="width<?=$stream_number ?>" name="width<?=$stream_number ?>" value="<?= filter_input(INPUT_POST, 'width'.$stream_number) ?>" required="required" />
