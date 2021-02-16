@@ -13,7 +13,14 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
-    print_r($_POST);
+    $keys = array_keys($_POST);
+    $sorted_keys = sort($keys);
+    
+    foreach ($keys as $key) {
+        if(substr($key, 0, strlen('width')) == 'width') {
+            //
+        }
+    }
 }
 
 // Получение данных
