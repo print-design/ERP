@@ -44,10 +44,22 @@ if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
     }
     
     if(count($streams) > 0) {
-        $error_message = (new Executer("insert into "))->error;
+        $date = date('Y-m-d');
+        $pallet_id = filter_input(INPUT_POST, 'pallet_id');
+        $executer = new Executer("insert into cut_request (date, pallet_id, roll_id) values ('$date', '$pallet_id', NULL)");
+        $error_message = $executer->error;
+        $cut_request_id = $executer->insert_id;
         
         if(empty($error_message)) {
-            //
+            foreach ($streams as $stream) {
+                $width = $stream['width'];
+                $request = addslashes($stream['request']);
+                $error_message = (new Executer("insert into stream (cut_request_id, width, request) values ($cut_request_id, '$width', '$request')"))->error;
+            }
+            
+            if(empty($error_message)) {
+                header('Location: '.APPLICATION.'/cut_request/');
+            }
         }
     }
 }
@@ -140,7 +152,7 @@ function GetOrdinal($param) {
                 <div class="col-6">
                     <h1>Заявка на раскрой паллета</h1>
                     <form method="post">
-                        <input type="hidden" id="pallet_id" name="pallet_id" value="<?= filter_input(INPUT_POST, 'id') ?>" />
+                        <input type="hidden" id="pallet_id" name="pallet_id" value="<?= filter_input(INPUT_GET, 'id') ?>" />
                         <div class="form-group">
                             <label for="length">Длина</label>
                             <input type="text" class="form-control int-only" style="width: 200px;" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" required="required" />
