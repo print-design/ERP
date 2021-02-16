@@ -45,8 +45,9 @@ if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
     
     if(count($streams) > 0) {
         $date = date('Y-m-d');
+        $length = filter_input(INPUT_POST, 'length');
         $pallet_id = filter_input(INPUT_POST, 'pallet_id');
-        $executer = new Executer("insert into cut_request (date, pallet_id, roll_id) values ('$date', '$pallet_id', NULL)");
+        $executer = new Executer("insert into cut_request (date, length, pallet_id, roll_id) values ('$date', '$length', '$pallet_id', NULL)");
         $error_message = $executer->error;
         $cut_request_id = $executer->insert_id;
         
