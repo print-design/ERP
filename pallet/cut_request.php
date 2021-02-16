@@ -50,6 +50,34 @@ $status_id = $row['status_id'];
 $status = $row['status'];
 $colour = $row['colour'];
 $comment = $row['comment'];
+
+// Формирование порядковых числительных
+function GetOrdinal($param) {
+    switch ($param) {
+        case 1:
+            return 'Первый';
+        case 2:
+            return 'Второй';
+        case 3:
+            return 'Третий';
+        case 4:
+            return 'Четвёртый';
+        case 5:
+            return 'Пятый';
+        case 6:
+            return 'Шестой';
+        case 7:
+            return 'Седьмой';
+        case 8:
+            return 'Восьмой';
+        case 9:
+            return 'Девятый';
+        case 10:
+            return 'Десятый';
+        default :
+            return $param.'-й';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,32 +119,34 @@ $comment = $row['comment'];
                             <label for="request1">Под какой заказ режем?</label>
                             <textarea id="request1" name="request1" class="form-control" rows="5" style="width: 500px;"><?= filter_input(INPUT_POST, 'request1') ?></textarea>
                         </div>
-                        <button type="button" class="btn btn-link" id="add-stream-btn" style="margin-bottom: 50px;"><i class="fas fa-plus" style="font-size: 10px; vertical-align: top; margin-top: 3px;"></i>&nbsp;Добавить ручей</button>
-                        <div class="form-group">
-                            <label for="remainder">Остаток</label>
-                            <input type="text" class="form-control" style="width: 200px;" id="remainder" name="remainder" value="<?= filter_input(INPUT_POST, 'remainder') ?>" disabled="disabled" />
-                        </div>
                         <?php
                         // Добавляем другие ручьи
                         $keys = array_keys($_POST);
                         $sorted_keys = sort($keys);
                         
                         foreach ($keys as $key) {
-                            echo '<br />';
                             if(substr($key, 0, strlen('width')) == 'width') {
                                 $stream_number = substr($key, strlen('width'));
-                                if(!empty(intval($stream_number))) {
-                                    echo $stream_number;
-                                }
+                                if(!empty(intval($stream_number)) && intval($stream_number) > 1):
+                                ?>
+                        <input type="hidden" class="stream_number" value="<?=$stream_number ?>"/>
+                        <p><?= GetOrdinal($stream_number) ?> ручей</p>
+                                <?php
+                                endif;
                             }
                         }
                         ?>
+                        <button type="button" class="btn btn-link" id="add-stream-btn" style="margin-bottom: 50px;"><i class="fas fa-plus" style="font-size: 10px; vertical-align: top; margin-top: 3px;"></i>&nbsp;Добавить ручей</button>
+                        <div class="form-group">
+                            <label for="remainder">Остаток</label>
+                            <input type="text" class="form-control" style="width: 200px;" id="remainder" name="remainder" value="<?= filter_input(INPUT_POST, 'remainder') ?>" disabled="disabled" />
+                        </div>
                         <button type="submit" class="btn btn-dark" id="cut-request-submit" name="cut-request-submit" style="margin-top: 20px; padding-top: 14px; padding-bottom: 14px; padding-left: 50px; padding-right: 50px;">ОТПРАВИТЬ НА РАСКРОЙ</button>
                     </form>                    
                 </div>
                 <div class="col-6">
                     <h1>Паллет №<?=$inner_id ?></h1>
-                    <p><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?>">К информации о паллете&nbsp;></a></p>
+                    <p style="margin-top:30px;"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?>">К информации о паллете&nbsp;></a></p>
                     <br/>
                     <?php
                     $colour_style = '';
