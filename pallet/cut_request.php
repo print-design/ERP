@@ -11,14 +11,35 @@ if(empty(filter_input(INPUT_GET, 'inner_id'))) {
     header('Location: '.APPLICATION.'/pallet/');
 }
 
+// Валидация формы
+define('ISINVALID', ' is-invalid');
+$form_valid = true;
+$error_message = '';
+
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'cut-request-submit')) {
     $keys = array_keys($_POST);
     $sorted_keys = sort($keys);
     
+    $streams = array();
+    
     foreach ($keys as $key) {
         if(substr($key, 0, strlen('width')) == 'width') {
-            //
+            $stream_number = substr($key, strlen('width'));
+            $width = filter_input(INPUT_POST, $key);
+            $request = filter_input(INPUT_POST, 'request'.$stream_number);
+            
+            // Валидация поля "Ширина"
+            if(empty($width)) {
+                $error_message = 'Обязательно укажите ширину каждого ручья';
+                $form_valid = false;
+            }
+            else {
+                $stream = array();
+                $stream['width'] = $width;
+                $stream['request'] = $request;
+                array_push($streams, $stream);
+            }
         }
     }
 }
