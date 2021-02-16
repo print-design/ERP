@@ -48,6 +48,18 @@ $total_weight = $row['total_weight'];
                         <tr>
                             <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Рулоны</h1></td>
                             <td style="padding-left: 20px; padding-right: 20px; font-weight: bold;">(<?= number_format($total_weight, 0, ',', ' ') ?> кг)</td>
+                            <td style="padding-left: 35px; padding-right: 10px;">
+                                <a class="btn btn-dark disabled" id="btn-cut-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
+                                    <div style="float: left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                                    &nbsp;Заявка на<br />раскрой
+                                </a>
+                            </td>
+                            <td style="padding-left: 15px; padding-right: 30px;">
+                                <a class="btn btn-dark disabled" id="btn-print-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
+                                    <div style="float: left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                                    &nbsp;Заявка на<br />печать
+                                </a>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -158,7 +170,7 @@ $total_weight = $row['total_weight'];
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkRoll" /></td>
+                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkRoll" /></td>
                         <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td><?= $row['film_brand'] ?></td>
                         <td><?= $row['thickness'] ?></td>
@@ -302,10 +314,18 @@ $total_weight = $row['total_weight'];
             $('.chkRoll').change(function(){
                 if($(this).is(':checked')) {
                     $('.chkRoll').not($(this)).prop('checked', false);
+                    $('#btn-cut-request').removeClass('disabled');
+                    $('#btn-cut-request').attr('href', 'cut_request.php?id=' + $(this).attr('data-id'));
+                    $('#btn-print-request').removeClass('disabled');
+                    $('#btn-print-request').attr('href', 'print_request.php?id=' + $(this).attr('data-id'));
                     $('tr.selected').removeClass('selected');
                     $(this).closest('tr').addClass('selected');
                 }
                 else {
+                    $('#btn-cut-request').addClass('disabled');
+                    $('#btn-cut-request').removeAttr('href');
+                    $('#btn-print-request').addClass('disabled');
+                    $('#btn-print-request').removeAttr('href');
                     $(this).closest('tr').removeClass('selected');
                 }
             });
