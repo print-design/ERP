@@ -57,15 +57,25 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <?php
                     $where = '';
                     
-                    $sql = "select cr.date, fb.name film_brand, p.thickness, p.width, cr.length "
+                    $sql = "select cr.date, fb.name film_brand, p.thickness, p.width, cr.length, p.inner_id, p.cell, "
+                            . "(select group_concat(width separator '-') from stream where cut_request_id = cr.id) widths, "
+                            . "(select group_concat(request separator '<br />') from stream where cut_request_id = cr.id) requests, "
+                            . "psh.id status_id, ps.name status, ps.colour "
                             . "from cut_request cr "
                             . "inner join pallet p on cr.pallet_id = p.id "
                             . "inner join film_brand fb on p.film_brand_id = fb.id "
+                            . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
+                            . "left join pallet_status ps on psh.status_id = ps.id "
                             . "$where "
                             . "order by cr.id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
+                    $status = $row['status'];
+                    $colour = '';
+                    if(!empty($row['colour'])) {
+                        $colour = " style='color: ".$row['colour']."'";
+                    }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <td></td>
@@ -74,12 +84,12 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td><?=$row['thickness'] ?></td>
                         <td><?=$row['width'] ?></td>
                         <td><?=$row['length'] ?></td>
+                        <td><?=$row['inner_id'] ?></td>
+                        <td><?=$row['cell'] ?></td>
+                        <td><?=$row['widths'] ?></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?=$row['requests'] ?></td>
+                        <td<?=$colour ?>><?=$row['status'] ?></td>
                         <td></td>
                     </tr>
                     <?php
