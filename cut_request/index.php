@@ -57,7 +57,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                     <?php
                     $where = '';
                     
-                    $sql = "select cr.date, fb.name film_brand "
+                    $sql = "select cr.date, fb.name film_brand, p.thickness, p.width, cr.length "
                             . "from cut_request cr "
                             . "inner join pallet p on cr.pallet_id = p.id "
                             . "inner join film_brand fb on p.film_brand_id = fb.id "
@@ -71,9 +71,9 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td></td>
                         <td><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format('d.m.Y') ?></td>
                         <td><?=$row['film_brand'] ?></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?=$row['thickness'] ?></td>
+                        <td><?=$row['width'] ?></td>
+                        <td><?=$row['length'] ?></td>
                         <td></td>
                         <td></td>
                         <td></td>
