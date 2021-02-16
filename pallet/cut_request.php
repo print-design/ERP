@@ -131,6 +131,15 @@ function GetOrdinal($param) {
                                 ?>
                         <input type="hidden" class="stream_number" value="<?=$stream_number ?>"/>
                         <p><?= GetOrdinal($stream_number) ?> ручей</p>
+                        <div class="form-group">
+                            <label for="width<?=$stream_number ?>">Ширина</label>
+                            <input type="text" class="form-control int-only" style="width: 200px;" id="width<?=$stream_number ?>" name="width<?=$stream_number ?>" value="<?= filter_input(INPUT_POST, 'width'.$stream_number) ?>" required="required" />
+                            <div class="invalid-feedback">Ширина обязательно.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="request<?=$stream_number ?>">Под какой заказ режем?</label>
+                            <textarea id="request<?=$stream_number ?>" name="request<?=$stream_number ?>" class="form-control" rows="5" style="width: 500px;"><?= filter_input(INPUT_POST, 'request'.$stream_number) ?></textarea>
+                        </div>
                                 <?php
                                 endif;
                             }
@@ -146,7 +155,7 @@ function GetOrdinal($param) {
                 </div>
                 <div class="col-6">
                     <h1>Паллет №<?=$inner_id ?></h1>
-                    <p style="margin-top:30px;"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?>">К информации о паллете&nbsp;></a></p>
+                    <p><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$inner_id ?>">К информации о паллете&nbsp;></a></p>
                     <br/>
                     <?php
                     $colour_style = '';
