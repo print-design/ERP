@@ -71,6 +71,16 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
                         <td></td>
                         <td><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format('d.m.Y') ?></td>
                         <td><?=$row['film_brand'] ?></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <?php
                     endwhile;
