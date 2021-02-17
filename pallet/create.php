@@ -98,10 +98,14 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
     if($form_valid) {
         $sql = "insert into pallet (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, rolls_number, cell, comment, inner_id, date, storekeeper_id) "
                 . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, $rolls_number, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
-        $error_message = (new Executer($sql))->error;
+        $executer = new Executer($sql);
+        $error_message = $executer->error;
+        $pallet_id = $executer->insert_id;
+        $user_id = GetUserId();
         
         if(empty($error_message)) {
             $error_message = (new Executer("delete from new_pallet_id where id=$inner_id"))->error;
+            $error_message = (new Executer("insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($pallet_id, '$date', $status_id, $user_id)"))->error;
             
             if(empty($error_message)) {
                 header('Location: '.APPLICATION."/pallet/");
@@ -295,10 +299,10 @@ else {
                         </select>
                         <div class="invalid-feedback">Менеджер обязательно</div>
                     </div>
+                    <input type="hidden" id="status_id" name="status_id" value="1" />
                     <div class="form-group">
-                        <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" disabled="true">
-                            <option value="">ВЫБРАТЬ СТАТУС</option>
+                        <label for="status_id_">Статус</label>
+                        <select id="status_id_" name="status_id_" class="form-control" disabled="true">
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s inner join pallet_status_level sl on sl.status_id = s.id order by s.name"))->result;
                             foreach ($statuses as $status) {

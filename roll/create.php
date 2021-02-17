@@ -91,10 +91,14 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     if($form_valid) {
         $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
                 . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
-        $error_message = (new Executer($sql))->error;
+        $executer = new Executer($sql);
+        $error_message = $executer->error;
+        $roll_id = $executer->insert_id;
+        $user_id = GetUserId();
         
         if(empty($error_message)) {
             $error_message = (new Executer("delete from new_roll_id where id=$inner_id"))->error;
+            $error_message = (new Executer("insert into roll_status_history (roll_id, date, status_id, user_id) values ($roll_id, '$date', $status_id, $user_id)"))->error;
             
             if(empty($error_message)) {
                 header('Location: '.APPLICATION."/roll/");
@@ -275,17 +279,17 @@ else {
                         </select>
                         <div class="invalid-feedback">Менеджер обязательно</div>
                     </div>
+                    <input type="hidden" id="status_id" name="status_id" value="1" />
                     <div class="form-group">
-                        <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" disabled="disabled">
-                            <option value="">ВЫБРАТЬ СТАТУС</option>
+                        <label for="status_id_">Статус</label>
+                        <select id="status_id_" name="status_id_" class="form-control" disabled="disabled">
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from roll_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
                                 $id = $status['id'];
                                 $name = $status['name'];
                                 $selected = '';
-                                if(filter_input(INPUT_POST, 'status_id') == $status['id']) $selected = " selected='selected'";
+                                if($status['id'] == 1) $selected = " selected='selected'";
                                 echo "<option value='$id'$selected>$name</option>";
                             }
                             ?>
