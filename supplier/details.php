@@ -148,7 +148,31 @@ $name = htmlentities($row['name']);
                     <a href="<?=APPLICATION ?>/supplier/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
                 </div>
                 <h1 style="font-size: 24px; line-height: 32px; font-weight: 600;"><?=$name ?></h1>
-                <h2 style="font-size: 18px; line-height: 24px; font-weight: 600;">Пленки</h2>
+                <h2 style="font-size: 18px; line-height: 24px; font-weight: 600;">Пленки поставщика</h2>
+                <div style="margin-top: 10px; margin-bottom: 30px;">
+                    <form method="post" class="form-inline" id="add-brand-form">
+                        <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
+                        <input type="hidden" id="scroll" name="scroll" />
+                        <div class="form-group">
+                            <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
+                            <div class="invalid-feedback">Марка пленки обязательно</div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
+                            <div class="invalid-feedback">Толщина обязательно</div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 120px; margin-left: 12px;" required="required" />
+                            <div class="invalid-feedback">Удельный вес обязательно</div>
+                        </div>
+                        <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
+                        <button class="btn btn-link" id="add-brand-cancel" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
+                    </form>
+                    <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px; padding-top: 8px; padding-bottom: 9px;">
+                        <div style="float:left; padding-top: 6px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                        &nbsp;Добавить марку<br/>пленки
+                    </button>
+                </div>
                 <?php
                 $film_brands = (new Grabber("select id, name from film_brand where supplier_id=". filter_input(INPUT_GET, 'id')." order by name"))->result;
                 $film_brand_variations = (new Grabber("select v.id, v.film_brand_id, v.thickness, v.weight from film_brand_variation v inner join film_brand b on v.film_brand_id=b.id where b.supplier_id=". filter_input(INPUT_GET, 'id')." order by thickness, weight"))->result;
@@ -174,10 +198,10 @@ $name = htmlentities($row['name']);
                                     <input type="text" class="form-control float-only" id="weight" name="weight" placeholder="Удельный вес" required="required" style="width:120px;"/>
                                     <div class="invalid-feedback">Удельный вес обязательно</div>
                                 </div>
-                                <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit" style="padding-left: 0; padding-right: 0;"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 4px;"></i>&nbsp;Добавить</button>
-                                <button class="btn btn-link ml-2 add-variation-cancel" style="padding-left: 0; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px; vertical-align: top; padding-top: 3px;"></i>&nbsp;Отмена</button>
+                                <button type="submit" class="btn btn-link ml-2" id="film_brand_variation_create_submit" name="film_brand_variation_create_submit" style="padding-left: 0; padding-right: 0;"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 8px;"></i>&nbsp;Добавить</button>
+                                <button class="btn btn-link ml-2 add-variation-cancel" style="padding-left: 0; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px; vertical-align: top; padding-top: 8px;"></i>&nbsp;Отмена</button>
                             </form>
-                            <button class="btn btn-link add-variation-button"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 4px;"></i>&nbsp;Добавить</button>
+                            <button class="btn btn-link add-variation-button"><i class="fas fa-plus" style="font-size: 8px; vertical-align: top; padding-top: 8px;"></i>&nbsp;Добавить</button>
                         </td>
                     </tr>
                 </table>
@@ -186,7 +210,7 @@ $name = htmlentities($row['name']);
                         <th>Толщина</th>
                         <?php
                         foreach ($current_film_brand_variations as $current_film_brand_variation) {
-                            echo "<td>".$current_film_brand_variation['thickness']."</td>";
+                            echo "<td>".$current_film_brand_variation['thickness']." мкм</td>";
                         }
                         ?>
                     </tr>
@@ -194,7 +218,7 @@ $name = htmlentities($row['name']);
                         <th>Удельный вес</th>
                         <?php
                         foreach ($current_film_brand_variations as $current_film_brand_variation) {
-                            echo "<td>".$current_film_brand_variation['weight']."</td>";
+                            echo "<td>".$current_film_brand_variation['weight']." г/м<sup>2</sup></td>";
                         }
                         ?>
                     </tr>
@@ -219,40 +243,10 @@ $name = htmlentities($row['name']);
                 </table>
                 <?php endforeach; ?>                
             </div>
-            <table>
-                <tr>
-                    <td>
-                        <form method="post" class="form-inline" id="add-brand-form">
-                            <input type="hidden" id="supplier_id" name="supplier_id" value="<?= filter_input(INPUT_GET, 'id') ?>"/>
-                            <input type="hidden" id="scroll" name="scroll" />
-                            <div class="form-group">
-                                <input type="text" class="form-control mr-2" id="name" name="name" required="required" placeholder="Марка пленки"/>
-                                <div class="invalid-feedback">Марка пленки обязательно</div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="thickness" name="thickness" class="form-control int-only" placeholder="Толщина" style="width: 100px; margin-left: 12px;" required="required" />
-                                <div class="invalid-feedback">Толщина обязательно</div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="weight" name="weight" class="form-control float-only" placeholder="Удельный вес" style="width: 120px; margin-left: 12px;" required="required" />
-                                <div class="invalid-feedback">Удельный вес обязательно</div>
-                            </div>
-                            <button type="submit" class="btn btn-link" id="film_brand_create_submit" name="film_brand_create_submit" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-plus" style="font-size: 10px;"></i>&nbsp;Добавить</button>
-                            <button class="btn btn-link" id="add-brand-cancel" style="padding-left: 10px; padding-right: 0;"><i class="fas fa-undo" style="font-size: 10px;"></i>&nbsp;Отмена</button>
-                        </form>
-                        <button class="btn btn-outline-dark" id="add-brand-button" style="padding-left: 32px; padding-right: 68px; padding-top: 8px; padding-bottom: 9px;">
-                            <div style="float:left; padding-top: 6px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
-                            &nbsp;Добавить марку<br/>пленки
-                        </button>
-                    </td>
-                    <td>
-                        <form method="post">
-                            <input type="hidden" id="id" name="id" value="<?= filter_input(INPUT_GET, 'id') ?>" />
-                            <button class="btn btn-outline-danger confirmable" id="delete-brand-button" name="delete-brand-button" style="margin-left: 35px; padding-left: 45px; padding-right: 45px; padding-top: 14px; padding-bottom: 14px;"><img src="<?=APPLICATION ?>/images/icons/trash-red.svg" style="vertical-align: top;" />&nbsp;&nbsp;&nbsp;Удалить поставщика</button>
-                        </form>
-                    </td>
-                </tr>
-            </table>
+            <form method="post">
+                <input type="hidden" id="id" name="id" value="<?= filter_input(INPUT_GET, 'id') ?>" />
+                <button class="btn btn-outline-danger confirmable" id="delete-brand-button" name="delete-brand-button" style="padding-left: 45px; padding-right: 45px; padding-top: 14px; padding-bottom: 14px;"><img src="<?=APPLICATION ?>/images/icons/trash-red.svg" style="vertical-align: top;" />&nbsp;&nbsp;&nbsp;Удалить поставщика</button>
+            </form>
         </div>
         <?php
         include '../include/footer.php';
