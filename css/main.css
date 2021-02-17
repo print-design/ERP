@@ -98,6 +98,10 @@ li#nav-user a.dropdown-toggle::after {
     padding-right: 15px;
 }
 
+.btn.disabled, .btn:disabled {
+    opacity: .65;
+}
+
 /*Заголовки*/
 .form-page h1 {
     font-size: 24px;
