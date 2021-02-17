@@ -65,7 +65,7 @@ $total_weight = $row['total_weight'];
                 </div>
                 <div class="p-1">
                     <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-top: 14px; padding-bottom: 14px; padding-right: 44px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый ролик</a>
-                    <button class="btn btn-outline-dark" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 13px; padding-top: 12px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
+                    <button class="btn btn-outline-dark disabled" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 13px; padding-top: 12px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
             <table class="table">

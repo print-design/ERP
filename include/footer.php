@@ -31,8 +31,13 @@
     $("#phone").mask("+7 (999) 999-99-99");
     
     // Подтверждение удаления
-    $('button.confirmable').click(function(){
+    $('button.confirmable').click(function() {
         return confirm('Действительно удалить?');
+    });
+    
+    // Отмена нажатия неактивной кнопки
+    $('button.disabled').click(function() {
+        return false;
     });
     
     <?php if(IsInRole('cutter')): ?>
