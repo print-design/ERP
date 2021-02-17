@@ -220,15 +220,39 @@ else {
                             <div class="invalid-feedback">Толщина обязательно</div>
                         </div>
                     </div>
+                    <?php
+                    $checked = '';
+                    if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on') {
+                        $checked = " checked='checked'";
+                    }
+                    ?>
+                    <div class="form-group">
+                        <input type='checkbox' id='caclulate_by_diameter' name="caclulate_by_diameter"<?=$checked ?> />
+                        <label class="form-check-label" for="caclulate_by_diameter">Рассчитать по диаметру</label>
+                    </div>
+                    <div class='row' id="controls-for-calculation">
+                        <div class="col-6 form-group">
+                            <label for="shpulya">Шпуля</label>
+                            <select id="shpulya" name="shpulya" class="form-control">
+                                <option value="">Выберите шпулю</option>
+                                <option value="76">76</option>
+                                <option value="152">152</option>
+                            </select>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="diameter">Диаметр мм</label>
+                            <input type="text" id="diameter" name="diameter" class="form-control int-only" />
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" class="form-control int-only" placeholder="Введите длину" required="required" />
+                            <input type="text" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" class="form-control int-only<?=$length_valid ?>" placeholder="Введите длину" required="required" />
                             <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only" placeholder="Введите массу нетто" required="required" />
+                            <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто" required="required" />
                             <div class="invalid-feedback">Масса нетто обязательно</div>
                         </div>
                     </div>
@@ -255,7 +279,7 @@ else {
                     </div>
                     <div class="form-group">
                         <label for="manager_id">Менеджер</label>
-                        <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
+                        <select id="manager_id" name="manager_id" class="form-control" disabled="true">
                             <option value="">Выберите менеджера</option>
                             <?php
                             $managers = (new Grabber("select u.id, u.first_name, u.last_name from user u inner join role r on u.role_id = r.id where r.name in ('manager', 'seniormanager') order by u.last_name"))->result;
@@ -273,7 +297,7 @@ else {
                     </div>
                     <div class="form-group">
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" disabled="disabled">
+                        <select id="status_id" name="status_id" class="form-control" disabled="true">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s inner join pallet_status_level sl on sl.status_id = s.id order by s.name"))->result;
@@ -330,6 +354,30 @@ else {
                             .fail(function() {
                                 alert('Ошибка при выборе марки пленки');
                             });
+                }
+            });
+            
+            if($('#caclulate_by_diameter').prop('checked') == true) {
+                $('#controls-for-calculation').show();
+                $('#length').prop('disabled', true);
+                $('#net_weight').prop('disabled', true);
+            }
+            else {
+                $('#controls-for-calculation').hide();
+                $('#length').prop('disabled', false);
+                $('#net_weight').prop('disabled', false);
+            }
+            
+            $('#caclulate_by_diameter').change(function(e){
+                if(e.target.checked) {
+                    $('#controls-for-calculation').show();
+                    $('#length').prop('disabled', true);
+                    $('#net_weight').prop('disabled', true);
+                }
+                else {
+                    $('#controls-for-calculation').hide();
+                    $('#length').prop('disabled', false);
+                    $('#net_weight').prop('disabled', false);
                 }
             });
         </script>
