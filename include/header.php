@@ -25,10 +25,10 @@ function Initials() {
     <nav class="navbar navbar-expand-sm">
         <ul class="navbar-nav mr-auto">
             <?php
-            $pallets_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/pallets/index.php' ? ' disabled' : '';
-            $rolls_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/rolls/index.php' ? ' disabled' : '';
-            $cut_requests_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/cut_requests/index.php' ? ' disabled' : '';
-            $utilized_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/utilized/index.php' ? ' disabled' : '';
+            $pallets_status = substr(filter_input(INPUT_SERVER, 'PHP_SELF'), 0, strlen(APPLICATION.'/pallet')) == APPLICATION.'/pallet' ? ' disabled' : '';
+            $rolls_status = substr(filter_input(INPUT_SERVER, 'PHP_SELF'), 0, strlen(APPLICATION.'/roll')) == APPLICATION.'/roll' ? ' disabled' : '';
+            $cut_requests_status = substr(filter_input(INPUT_SERVER, 'PHP_SELF'), 0, strlen(APPLICATION.'/cut_request')) == APPLICATION.'/cut_request' ? ' disabled' : '';
+            $utilized_status = substr(filter_input(INPUT_SERVER, 'PHP_SELF'), 0, strlen(APPLICATION.'/utilized')) == APPLICATION.'/utilized' ? ' disabled' : '';
             $user_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/user/index.php' ? ' disabled' : '';
             $personal_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/personal/index.php' ? ' disabled' : '';
             if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
