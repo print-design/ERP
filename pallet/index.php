@@ -70,7 +70,7 @@ $total_weight = $row['total_weight'];
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th style="padding-left: 5px; padding-right: 5px;"></th>
+                        <th class="d-none" style="padding-left: 5px; padding-right: 5px;"></th>
                         <th style="padding-left: 5px; padding-right: 5px;">Дата прихода</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Толщина</th>
@@ -170,7 +170,7 @@ $total_weight = $row['total_weight'];
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td style="padding-left: 5px; padding-right: 5px;"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkPallet" /></td>
+                        <td class="d-none" style="padding-left: 5px; padding-right: 5px;"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkPallet" /></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['film_brand'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['thickness'] ?></td>

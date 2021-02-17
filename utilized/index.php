@@ -70,7 +70,7 @@ $utilized_status_roll_id = 2;
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th></th>
+                        <th class="d-none"></th>
                         <th>Дата срабатывания</th>
                         <th>Марка пленки</th>
                         <th>Толщина</th>
@@ -248,7 +248,7 @@ $utilized_status_roll_id = 2;
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkFilm" /></td>
+                        <td class="d-none"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkFilm" /></td>
                         <td><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format("d.m.Y") ?></td>
                         <td><?=$row['film_brand'] ?></td>
                         <td><?=$row['thickness'] ?></td>

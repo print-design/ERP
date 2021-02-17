@@ -43,7 +43,7 @@ function Initials() {
             endif;
             if(IsInRole(array('admin', 'dev', 'technologist', 'cutter'))):
             ?>
-            <li class="nav-item">
+            <li class="nav-item d-none">
                 <a class="nav-link<?=$cut_requests_status ?>" href="<?=APPLICATION ?>/cut_request/">Заявки</a>
             </li>
             <?php
