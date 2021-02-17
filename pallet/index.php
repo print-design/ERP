@@ -17,7 +17,7 @@ if(null !== filter_input(INPUT_POST, 'delete-pallet-submit')) {
 }
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-$utilized_status_id = 4;
+$utilized_status_id = 2;
 
 // Получение общей массы паллетов
 $row = (new Fetcher("select sum(p.net_weight) total_weight from pallet p left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id where psh.status_id is null or psh.status_id <> $utilized_status_id"))->Fetch();

@@ -70,7 +70,7 @@ if(empty($status_id)) $status_id = $row['status_id'];
 $comment = $row['comment'];
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-$utilized_status_id = 4;
+$utilized_status_id = 2;
 ?>
 <!DOCTYPE html>
 <html>

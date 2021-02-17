@@ -35,7 +35,7 @@ if(null !== filter_input(INPUT_POST, 'delete-film-submit')) {
 }
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
-$utilized_status_pallet_id = 4;
+$utilized_status_pallet_id = 2;
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
 $utilized_status_roll_id = 2;
