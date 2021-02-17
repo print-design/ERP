@@ -71,21 +71,21 @@ $total_weight = $row['total_weight'];
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <th></th>
-                        <th>Дата создания</th>
-                        <th>Марка пленки</th>
-                        <th>Толщина</th>
-                        <th>Ширина</th>
-                        <th>Вес</th>
-                        <th>Длина</th>
-                        <th>Поставщик</th>
-                        <th>ID поставщика</th>
-                        <th>ID руллона</th>
-                        <th>№ ячейки</th>
-                        <th>Менеджер</th>
-                        <th>Статус</th>
-                        <th>Комментарий</th>
-                        <th></th>
+                        <th style="padding-left: 5px; padding-right: 5px;"></th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Дата создания</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Марка пленки</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Толщина</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Ширина</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Вес</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Длина</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Поставщик</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">ID поставщика</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">ID руллона</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">№ ячейки</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Менеджер</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Статус</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">Комментарий</th>
+                        <th style="padding-left: 5px; padding-right: 5px;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,21 +170,21 @@ $total_weight = $row['total_weight'];
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkRoll" /></td>
-                        <td><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
-                        <td><?= $row['film_brand'] ?></td>
-                        <td><?= $row['thickness'] ?></td>
-                        <td><?= $row['width'] ?></td>
-                        <td><?= $row['net_weight'] ?></td>
-                        <td><?= $row['length'] ?></td>
-                        <td><?= $row['supplier'] ?></td>
-                        <td><?= $row['id_from_supplier'] ?></td>
-                        <td><?= $row['inner_id'] ?></td>
-                        <td><?= $row['cell'] ?></td>
-                        <td><?= $row['last_name'].' '.$row['first_name'] ?></td>
-                        <td style="font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
-                        <td style="white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
-                        <td style="position: relative;">
+                        <td style="padding-left: 5px; padding-right: 5px;"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-id="<?=$row['id'] ?>" class="form-check chkRoll" /></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['film_brand'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['thickness'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['width'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['net_weight'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['length'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['supplier'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id_from_supplier'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['inner_id'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['cell'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['last_name'].' '.$row['first_name'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px; font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px; white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px; position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
                                 <div class="command"><a href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
