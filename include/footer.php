@@ -12,10 +12,23 @@
         }
     });
     
+    $('.int-only').change(function(e) {
+        var val = $(this).val();
+        val = val.replace(/[^\d]/g, '');
+        $(this).val(val);
+    });
+    
     $('.float-only').keypress(function(e) {
         if(!/[\.\d]/.test(String.fromCharCode(e.charCode))) {
             return false;
         }
+    });
+    
+    $('.float-only').change(function(e) {
+        var val = $(this).val();
+        val = val.replace(',', '.');
+        val = val.replace(/[^\.\d]/g, '');
+        $(this).val(val);
     });
     
     // Валидация
