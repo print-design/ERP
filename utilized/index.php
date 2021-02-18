@@ -59,14 +59,7 @@ $utilized_status_roll_id = 2;
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
-            <div class="d-flex justify-content-between mb-auto">
-                <div class="p-1">
-                    <h1>Сработанная пленка</h1>
-                </div>
-                <div class="p-1">
-                    <button class="btn btn-outline-dark disabled" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
-                </div>
-            </div>
+            <h1>Сработанная пленка</h1>
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">

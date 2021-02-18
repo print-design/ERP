@@ -48,13 +48,13 @@ $total_weight = $row['total_weight'];
                         <tr>
                             <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Паллеты</h1></td>
                             <td style="padding-left: 20px; padding-right: 20px; font-weight: bold;">(<?= number_format($total_weight, 0, ',', ' ') ?> кг)</td>
-                            <td style='padding-left: 35px; padding-right: 30px;'>
+                            <td style='padding-left: 35px; padding-right: 30px;' class="d-none">
                                 <a class="btn btn-dark disabled" id="btn-cut-request" style="padding-left: 40px; padding-right: 60px; padding-bottom: 8px; padding-top: 9px;">
                                     <div style="float:left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
                                     &nbsp;Заявка на<br/>раскрой
                                 </a>
                             </td>
-                            <td>
+                            <td class="d-none">
                                 <a class="btn btn-outline-dark disabled" id="btn-reserve-request" style="padding-left: 42px; padding-right: 42px; padding-bottom: 8px; padding-top: 9px;">
                                     Заявка на<br/>резервирование
                                 </a>
@@ -63,8 +63,8 @@ $total_weight = $row['total_weight'];
                     </table>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" class="btn btn-outline-dark" style="margin-right: 12px; padding-left: 33px; padding-right: 44px; padding-top: 14px; padding-bottom: 14px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
-                    <button class="btn btn-outline-dark disabled" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
+                    <a href="create.php" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; width: 200px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
+                    <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
             <table class="table">
