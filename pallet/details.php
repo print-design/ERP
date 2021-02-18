@@ -187,13 +187,13 @@ $utilized_status_id = 2;
                             <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку" disabled="disabled" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="manager_id">Менеджер</label>
                         <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
                             <option value="">Выберите менеджера</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="status_id">Статус</label>
                         <select id="status_id" name="status_id" class="form-control" required="required">
                             <option value="">ВЫБРАТЬ СТАТУС</option>

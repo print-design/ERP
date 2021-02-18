@@ -261,7 +261,7 @@ else {
                             <div class="invalid-feedback">Ячейка на складе обязательно</div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="manager_id">Менеджер</label>
                         <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
                             <option value="">Выберите менеджера</option>
@@ -280,7 +280,7 @@ else {
                         <div class="invalid-feedback">Менеджер обязательно</div>
                     </div>
                     <input type="hidden" id="status_id" name="status_id" value="1" />
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="status_id_">Статус</label>
                         <select id="status_id_" name="status_id_" class="form-control" disabled="disabled">
                             <?php
