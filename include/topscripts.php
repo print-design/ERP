@@ -184,12 +184,12 @@ if(null !== filter_input(INPUT_POST, 'login_submit')) {
             }
             // ****************************
             
-            setcookie(USER_ID, $user_id, 0, "/");
-            setcookie(USERNAME, $username, 0, "/");
-            setcookie(LAST_NAME, $last_name, 0, "/");
-            setcookie(FIRST_NAME, $first_name, 0, "/");
-            setcookie(ROLE, $role, 0, "/");
-            setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
+            setcookie(USER_ID, $user_id, time() + 60 * 60 * 24 * 100, "/");
+            setcookie(USERNAME, $username, time() + 60 * 60 * 24 * 100, "/");
+            setcookie(LAST_NAME, $last_name, time() + 60 * 60 * 24 * 100, "/");
+            setcookie(FIRST_NAME, $first_name, time() + 60 * 60 * 24 * 100, "/");
+            setcookie(ROLE, $role, time() + 60 * 60 * 24 * 100, "/");
+            setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), time() + 60 * 60 * 24 * 100, "/");
             header("Refresh:0");
         }
     }
@@ -216,12 +216,12 @@ if(null !== filter_input(INPUT_POST, 'security_code_submit')) {
             $error_message = (new Executer("update user set code=NULL where id=$user_id"))->error;
             
             if($error_message == '') {
-                setcookie(USER_ID, $user_id, 0, "/");
-                setcookie(USERNAME, $username, 0, "/");
-                setcookie(LAST_NAME, $last_name, 0, "/");
-                setcookie(FIRST_NAME, $first_name, 0, "/");
-                setcookie(ROLE, $role, 0, '/');
-                setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), 0, "/");
+                setcookie(USER_ID, $user_id, time() + 60 * 60 * 24 * 100, "/");
+                setcookie(USERNAME, $username, time() + 60 * 60 * 24 * 100, "/");
+                setcookie(LAST_NAME, $last_name, time() + 60 * 60 * 24 * 100, "/");
+                setcookie(FIRST_NAME, $first_name, time() + 60 * 60 * 24 * 100, "/");
+                setcookie(ROLE, $role, time() + 60 * 60 * 24 * 100, '/');
+                setcookie(LOGIN_TIME, (new DateTime())->getTimestamp(), time() + 60 * 60 * 24 * 100, "/");
                 header("Refresh:0");
             }
         }
@@ -235,12 +235,12 @@ if(null !== filter_input(INPUT_POST, 'security_code_submit')) {
 
 // Выход из системы
 if(null !== filter_input(INPUT_POST, 'logout_submit')) {
-    setcookie(USER_ID, '', 0, "/");
-    setcookie(USERNAME, '', 0, "/");
-    setcookie(LAST_NAME, '', 0, "/");
-    setcookie(FIRST_NAME, '', 0, "/");
-    setcookie(LOGIN_TIME, '', 0, "/");
-    setcookie(ROLE, '', 0, "/");
+    setcookie(USER_ID, '', time() + 60 * 60 * 24 * 100, "/");
+    setcookie(USERNAME, '', time() + 60 * 60 * 24 * 100, "/");
+    setcookie(LAST_NAME, '', time() + 60 * 60 * 24 * 100, "/");
+    setcookie(FIRST_NAME, '', time() + 60 * 60 * 24 * 100, "/");
+    setcookie(LOGIN_TIME, '', time() + 60 * 60 * 24 * 100, "/");
+    setcookie(ROLE, '', time() + 60 * 60 * 24 * 100, "/");
     header("Refresh:0");
     header('Location: '.APPLICATION.'/');
 }
