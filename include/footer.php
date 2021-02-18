@@ -33,6 +33,8 @@
     
     $('input[type="text"]').prop('autocomplete', 'off');
     
+    $('form').prop('autocomplete', 'off');
+    
     // Валидация
     $('input').keypress(function(){
         $(this).removeClass('is-invalid');

@@ -128,7 +128,7 @@ if(null !== filter_input(INPUT_POST, 'supplier_create_submit')) {
                 <div class="form-group" style="padding-bottom: 6px;">
                     <div style="width:319px;">
                         <label for="name">Название поставщика</label>
-                        <input placeholder="Название поставщика" type="text" id="name" name="name" class="form-control<?=$name_valid ?>" value="<?= filter_input(INPUT_POST, 'name') ?>" required="required"/>
+                        <input type="text" id="name" name="name" class="form-control<?=$name_valid ?>" value="<?= filter_input(INPUT_POST, 'name') ?>" required="required"/>
                         <div class="invalid-feedback">Название поставщика обязательно</div>                            
                     </div>
                 </div>
