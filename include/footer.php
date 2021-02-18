@@ -31,7 +31,7 @@
         $(this).val(val);
     });
     
-    $('input[type="text"]').prop('autocomplete', 'off')
+    $('input[type="text"]').prop('autocomplete', 'off');
     
     // Валидация
     $('input').keypress(function(){
