@@ -64,20 +64,20 @@ $utilized_status_roll_id = 2;
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none"></th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Дата срабатывания</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Марка пленки</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Толщина</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Ширина</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Вес</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Длина</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Поставщик</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">ID поставщика</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата срабатывания</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 20%;">Марка пленки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Ширина</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Вес</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID поставщика</th>
                         <th style="padding-left: 5px; padding-right: 5px;">ID пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кол-во рулонов</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кто заказал</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Статус</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">Комментарий</th>
-                        <th style="padding-left: 5px; padding-right: 5px;"></th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Статус</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 15%;">Комментарий</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 2%;"></th>
                     </tr>
                 </thead>
                 <tbody>
