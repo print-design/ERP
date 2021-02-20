@@ -19,7 +19,11 @@
     });
     
     $('.float-only').keypress(function(e) {
-        if(!/[\.\d]/.test(String.fromCharCode(e.charCode))) {
+        if(!/[\.\,\d]/.test(String.fromCharCode(e.charCode))) {
+            return false;
+        }
+        
+        if(/[\.\,]/.test(String.fromCharCode(e.charCode)) && ($(e.target).val().includes('.') || $(e.target).val().includes(','))) {
             return false;
         }
     });
