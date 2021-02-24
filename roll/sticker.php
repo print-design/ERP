@@ -17,7 +17,6 @@ $thickness = filter_input(INPUT_POST, 'thickness');
 $length = filter_input(INPUT_POST, 'length');
 $net_weight = filter_input(INPUT_POST, 'net_weight');
 $cell = filter_input(INPUT_POST, 'cell');
-$manager_id = filter_input(INPUT_POST, 'manager_id');
 $status_id = filter_input(INPUT_POST, 'status_id');
 $comment = filter_input(INPUT_POST, 'comment');
 
@@ -34,11 +33,6 @@ if(!empty($supplier_id)) {
 if(!empty($film_brand_id)) {
     $row = (new Fetcher("select name from film_brand where id = $film_brand_id"))->Fetch();
     $film_brand = $row['name'];
-}
-
-if(!empty($manager_id)) {
-    $row = (new Fetcher("select first_name, last_name from user where id = $manager_id"))->Fetch();
-    $manager = $row['last_name'].' '.$row['first_name'];
 }
 
 if(!empty($status_id)) {
@@ -76,7 +70,6 @@ if(!empty($status_id)) {
                                     <td></td>
                                     <td><strong>Ячейка на складе</strong><br/><?=$cell ?></td>
                                 </tr>
-                                <tr><td colspan="2"><strong>Менеджер</strong><br/><?=$manager ?></td></tr>
                                 <tr><td colspan="2"><strong>Статус</strong><br/><?=$status ?></td></tr>
                                 <tr><td colspan="2"><strong>Комментарий</strong><br/><div style="white-space: pre-wrap;"><?= $comment ?></div></td></tr>
                             </tbody>

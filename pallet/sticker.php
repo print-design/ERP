@@ -18,7 +18,6 @@ $length = filter_input(INPUT_POST, 'length');
 $net_weight = filter_input(INPUT_POST, 'net_weight');
 $rolls_number = filter_input(INPUT_POST, 'rolls_number');
 $cell = filter_input(INPUT_POST, 'cell');
-$manager_id = filter_input(INPUT_POST, 'manager_id');
 $status_id = filter_input(INPUT_POST, 'status_id');
 $comment = filter_input(INPUT_POST, 'comment');
 
@@ -35,11 +34,6 @@ if(!empty($supplier_id)) {
 if(!empty($film_brand_id)) {
     $row = (new Fetcher("select name from film_brand where id = $film_brand_id"))->Fetch();
     $film_brand = $row['name'];
-}
-
-if(!empty($manager_id)) {
-    $row = (new Fetcher("select first_name, last_name from user where id = $manager_id"))->Fetch();
-    $manager = $row['last_name'].' '.$row['first_name'];
 }
 
 if(!empty($status_id)) {

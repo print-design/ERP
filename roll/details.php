@@ -117,6 +117,17 @@ $utilized_status_id = 2;
                 <div style="width: 423px;">
                     <input type="hidden" id="id" name="id" value="<?=$id ?>" />
                     <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
+                    <input type="hidden" id="date" name="date" value="<?= $date ?>" />
+                    <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
+                    <input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
+                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?=$supplier_id ?>" />
+                    <input type="hidden" id="id_from_supplier" name="id_from_supplier" value="<?=$id_from_supplier ?>" />
+                    <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand_id ?>" />
+                    <input type="hidden" id="width" name="width" value="<?=$width ?>" />
+                    <input type="hidden" id="thickness" name="thickness" value="<?=$thickness ?>" />
+                    <input type="hidden" id="length" name="length" value="<?=$length ?>" />
+                    <input type="hidden" id="net_weight" name="net_weight" value="<?=$net_weight ?>" />
+                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" />
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -225,7 +236,10 @@ $utilized_status_id = 2;
                         <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities($comment) ?></textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
+                <div class="form-inline" style="margin-top: 30px;">
+                    <button type="submit" id="change-status-submit" name="change-status-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">Сменить статус</button>
+                    <button type="submit" formaction="<?=APPLICATION ?>/roll/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                </div>
             </form>
         </div>
         <?php
