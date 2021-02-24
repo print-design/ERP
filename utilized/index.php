@@ -59,12 +59,26 @@ $utilized_status_roll_id = 2;
                 echo "<div class='alert alert-danger'>$error_message</div>";
             }
             ?>
-            <h1>Сработанная пленка</h1>
+            <div class="d-flex justify-content-between mb-auto">
+                <div class="p-1">
+                    <table>
+                        <tr>
+                            <td><h1 style="font-size: 32px; line-height: 48px; font-weight: 600;">Сработанная пленка</h1></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="p-1">
+                    <a class="btn btn-dark disabled" id="btn-print-request" style="visibility: hidden;">
+                        <div style="float: left; padding-top: 8px; padding-right: 30px; font-size: 12px;"><i class="fas fa-plus"></i></div>
+                        &nbsp;Заявка на<br />печать
+                    </a>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none"></th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата срабатывания</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата<br />срабатывания</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 20%;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Ширина</th>
@@ -72,7 +86,7 @@ $utilized_status_roll_id = 2;
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID поставщика</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">ID пленки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кол-во рулонов</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кто заказал</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Статус</th>

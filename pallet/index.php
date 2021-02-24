@@ -63,15 +63,15 @@ $total_weight = $row['total_weight'];
                     </table>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; width: 200px;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
-                    <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр" style="padding-left: 14px; padding-right: 42px; padding-bottom: 14px; padding-top: 14px;"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
+                    <a href="create.php" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; width: 200px; text-align: left;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый паллет</a>
+                    <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
             <table class="table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th class="d-none" style="padding-left: 5px; padding-right: 6px; width: 20%;"></th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата прихода</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата<br />прихода</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 20%;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Ширина</th>
@@ -79,7 +79,7 @@ $total_weight = $row['total_weight'];
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID поставщика</th>
-                        <th style="padding-left: 5px; padding-right: 5px;">ID паллета</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID паллета</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кол-во рулонов</th>
                         <th style="padding-left: 5px; padding-right: 5px;">№ ячейки</th>
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none">Кто заказал</th>
