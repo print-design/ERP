@@ -26,24 +26,33 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $form_valid = false;
     }
     
-    $id = filter_input(INPUT_POST, 'id');
-    $date = date('Y-m-d');
-    $inner_id = filter_input(INPUT_POST, 'inner_id');
-    $status_id = filter_input(INPUT_POST, 'status_id');
-    $user_id = GetUserId();
-    
-    $error_message = (new Executer("insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
-    
-    if(empty($error_message)) {
-        $comment = filter_input(INPUT_POST, 'comment');
-        if(!empty($comment)) {
-            $comment = addslashes($comment);
-            $error_message = (new Executer("update pallet set comment='$comment' where id=$id"))->error;
+    if($form_valid) {
+        $id = filter_input(INPUT_POST, 'id');
+        $status_id = filter_input(INPUT_POST, 'status_id');
+        
+        // Получаем имеющийся статус и проверяем, совпадает ли он с новым статусом
+        $sql = "select status_id from pallet_status_history where pallet_id=$id order by id limit 1";
+        $row = (new Fetcher($sql))->Fetch();
+        
+        if(!$row || $row['status_id'] != $status_id) {
+            $date = date('Y-m-d');
+            $inner_id = filter_input(INPUT_POST, 'inner_id');
+            $user_id = GetUserId();
+            
+            $error_message = (new Executer("insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
         }
-    }
-    
-    if(empty($error_message)) {
-        header('Location: '.APPLICATION.'/pallet/');
+        
+        if(empty($error_message)) {
+            $comment = filter_input(INPUT_POST, 'comment');
+            if(!empty($comment)) {
+                $comment = addslashes($comment);
+                $error_message = (new Executer("update pallet set comment='$comment' where id=$id"))->error;
+            }
+        }
+        
+        if(empty($error_message)) {
+            header('Location: '.APPLICATION.'/pallet/');
+        }
     }
 }
 
