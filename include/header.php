@@ -80,7 +80,7 @@ function Initials() {
             <li class="nav-item1">
                 <a class="nav-link" href="<?=APPLICATION ?>/search.php"><i class="fas fa-search"></i></a>
             </li>
-            <li class="nav-item dropdown" id="nav-user">
+            <li class="nav-item dropdown" id="nav-user" style="padding-left: 5px;">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><?= Initials() ?></a>
                 <div class="dropdown-menu" id="user-dropdown">
                     <a href="<?=APPLICATION ?>/personal/" class="btn btn-link dropdown-item"><i class="fas fa-user"></i>&nbsp;Мои настройки</a>
