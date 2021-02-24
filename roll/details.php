@@ -114,9 +114,9 @@ $utilized_status_id = 2;
             <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о рулоне № <?=$inner_id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">ID <?=$id_from_supplier ?></h2>
             <form method="post">
-                <input type="hidden" id="id" name="id" value="<?=$id ?>" />
-                <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                 <div style="width: 423px;">
+                    <input type="hidden" id="id" name="id" value="<?=$id ?>" />
+                    <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -224,8 +224,8 @@ $utilized_status_id = 2;
                         <label for="comment">Комментарий</label>
                         <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities($comment) ?></textarea>
                     </div>
-                    <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
                 </div>
+                <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
             </form>
         </div>
         <?php

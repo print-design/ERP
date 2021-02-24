@@ -115,9 +115,21 @@ $utilized_status_id = 2;
             <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о паллете № <?=$inner_id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">ID <?=$id_from_supplier ?></h2>
             <form method="post">
-                <input type="hidden" id="id" name="id" value="<?=$id ?>" />
-                <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                 <div style="width: 423px;">
+                    <input type="hidden" id="id" name="id" value="<?=$id ?>" />
+                    <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
+                    <input type="hidden" id="date" name="date" value="<?= $date ?>" />
+                    <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
+                    <input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
+                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?=$supplier_id ?>" />
+                    <input type="hidden" id="id_from_supplier" name="id_from_supplier" value="<?=$id_from_supplier ?>" />
+                    <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand_id ?>" />
+                    <input type="hidden" id="width" name="width" value="<?=$width ?>" />
+                    <input type="hidden" id="thickness" name="thickness" value="<?=$thickness ?>" />
+                    <input type="hidden" id="length" name="length" value="<?=$length ?>" />
+                    <input type="hidden" id="net_weight" name="net_weight" value="<?=$net_weight ?>" />
+                    <input type="hidden" id="rolls_number" name="rolls_number" value="<?=$rolls_number ?>" />
+                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" />
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -237,7 +249,10 @@ $utilized_status_id = 2;
                         <label for="comment">Комментарий</label>
                         <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities($comment) ?></textarea>
                     </div>
-                    <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
+                </div>
+                <div class="form-inline" style="margin-top: 30px;">
+                    <button type="submit" id="change-status-submit" name="change-status-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">Сменить статус</button>
+                    <button type="submit" formaction="<?=APPLICATION ?>/pallet/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
                 </div>
             </form>
         </div>
