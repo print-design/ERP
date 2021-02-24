@@ -39,6 +39,8 @@
     
     $('form').prop('autocomplete', 'off');
     
+    $('textarea').css('resize', 'none');
+    
     // Валидация
     $('input').keypress(function(){
         $(this).removeClass('is-invalid');
