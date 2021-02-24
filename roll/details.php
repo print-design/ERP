@@ -68,6 +68,9 @@ if(empty($status_id)) $status_id = $row['status_id'];
 
 $comment = $row['comment'];
 
+// СТАТУС "СВОБОДНЫЙ" ДЛЯ РУЛОНА
+$free_status_id = 1;
+
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ РУЛОНА
 $utilized_status_id = 2;
 ?>

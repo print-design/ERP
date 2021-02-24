@@ -35,6 +35,14 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     $error_message = (new Executer("insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
     
     if(empty($error_message)) {
+        $comment = filter_input(INPUT_POST, 'comment');
+        if(!empty($comment)) {
+            $comment = addslashes($comment);
+            $error_message = (new Executer("update pallet set comment='$comment' where id=$id"))->error;
+        }
+    }
+    
+    if(empty($error_message)) {
         header('Location: '.APPLICATION.'/pallet/');
     }
 }
@@ -68,6 +76,9 @@ $status_id = filter_input(INPUT_POST, 'status_id');
 if(empty($status_id)) $status_id = $row['status_id'];
 
 $comment = $row['comment'];
+
+// СТАТУС "СВОБОДНЫЙ" ДЛЯ ПАЛЛЕТА
+$free_status_id = 1;
 
 // СТАТУС "СРАБОТАННЫЙ" ДЛЯ ПАЛЛЕТА
 $utilized_status_id = 2;
@@ -193,17 +204,18 @@ $utilized_status_id = 2;
                             <option value="">Выберите менеджера</option>
                         </select>
                     </div>
-                    <div class="form-group d-none">
+                    <div class="form-group">
                         <label for="status_id">Статус</label>
                         <select id="status_id" name="status_id" class="form-control" required="required">
                             <option value="">ВЫБРАТЬ СТАТУС</option>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
-                                if(!(empty($status_id) && $status['id'] == $utilized_status_id)) {
+                                if(!(empty($status_id) && $status['id'] == $utilized_status_id)) { // Если статуса нет, то нельзя сразу поставить "Сработанный"
                                     $id = $status['id'];
                                     $name = $status['name'];
                                     $selected = '';
+                                    if(empty($status_id)) $status_id = $free_status_id; // По умолчанию ставим статус "Свободный"
                                     if($status_id == $status['id']) $selected = " selected='selected'";
                                     echo "<option value='$id'$selected>$name</option>";
                                 }
@@ -214,7 +226,7 @@ $utilized_status_id = 2;
                     </div>
                     <div class="form-group">
                         <label for="comment">Комментарий</label>
-                        <textarea id="comment" name="comment" rows="4" class="form-control" disabled="disabled"><?= htmlentities($comment) ?></textarea>
+                        <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities($comment) ?></textarea>
                     </div>
                     <button type="submit" class="btn btn-dark" id="change-status-submit" name="change-status-submit" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; padding-right: 30px; margin-top: 30px;">Сменить статус</button>
                 </div>
