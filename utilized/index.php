@@ -258,10 +258,10 @@ $utilized_status_roll_id = 2;
                         <td style="padding-left: 5px; padding-right: 5px;" class="d-none"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkFilm" /></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format("d.m.Y") ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['film_brand'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['thickness'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['width'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['net_weight'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['length'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['thickness'] ?> мкм</td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['width'] ?> мм</td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['net_weight'] ?> кг</td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['length'] ?> м</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['id_from_supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['inner_id'] ?></td>
