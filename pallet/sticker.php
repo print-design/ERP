@@ -46,94 +46,80 @@ if(!empty($status_id)) {
 <html>
     <head>
         <?php
-        //include '../include/head.php';
+        include '../include/head.php';
         ?>
     </head>
     <body class="print">
-        <h1>ID&nbsp;<?=$inner_id ?>
-        </h1><strong>Поставщик</strong>
-        <br/>
-        <?=$supplier ?>
-        <br /><br />
-        <strong>Кладовщик</strong>
-        <br />
-        <?php
-        $storekeeper = filter_input(INPUT_POST, 'storekeeper');
-        if(null === $storekeeper) {
-            echo filter_input(INPUT_COOKIE, LAST_NAME);
-                
-            if(!empty(filter_input(INPUT_COOKIE, LAST_NAME)) && !empty(filter_input(INPUT_COOKIE, FIRST_NAME))) {
-                echo ' ';
-            }
-                
-            echo filter_input(INPUT_COOKIE, FIRST_NAME);
-        }
-        else {
-            echo $storekeeper;;
-        }
-        ?>
-        <br /><br />
-        <strong>Дата прихода</strong>
-        <br />
-        <?= DateTime::createFromFormat('Y-m-d', $date)->format('d.m.Y') ?>
-        <br /><br />
-        <strong>ID от поставщика:</strong>
-        <br/>
-        <?=$id_from_supplier ?>
-        <br /><br />
-        <strong>Марка пленки</strong>
-        <br/>
-        <?=$film_brand ?>
-        <br /><br />
-        <strong>Ширина</strong>
-        <br/>
-        <?=$width ?>
-        <br /><br />
-        <strong>Толщина</strong>
-        <br/>
-        <?=$thickness ?>
-        <br /><br />
-        <strong>Длина</strong>
-        <br/>
-        <?=$length ?>
-        <br /><br />
-        <strong>Масса нетто</strong>
-        <br/>
-        <?=$net_weight ?>
-        <br /><br />
-        <strong>Количество рулонов</strong>
-        <br/>
-        <?=$rolls_number ?>
-        <br /><br />
-        <strong>Ячейка на складе</strong>
-        <br/>
-        <?=$cell ?>
-        <br /><br />
-        <strong>Статус</strong>
-        <br/>
-        <?=$status ?>
-        <br /><br />
-        <strong>Комментарий</strong>
-        <br/>
-        <?= $comment ?>
-        <br /><br />
-        <?php
-        include '../qr/qrlib.php';
-        $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
-        $data = $_SERVER['HTTP_ORIGIN'].APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
-        $current_date_time = date("dmYHis");
-        $filename = "../temp/$current_date_time.png";
-        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 5, 2, true);
-        echo "<img src='$filename' />";
+        <div style="margin-left: 20px;">
+            <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Паллет №<?=$inner_id ?> от <?=$date ?></h1>
+            <table>
+                <tr>
+                    <td>
+                        <table class="table table-bordered" style="width: 400px;">
+                            <tbody>
+                                <tr><td colspan="2"><strong>Поставщик</strong><br /><?=$supplier ?></td></tr>
+                                <tr><td colspan="2"><strong>ID от поставщика</strong><br/><?=$id_from_supplier ?></td></tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>Кладовщик</strong>
+                                        <br />
+                                        <?php
+                                        $storekeeper = filter_input(INPUT_POST, 'storekeeper');
+                                        if(null === $storekeeper) {
+                                            echo filter_input(INPUT_COOKIE, LAST_NAME);
+                                            
+                                            if(!empty(filter_input(INPUT_COOKIE, LAST_NAME)) && !empty(filter_input(INPUT_COOKIE, FIRST_NAME))) {
+                                                echo ' ';
+                                            }
+                                            
+                                            echo filter_input(INPUT_COOKIE, FIRST_NAME);
+                                        }
+                                        else {
+                                            echo $storekeeper;;
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="2"><strong><strong>Марка пленки</strong><br/><?=$film_brand ?></strong></td></tr>
+                                <tr>
+                                    <td><strong>Ширина</strong><br/><?=$width ?></td>
+                                    <td><strong>Толщина</strong><br/><?=$thickness ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Длина</strong><br/><?=$length ?></td>
+                                    <td><strong>Масса нетто</strong><br/><?=$net_weight ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Количество рулонов</strong><br/><?=$rolls_number ?></td>
+                                    <td><strong>Ячейка на складе</strong><br/><?=$cell ?></td>
+                                </tr>
+                                <tr><td colspan="2"><strong>Статус</strong><br/><?=$status ?></td></tr>
+                                <tr><td colspan="2"><strong>Комментарий</strong><br/><?= $comment ?></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top; padding-left: 50px;">
+                        <?php
+                        include '../qr/qrlib.php';
+                        $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
+                        $data = $_SERVER['HTTP_ORIGIN'].APPLICATION.'/pallet/details.php?inner_id='.$inner_id;
+                        $current_date_time = date("dmYHis");
+                        $filename = "../temp/$current_date_time.png";
+                        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 5, 2, true);
+                        echo "<img src='$filename' />";
             
-        // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
-        $files = scandir("../temp/");
-        foreach ($files as $file) {
-            if($file != "$current_date_time.png" && !is_dir($file)) {
-                unlink("../temp/$file");
-            }
-        }
-        ?>
+                        // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
+                        $files = scandir("../temp/");
+                        foreach ($files as $file) {
+                            if($file != "$current_date_time.png" && !is_dir($file)) {
+                                unlink("../temp/$file");
+                            }
+                        }
+                        ?>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <script>
             var css = '@page { size: 5cm 7cm; } body { font-size: 10px; } * { margin: 0; padding: 0; }',
                     head = document.head || document.getElementsByTagName('head')[0],

@@ -55,8 +55,29 @@ if(!empty($status_id)) {
                     <td>
                         <table class="table table-bordered" style="width: 400px;">
                             <tbody>
-                                <tr><td colspan="2"><strong>Поставщик:</strong><br/><?=$supplier ?></td></tr>
-                                <tr><td colspan="2"><strong>ID от поставщика:</strong><br/><?=$id_from_supplier ?></td></tr>
+                                <tr><td colspan="2"><strong>Поставщик</strong><br/><?=$supplier ?></td></tr>
+                                <tr><td colspan="2"><strong>ID от поставщика</strong><br/><?=$id_from_supplier ?></td></tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>Кладовщик</strong>
+                                        <br />
+                                        <?php
+                                        $storekeeper = filter_input(INPUT_POST, 'storekeeper');
+                                        if(null === $storekeeper) {
+                                            echo filter_input(INPUT_COOKIE, LAST_NAME);
+                                            
+                                            if(!empty(filter_input(INPUT_COOKIE, LAST_NAME)) && !empty(filter_input(INPUT_COOKIE, FIRST_NAME))) {
+                                                echo ' ';
+                                            }
+                                            
+                                            echo filter_input(INPUT_COOKIE, FIRST_NAME);
+                                        }
+                                        else {
+                                            echo $storekeeper;;
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
                                 <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
                                 <tr>
                                     <td><strong>Ширина</strong><br/><?=$width ?></td>
@@ -80,9 +101,18 @@ if(!empty($status_id)) {
                         include '../qr/qrlib.php';
                         $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
                         $data = filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION.'/roll/details.php?inner_id='.$inner_id;
-                        $filename = '../temp/test.png';
+                        $current_date_time = date("dmYHis");
+                        $filename = "../temp/$current_date_time.png";
                         QRcode::png(addslashes($data), $filename, $errorCorrectionLevel, 10, 4, true);
                         echo "<img src='$filename' />";
+                        
+                        // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
+                        $files = scandir("../temp/");
+                        foreach ($files as $file) {
+                            if($file != "$current_date_time.png" && !is_dir($file)) {
+                                unlink("../temp/$file");
+                            }
+                        }
                         ?>
                     </td>
                 </tr>
