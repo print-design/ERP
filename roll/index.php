@@ -73,8 +73,9 @@ $total_weight = $row['total_weight'];
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th class="d-none" style="padding-left: 5px; padding-right: 5px;"></th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата<br />создания</th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 20%;">Марка пленки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 16%;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Плотность</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Ширина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Вес</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
@@ -146,7 +147,8 @@ $total_weight = $row['total_weight'];
                     
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
                             . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
-                            . "rsh.status_id status_id, r.comment "
+                            . "rsh.status_id status_id, r.comment, "
+                            . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
                             . "from roll r "
                             . "left join film_brand fb on r.film_brand_id = fb.id "
                             . "left join supplier s on r.supplier_id = s.id "
@@ -174,6 +176,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px;"><?= date_create_from_format("Y-m-d", $row['date'])->format("d.m.Y") ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['film_brand'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['thickness'] ?> мкм</td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['density'] ?> г/м<sup>2</sup></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['width'] ?> мм</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['net_weight'] ?> кг</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['length'] ?> м</td>
