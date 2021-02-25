@@ -134,6 +134,7 @@ if(!empty($status_id)) {
             
             head.appendChild(style);
             
-            window.print();</script>
+            window.print();
+        </script>
     </body>
 </html>

@@ -29,9 +29,16 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     if($form_valid) {
         $id = filter_input(INPUT_POST, 'id');
         $status_id = filter_input(INPUT_POST, 'status_id');
+        $length = filter_input(INPUT_POST, 'length');
+        $net_weight = filter_input(INPUT_POST, 'net_weight');
+        $rolls_number = filter_input(INPUT_POST, 'rolls_number');
+        $cell = filter_input(INPUT_POST, 'cell');
+        $comment = filter_input(INPUT_POST, 'comment');
         
-        // Получаем имеющийся статус и проверяем, совпадает ли он с новым статусом
-        $sql = "select status_id from pallet_status_history where pallet_id=$id order by id limit 1";
+        // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
+        $sql = "select length, net_weight, rolls_number, cell, comment, "
+                . "(select status_id from pallet_status_history where pallet_id=$id order by is limit 1) status_id "
+                . "from pallet where id=$id";
         $row = (new Fetcher($sql))->Fetch();
         
         if(!$row || $row['status_id'] != $status_id) {
@@ -43,10 +50,9 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
         
         if(empty($error_message)) {
-            $comment = filter_input(INPUT_POST, 'comment');
-            if(!empty($comment)) {
+            if(!$row || $row['length'] != $length || $row['net_weight'] != $net_weight || $row['rolls_number'] != $rolls_number || $row['cell'] != $cell) {
                 $comment = addslashes($comment);
-                $error_message = (new Executer("update pallet set comment='$comment' where id=$id"))->error;
+                $error_message = (new Executer("update pallet set length=$length, net_weight=$net_weight, rolls_number=$rolls_number, cell='$cell', comment='$comment' where id=$id"))->error;
             }
         }
         
@@ -193,17 +199,17 @@ $utilized_status_id = 2;
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину" disabled="disabled" />
+                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину" />
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто" disabled="disabled" />
+                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="rolls_number">Количество рулонов</label>
-                            <select id="rolls_number" name="rolls_number" class="form-control" disabled="disabled">
+                            <select id="rolls_number" name="rolls_number" class="form-control">
                                 <option value="">Выберите количество</option>
                                 <?php
                                 for($i=1; $i<7; $i++) {
@@ -216,7 +222,7 @@ $utilized_status_id = 2;
                         </div>
                         <div class="col-6 form-group">
                             <label for="cell">Ячейка на складе</label>
-                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку" disabled="disabled" />
+                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку" />
                         </div>
                     </div>
                     <div class="form-group d-none">
