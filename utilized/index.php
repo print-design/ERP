@@ -79,8 +79,9 @@ $utilized_status_roll_id = 2;
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none"></th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата<br />срабатывания</th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 20%;">Марка пленки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 16%;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Плотность</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Ширина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Вес</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
@@ -208,7 +209,8 @@ $utilized_status_roll_id = 2;
                     
                     $sql = "select 'pallet' type, p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
                             . "s.name supplier, p.id_from_supplier id_from_supplier, p.inner_id inner_id, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
-                            . "psh.status_id status_id, p.comment comment "
+                            . "psh.status_id status_id, p.comment comment, "
+                            . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=p.thickness limit 1) density "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
                             . "left join supplier s on p.supplier_id = s.id "
@@ -218,7 +220,8 @@ $utilized_status_roll_id = 2;
                             . "union "
                             . "select 'roll' type, r.id id, rsh.date date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
                             . "s.name supplier, r.id_from_supplier id_from_supplier, r.inner_id inner_id, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
-                            . "rsh.status_id status_id, r.comment comment "
+                            . "rsh.status_id status_id, r.comment comment, "
+                            . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
                             . "from roll r "
                             . "left join film_brand fb on r.film_brand_id = fb.id "
                             . "left join supplier s on r.supplier_id = s.id "
@@ -259,6 +262,7 @@ $utilized_status_roll_id = 2;
                         <td style="padding-left: 5px; padding-right: 5px;"><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format("d.m.Y") ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['film_brand'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['thickness'] ?> мкм</td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= round($row['density'], 2) ?> г/м<sup>2</sup></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['width'] ?> мм</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['net_weight'] ?> кг</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['length'] ?> м</td>
