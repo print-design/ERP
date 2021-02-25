@@ -50,7 +50,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
         
         if(empty($error_message)) {
-            if(!$row || $row['length'] != $length || $row['net_weight'] != $net_weight || $row['rolls_number'] != $rolls_number || $row['cell'] != $cell) {
+            if(!$row || $row['length'] != $length || $row['net_weight'] != $net_weight || $row['rolls_number'] != $rolls_number || $row['cell'] != $cell || $row['comment'] != $comment) {
                 $comment = addslashes($comment);
                 $error_message = (new Executer("update pallet set length=$length, net_weight=$net_weight, rolls_number=$rolls_number, cell='$cell', comment='$comment' where id=$id"))->error;
             }

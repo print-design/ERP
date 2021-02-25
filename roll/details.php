@@ -29,13 +29,11 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     if($form_valid) {
         $id = filter_input(INPUT_POST, 'id');
         $status_id = filter_input(INPUT_POST, 'status_id');
-        $length = filter_input(INPUT_POST, 'length');
-        $net_weight = filter_input(INPUT_POST, 'net_weight');
         $cell = filter_input(INPUT_POST, 'cell');
         $comment = filter_input(INPUT_POST, 'comment');
         
         // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
-        $sql = "select length, net_weight, cell, comment, "
+        $sql = "select cell, comment, "
                 . "(status_id from roll_status_history where roll_id=$id order by id desc limit 1) status_id "
                 . "from roll where id=$id";
         $row = (new Fetcher($sql))->Fetch();
@@ -49,9 +47,9 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
         
         if(empty($error_message)) {
-            if(!$row || $row['length'] != $length || $row['net_weight'] != $net_weight || $row['cell'] != $cell) {
+            if(!$row || $row['cell'] != $cell || $row['comment'] != $comment) {
                 $comment = addslashes($comment);
-                $error_message = (new Executer("update roll set length=$length, net_weight=$net_weight, cell='$cell', comment='$comment' where id=$id"))->error;
+                $error_message = (new Executer("update roll set cell='$cell', comment='$comment' where id=$id"))->error;
             }
         }
         
@@ -196,11 +194,11 @@ $utilized_status_id = 2;
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину" />
+                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину" disabled="disabled" />
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто" />
+                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто" disabled="disabled" />
                         </div>
                     </div>
                     <div class="row">
