@@ -37,7 +37,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         
         // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
         $sql = "select length, net_weight, rolls_number, cell, comment, "
-                . "(select status_id from pallet_status_history where pallet_id=$id order by is limit 1) status_id "
+                . "(select status_id from pallet_status_history where pallet_id=$id order by id desc limit 1) status_id "
                 . "from pallet where id=$id";
         $row = (new Fetcher($sql))->Fetch();
         
