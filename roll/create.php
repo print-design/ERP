@@ -223,7 +223,7 @@ else {
                         $checked = " checked='checked'";
                     }
                     ?>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <input type="checkbox" id="caclulate_by_diameter" name="caclulate_by_diameter"<?=$checked ?> />
                         <label class="form-check-label" for="caclulate_by_diameter">Рассчитать по диаметру</label>
                     </div>
