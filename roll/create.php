@@ -236,14 +236,21 @@ else {
                         <div class="col-6 form-group">
                             <label for="shpulya">Шпуля</label>
                             <select id="shpulya" name="shpulya" class="form-control">
+                                <?php
+                                $shpulya_selected_76 = '';
+                                $shpulya_selected_152 = '';
+                                $shpulya = filter_input(INPUT_POST, 'shpulya');
+                                if($shpulya == 76) $shpulya_selected_76 = " selected='selected'";
+                                if($shpulya == 152) $shpulya_selected_152 = " selected='selected'";
+                                ?>
                                 <option value="">Выберите шпулю</option>
-                                <option value="76">76</option>
-                                <option value="152">152</option>
+                                <option value="76"<?=$shpulya_selected_76 ?>">76</option>
+                                <option value="152"<?=$shpulya_selected_152 ?>">152</option>
                             </select>
                         </div>
                         <div class="col-6 form-group">
                             <label for="diameter">Расчет по радиусу (от вала)</label>
-                            <input type="text" id="diameter" name="diameter" class="form-control int-only" />
+                            <input type="text" id="diameter" name="diameter" class="form-control int-only" value="<?= filter_input(INPUT_POST, 'diameter') ?>" />
                         </div>
                     </div>
                     <div class="row">
@@ -369,6 +376,46 @@ else {
                     $('#net_weight').prop('disabled', false);
                 }
             });
+            
+            // Расчёт по радиусу
+            function CalculateByRadius() {
+                $('#length').val('');
+                $('#net_weight').val('');
+                
+                shpulya = $('#shpulya').val();
+                
+                thickness = $('#thickness').val();
+                radiusotvala = $('#diameter').val();
+                width = $('#width').val();
+                
+                if(!isNaN(shpulya) && !isNaN(thickness) && !isNaN(radiusotvala)) {
+                    if(shpulya == 76) {
+                        var length = (0.15 * radiusotvala * radiusotvala + 11.3961 * radiusotvala - 176.4427) * 20 / thickness;
+                        $('#length').val(length.toFixed(2));
+                        
+                        var net_weight = (length * width) / 1000 / 1000;
+                        $('#net_weight').val(net_weight.toFixed(2));
+                        //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
+                    }
+                    
+                    if(shpulya == 152) {
+                        var length = 0.1524 * radiusotvala * radiusotvala + 23.1245 * radiusotvala - 228.5017;
+                        $('#length').val(length.toFixed(2));
+                        
+                        var net_weight = (length * width) / 1000 / 1000;
+                        $('#net_weight').val(net_weight.toFixed(2));
+                        //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
+                    }
+                }
+            }
+            
+            $('#shpulya').change(CalculateByRadius);
+            
+            $('#diameter').keypress(CalculateByRadius);
+            
+            $('#diameter').change(CalculateByRadius);
+            
+            $(document).ready(CalculateByRadius);
         </script>
    </body>
 </html>
