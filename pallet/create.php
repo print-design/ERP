@@ -232,7 +232,7 @@ else {
                     ?>
                     <div class="form-group d-none">
                         <input type='checkbox' id='caclulate_by_diameter' name="caclulate_by_diameter"<?=$checked ?> />
-                        <label class="form-check-label" for="caclulate_by_diameter">Рассчитать по диаметру</label>
+                        <label class="form-check-label" for="caclulate_by_diameter">Рассчитать по радиусу</label>
                     </div>
                     <div class='row' id="controls-for-calculation">
                         <div class="col-6 form-group">
