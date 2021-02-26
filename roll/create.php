@@ -47,6 +47,11 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
         $form_valid = false;
     }
     
+    if(intval($width) < 50 || intval($width) > 1600) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
     $thickness = filter_input(INPUT_POST, 'thickness');
     if(empty($thickness)) {
         $thickness_valid = ISINVALID;
@@ -195,7 +200,7 @@ else {
                         <div class="col-6 form-group">
                             <label for="width" id="label_width">Ширина</label>
                             <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only" placeholder="Введите ширину" required="required" />
-                            <div class="invalid-feedback">Ширина обязательно</div>
+                            <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
                         <div class="col-6 form-group">
                             <label for="thickness" id="label_thickness">Толщина</label>
