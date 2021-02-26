@@ -206,7 +206,7 @@ else {
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="width">Ширина</label>
-                            <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only" placeholder="Введите ширину" required="required" />
+                            <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only<?=$width_valid ?>" placeholder="Введите ширину" required="required" />
                             <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
                         <div class="col-6 form-group">
