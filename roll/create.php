@@ -377,6 +377,10 @@ else {
                 }
             });
             
+            <?php
+            
+            ?>
+            
             // Расчёт по радиусу
             function CalculateByRadius() {
                 $('#length').val('');
