@@ -237,7 +237,7 @@ else {
                             </select>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="diameter">Диаметр мм</label>
+                            <label for="diameter">Расчет по радиусу (от вала)</label>
                             <input type="text" id="diameter" name="diameter" class="form-control int-only" />
                         </div>
                     </div>
