@@ -377,8 +377,16 @@ else {
                 }
             });
             
-            <?php
+            // Все марки плёнки с их вариациями
+            var films = new Map();
             
+            <?php
+            $sql = "SELECT fbv.film_brand_id, fbv.thickness, fbv.weight FROM film_brand_variation fbv";
+            $fetcher = new Fetcher($sql);
+            while ($row = $fetcher->Fetch()) {
+                echo "films.set(".$row['film_brand_id'].", new Map());\n";
+                echo "films.get(".$row['film_brand_id'].").set(".$row['thickness'].", ".$row['weight'].");\n";
+            }
             ?>
             
             // Расчёт по радиусу
@@ -386,8 +394,8 @@ else {
                 $('#length').val('');
                 $('#net_weight').val('');
                 
+                film_brand_id = $('#film_brand_id').val();
                 shpulya = $('#shpulya').val();
-                
                 thickness = $('#thickness').val();
                 radiusotvala = $('#diameter').val();
                 width = $('#width').val();
