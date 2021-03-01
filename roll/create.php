@@ -437,6 +437,14 @@ else {
             
             $('#diameter').change(CalculateByRadius);
             
+            $('#thickness').change(CalculateByRadius);
+            
+            $('#width').keypress(CalculateByRadius);
+            
+            $('#width').keyup(CalculateByRadius);
+            
+            $('#width').change(CalculateByRadius);
+            
             <?php
             if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on'):
             ?>
