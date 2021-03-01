@@ -94,7 +94,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        /*$sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
+        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
                 . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $executer = new Executer($sql);
         $error_message = $executer->error;
@@ -108,7 +108,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
             if(empty($error_message)) {
                 header('Location: '.APPLICATION."/roll/");
             }
-        }*/
+        }
     }
 }
 
@@ -384,7 +384,9 @@ else {
             $sql = "SELECT fbv.film_brand_id, fbv.thickness, fbv.weight FROM film_brand_variation fbv";
             $fetcher = new Fetcher($sql);
             while ($row = $fetcher->Fetch()) {
+                echo "if(films.get(".$row['film_brand_id'].") == undefined) {\n";
                 echo "films.set(".$row['film_brand_id'].", new Map());\n";
+                echo "}\n";
                 echo "films.get(".$row['film_brand_id'].").set(".$row['thickness'].", ".$row['weight'].");\n";
             }
             ?>
@@ -409,7 +411,8 @@ else {
                         var length = (0.15 * radiusotvala * radiusotvala + 11.3961 * radiusotvala - 176.4427) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
                         
-                        var net_weight = (length * width) / 1000 / 1000;
+                        var ud_ves = films.get(parseInt($('#film_brand_id').val())).get(parseInt(thickness));
+                        var net_weight = (length * ud_ves * width) / 1000 / 1000;
                         $('#net_weight').val(net_weight.toFixed(2));
                         //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
                     }
