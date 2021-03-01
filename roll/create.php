@@ -419,7 +419,7 @@ else {
                     }
                     
                     if(shpulya == 152) {
-                        var length = 0.1524 * radiusotvala * radiusotvala + 23.1245 * radiusotvala - 228.5017;
+                        var length = (0.1524 * radiusotvala * radiusotvala + 23.1245 * radiusotvala - 228.5017) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
                         
                         var net_weight = (length * ud_ves * width) / 1000 / 1000;
