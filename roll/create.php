@@ -21,6 +21,8 @@ $net_weight_valid = '';
 $cell_valid = '';
 $status_id_valid = '';
 
+$invalid_message = '';
+
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     $supplier_id = filter_input(INPUT_POST, 'supplier_id');
@@ -68,6 +70,24 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     if(empty($net_weight)) {
         $net_weight_valid = ISINVALID;
         $form_valid = false;
+    }
+    
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+    
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+    
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
     }
     
     $cell = filter_input(INPUT_POST, 'cell');
@@ -262,7 +282,7 @@ else {
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
                             <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто" required="required" />
-                            <div class="invalid-feedback">Масса нетто обязательно</div>
+                            <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>
                         </div>
                     </div>
                     <div class="row">
