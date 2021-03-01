@@ -94,7 +94,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
-        $sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
+        /*$sql = "insert into roll (supplier_id, id_from_supplier, film_brand_id, width, thickness, length, net_weight, cell, comment, inner_id, date, storekeeper_id) "
                 . "values ($supplier_id, '$id_from_supplier', $film_brand_id, $width, $thickness, $length, $net_weight, '$cell', '$comment', '$inner_id', '$date', '$storekeeper_id')";
         $executer = new Executer($sql);
         $error_message = $executer->error;
@@ -108,7 +108,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
             if(empty($error_message)) {
                 header('Location: '.APPLICATION."/roll/");
             }
-        }
+        }*/
     }
 }
 
@@ -391,6 +391,9 @@ else {
             
             // Расчёт по радиусу
             function CalculateByRadius() {
+                $('#length').removeClass('is-invalid');
+                $('#net_weight').removeClass('is-invalid');
+                
                 $('#length').val('');
                 $('#net_weight').val('');
                 
@@ -400,7 +403,8 @@ else {
                 radiusotvala = $('#diameter').val();
                 width = $('#width').val();
                 
-                if(!isNaN(shpulya) && !isNaN(thickness) && !isNaN(radiusotvala)) {
+                if(!isNaN(shpulya) && !isNaN(thickness) && !isNaN(radiusotvala) 
+                        && shpulya != '' && thickness != '' && radiusotvala != '') {
                     if(shpulya == 76) {
                         var length = (0.15 * radiusotvala * radiusotvala + 11.3961 * radiusotvala - 176.4427) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
@@ -427,7 +431,13 @@ else {
             
             $('#diameter').change(CalculateByRadius);
             
+            <?php
+            if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on'):
+            ?>
             $(document).ready(CalculateByRadius);
+            <?php
+            endif;
+            ?>
         </script>
    </body>
 </html>
