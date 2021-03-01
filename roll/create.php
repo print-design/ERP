@@ -433,6 +433,8 @@ else {
             
             $('#diameter').keypress(CalculateByRadius);
             
+            $('#diameter').keyup(CalculateByRadius);
+            
             $('#diameter').change(CalculateByRadius);
             
             <?php
