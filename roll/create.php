@@ -405,13 +405,14 @@ else {
                 radiusotvala = $('#diameter').val();
                 width = $('#width').val();
                 
-                if(!isNaN(shpulya) && !isNaN(thickness) && !isNaN(radiusotvala) 
-                        && shpulya != '' && thickness != '' && radiusotvala != '') {
+                if(!isNaN(shpulya) && !isNaN(thickness) && !isNaN(radiusotvala) && !isNaN(width) 
+                        && shpulya != '' && thickness != '' && radiusotvala != '' && width != '') {
+                    var ud_ves = films.get(parseInt($('#film_brand_id').val())).get(parseInt(thickness));
+                    
                     if(shpulya == 76) {
                         var length = (0.15 * radiusotvala * radiusotvala + 11.3961 * radiusotvala - 176.4427) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
                         
-                        var ud_ves = films.get(parseInt($('#film_brand_id').val())).get(parseInt(thickness));
                         var net_weight = (length * ud_ves * width) / 1000 / 1000;
                         $('#net_weight').val(net_weight.toFixed(2));
                         //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
@@ -421,7 +422,7 @@ else {
                         var length = 0.1524 * radiusotvala * radiusotvala + 23.1245 * radiusotvala - 228.5017;
                         $('#length').val(length.toFixed(2));
                         
-                        var net_weight = (length * width) / 1000 / 1000;
+                        var net_weight = (length * ud_ves * width) / 1000 / 1000;
                         $('#net_weight').val(net_weight.toFixed(2));
                         //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
                     }
