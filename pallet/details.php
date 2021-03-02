@@ -16,29 +16,118 @@ define('ISINVALID', ' is-invalid');
 $form_valid = true;
 $error_message = '';
 
+$supplier_id_valid = '';
+$id_from_supplier_valid = '';
+$film_brand_id_valid = '';
+$width_valid = '';
+$thickness_valid = '';
+$length_valid = '';
+$net_weight_valid = '';
+$rolls_number_valid = '';
+$cell_valid = '';
 $status_id_valid = '';
+
+$invalid_message = '';
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
-    $status_id = filter_input(INPUT_POST, 'status_id');
-    if(empty($status_id)) {
-        $status_id_valid = ISINVALID;
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) {
+        $supplier_id_valid = ISINVALID;
         $form_valid = false;
     }
     
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) {
+        $id_from_supplier_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) {
+        $film_brand_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if(intval($width) < 50 || intval($width) > 1600) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $length = filter_input(INPUT_POST, 'length');
+    if(empty($length)) {
+        $length_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $net_weight = filter_input(INPUT_POST, 'net_weight');
+    if(empty($net_weight)) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+    
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+    
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
+    }
+    
+    $rolls_number = filter_input(INPUT_POST, 'rolls_number');
+    if(empty($rolls_number)) {
+        $rolls_number_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) {
+        $cell_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    // Выбор менеджера пока не обязательный.
+    $manager_id = filter_input(INPUT_POST, 'manager_id');
+    if(empty($manager_id)) {
+        $manager_id = "NULL";
+    }
+    
+    // Статус пока не обязательно.
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        $status_id = "NULL";
+    }
+    
+    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $date = filter_input(INPUT_POST, 'date');
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
+    
     if($form_valid) {
-        $id = filter_input(INPUT_POST, 'id');
-        $status_id = filter_input(INPUT_POST, 'status_id');
-        $length = filter_input(INPUT_POST, 'length');
-        $net_weight = filter_input(INPUT_POST, 'net_weight');
-        $rolls_number = filter_input(INPUT_POST, 'rolls_number');
-        $cell = filter_input(INPUT_POST, 'cell');
-        $comment = filter_input(INPUT_POST, 'comment');
-        
-        // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
-        $sql = "select length, net_weight, rolls_number, cell, comment, "
-                . "(select status_id from pallet_status_history where pallet_id=$id order by id desc limit 1) status_id "
-                . "from pallet where id=$id";
+        // Получаем имеющийся статус данные и проверяем, совпадают ли он с новым статусом
+        $sql = "select status_id from pallet_status_history where pallet_id=$id order by id desc limit 1";
         $row = (new Fetcher($sql))->Fetch();
         
         if(!$row || $row['status_id'] != $status_id) {
@@ -50,10 +139,9 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
         
         if(empty($error_message)) {
-            if(!$row || $row['length'] != $length || $row['net_weight'] != $net_weight || $row['rolls_number'] != $rolls_number || $row['cell'] != $cell || $row['comment'] != $comment) {
-                $comment = addslashes($comment);
-                $error_message = (new Executer("update pallet set length=$length, net_weight=$net_weight, rolls_number=$rolls_number, cell='$cell', comment='$comment' where id=$id"))->error;
-            }
+            $sql = "update pallet set ";
+            $sql .= "comment = $comment where id=$id";
+            $error_message = (new Executer($sql))->error;
         }
         
         if(empty($error_message)) {
@@ -206,7 +294,7 @@ $utilized_status_id = 2;
                     <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <input type="hidden" id="date" name="date" value="<?= $date ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
-                    <input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
+                    <!--input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
                     <input type="hidden" id="supplier_id" name="supplier_id" value="<?=$supplier_id ?>" />
                     <input type="hidden" id="id_from_supplier" name="id_from_supplier" value="<?=$id_from_supplier ?>" />
                     <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand_id ?>" />
@@ -215,7 +303,7 @@ $utilized_status_id = 2;
                     <input type="hidden" id="length" name="length" value="<?=$length ?>" />
                     <input type="hidden" id="net_weight" name="net_weight" value="<?=$net_weight ?>" />
                     <input type="hidden" id="rolls_number" name="rolls_number" value="<?=$rolls_number ?>" />
-                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" />
+                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" /-->
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -238,6 +326,7 @@ $utilized_status_id = 2;
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Поставщик обязательно</div>
                     </div>
                     <div class="form-group">
                         <?php
@@ -245,6 +334,7 @@ $utilized_status_id = 2;
                         ?>
                         <label for="id_from_supplier">ID паллета от поставщика</label>
                         <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= $id_from_supplier ?>" class="form-control" placeholder="Введите ID"<?=$id_from_supplier_disabled ?> />
+                        <div class="invalid-feedback">ID паллета от поставщика обязательно</div>
                     </div>
                     <div class="form-group">
                         <?php
@@ -264,6 +354,7 @@ $utilized_status_id = 2;
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Марка пленки обязательно</div>
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
@@ -272,6 +363,7 @@ $utilized_status_id = 2;
                             ?>
                             <label for="width">Ширина</label>
                             <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only" placeholder="Введите ширину"<?=$width_disabled ?> />
+                            <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
                         <div class="col-6 form-group">
                             <?php
@@ -289,6 +381,7 @@ $utilized_status_id = 2;
                                 }
                                 ?>
                             </select>
+                            <div class="invalid-feedback">Толщина обязательно</div>
                         </div>
                     </div>
                     <div class="row">
@@ -301,6 +394,7 @@ $utilized_status_id = 2;
                             ?>
                             <label for="length">Длина</label>
                             <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину"<?=$length_disabled ?>" />
+                            <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <?php
@@ -311,6 +405,7 @@ $utilized_status_id = 2;
                             ?>
                             <label for="net_weight">Масса нетто</label>
                             <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто"<?=$net_weight_disabled ?> />
+                            <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>
                         </div>
                     </div>
                     <div class="row">
@@ -332,6 +427,7 @@ $utilized_status_id = 2;
                                 }
                                 ?>
                             </select>
+                            <div class="invalid-feedback">Количество рулонов обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <?php
@@ -342,6 +438,7 @@ $utilized_status_id = 2;
                             ?>
                             <label for="cell">Ячейка на складе</label>
                             <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку"<?=$cell_disabled ?> />
+                            <div class="invalid-feedback">Ячейка на складе обязательно</div>
                         </div>
                     </div>
                     <div class="form-group d-none">
@@ -352,6 +449,7 @@ $utilized_status_id = 2;
                         <select id="manager_id" name="manager_id" class="form-control"<?=$manager_disabled ?>>
                             <option value="">Выберите менеджера</option>
                         </select>
+                        <div class="invalid-feedback">Менеджер обязательно</div>
                     </div>
                     <div class="form-group">
                         <?php
