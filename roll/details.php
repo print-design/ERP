@@ -59,6 +59,82 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     }
 }
 
+// Обработка отправки формы распечатки стикера
+if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $sql = "select r.id, r.inner_id, r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
+            . "r.net_weight, r.cell, "
+            . "(select rsh.status_id from roll_status_history rsh where rsh.roll_id = r.id order by rsh.id desc limit 0, 1) status_id, "
+            . "r.comment "
+            . "from roll r inner join user u on r.storekeeper_id = u.id "
+            . "where r.inner_id=$inner_id";
+    
+    $row = (new Fetcher($sql))->Fetch();
+    
+    $formdata = array();
+    
+    $id = $row['id'];
+    $formdata['id'] = $id;
+    
+    $inner_id = $row['inner_id'];
+    $formdata['inner_id'] = $inner_id;
+    
+    $date = $row['date'];
+    $formdata['date'] = $date;
+    
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
+    if(empty($storekeeper_id)) $storekeeper_id = $row['storekeeper_id'];
+    $formdata['storekeeper_id'] = $storekeeper_id;
+    
+    //$storekeeper = $row['last_name'].' '.$row['first_name'];
+    
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) $supplier_id = $row['supplier_id'];
+    $formdata['supplier_id'] = $supplier_id;
+    
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) $id_from_supplier = $row['id_from_supplier'];
+    $formdata['id_from_supplier'] = $id_from_supplier;
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) $film_brand_id = $row['film_brand_id'];
+    $formdata['film_brand_id'] = $film_brand_id;
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) $width = $row['width'];
+    $formdata['width'] = $width;
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) $thickness = $row['thickness'];
+    $formdata['thickness'] = $thickness;
+    
+    $length = filter_input(INPUT_POST, 'length');
+    if(empty($length)) $length = $row['length'];
+    $formdata['length'] = $length;
+    
+    $net_weight = filter_input(INPUT_POST, 'net_weight');
+    if(empty($net_weight)) $net_weight = $row['net_weight'];
+    $formdata['net_weight'] = $net_weight;
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) $cell = $row['cell'];
+    $formdata['cell'] = $cell;
+    
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) $status_id = $row['status_id'];
+    $formdata['status_id'] = $status_id;
+
+    $comment = filter_input(INPUT_POST, 'comment');
+    if(empty($comment)) $comment = $row['comment'];
+    $formdata['comment'] = $comment;
+    
+    session_start();
+    $_SESSION['formdata'] = $formdata;
+    ?>
+    <script type="text/javascript">window.open('<?=APPLICATION ?>/roll/sticker.php');</script>
+    <?php
+}
+
 // Получение данных
 $inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select r.id, r.inner_id, r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
@@ -240,7 +316,10 @@ $utilized_status_id = 2;
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
                     <button type="submit" id="change-status-submit" name="change-status-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">Сменить статус</button>
-                    <button type="submit" formaction="<?=APPLICATION ?>/roll/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                    <form method="post">
+                        <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
+                        <button type="submit" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                    </form>
                 </div>
             </form>
         </div>
