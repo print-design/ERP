@@ -31,7 +31,7 @@ function Initials() {
             $utilized_status = substr(filter_input(INPUT_SERVER, 'PHP_SELF'), 0, strlen(APPLICATION.'/utilized')) == APPLICATION.'/utilized' ? ' disabled' : '';
             $user_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/user/index.php' ? ' disabled' : '';
             $personal_status = filter_input(INPUT_SERVER, 'PHP_SELF') == APPLICATION.'/personal/index.php' ? ' disabled' : '';
-            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))):
             ?>
             <li class="nav-item">
                 <a class="nav-link<?=$pallets_status ?>" href="<?=APPLICATION ?>/pallet/">Паллеты</a>
@@ -48,7 +48,7 @@ function Initials() {
             </li>
             <?php
             endif;
-            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+            if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))):
             ?>
             <li class="nav-item">
                 <a class="nav-link<?=$utilized_status ?>" href="<?=APPLICATION ?>/utilized/">Сработанная пленка</a>

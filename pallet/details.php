@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -221,8 +221,11 @@ $utilized_status_id = 2;
                         <p id="storekeeper"><?=$storekeeper ?></p>
                     </div>
                     <div class="form-group">
+                        <?php
+                        $supplier_id_disabled = " disabled='disabled'";
+                        ?>
                         <label for="supplier_id">Поставщик</label>
-                        <select id="supplier_id" name="supplier_id" class="form-control" disabled="disabled">
+                        <select id="supplier_id" name="supplier_id" class="form-control"<?=$supplier_id_disabled ?>>
                             <option value="">Выберите поставщика</option>
                             <?php
                             $suppliers = (new Grabber("select id, name from supplier order by name"))->result;
@@ -237,12 +240,18 @@ $utilized_status_id = 2;
                         </select>
                     </div>
                     <div class="form-group">
+                        <?php
+                        $id_from_supplier_disabled = " disabled='disabled'";
+                        ?>
                         <label for="id_from_supplier">ID паллета от поставщика</label>
-                        <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= $id_from_supplier ?>" class="form-control" placeholder="Введите ID" disabled="disabled" />
+                        <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= $id_from_supplier ?>" class="form-control" placeholder="Введите ID"<?=$id_from_supplier_disabled ?> />
                     </div>
                     <div class="form-group">
+                        <?php
+                        $film_brand_id_disabled = " disabled='disabled'";
+                        ?>
                         <label for="film_brand_id">Марка пленки</label>
-                        <select id="film_brand_id" name="film_brand_id" class="form-control" disabled="disabled">
+                        <select id="film_brand_id" name="film_brand_id" class="form-control"<?=$film_brand_id_disabled ?>>
                             <option value="">Выберите марку</option>
                             <?php
                             $film_brands = (new Grabber("select id, name from film_brand where supplier_id = $supplier_id"))->result;
@@ -258,12 +267,18 @@ $utilized_status_id = 2;
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
+                            <?php
+                            $width_disabled = " disabled='disabled'";
+                            ?>
                             <label for="width">Ширина</label>
-                            <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only" placeholder="Введите ширину" disabled="disabled" />
+                            <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only" placeholder="Введите ширину"<?=$width_disabled ?> />
                         </div>
                         <div class="col-6 form-group">
+                            <?php
+                            $thickness_disabled = " disabled='disabled'";
+                            ?>
                             <label for="thickness">Толщина</label>
-                            <select id="thickness" name="thickness" class="form-control" disabled="disabled">
+                            <select id="thickness" name="thickness" class="form-control"<?=$thickness_disabled ?>>
                                 <option value="">Выберите толщину</option>
                                 <?php
                                 $film_brand_variations = (new Grabber("select thickness from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
@@ -280,7 +295,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $length_disabled = "";
-                            if(!IsInRole(array('storekeeper'))) {
+                            if(!IsInRole(array('dev', 'technologist', 'storekeeper'))) {
                                 $length_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -288,14 +303,26 @@ $utilized_status_id = 2;
                             <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину"<?=$length_disabled ?>" />
                         </div>
                         <div class="col-6 form-group">
+                            <?php
+                            $net_weight_disabled = '';
+                            if(!IsInRole(array('dev', 'technologist'))) {
+                                $net_weight_disabled = " disabled='disabled'";
+                            }
+                            ?>
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто" />
+                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто"<?=$net_weight_disabled ?> />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
                             <label for="rolls_number">Количество рулонов</label>
-                            <select id="rolls_number" name="rolls_number" class="form-control">
+                            <?php
+                            $rolls_number_disabled = '';
+                            if(!IsInRole(array('dev', 'technologist'))) {
+                                $rolls_number_disabled = " disabled='disabled'";
+                            }
+                            ?>
+                            <select id="rolls_number" name="rolls_number" class="form-control"<?=$rolls_number_disabled ?>>
                                 <option value="">Выберите количество</option>
                                 <?php
                                 for($i=1; $i<7; $i++) {
@@ -309,23 +336,32 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $cell_disabled = "";
-                            if(!IsInRole(array('storekeeper'))) {
+                            if(!IsInRole(array('dev', 'technologist', 'storekeeper'))) {
                                 $cell_disabled = " disabled='disabled'";
                             }
                             ?>
                             <label for="cell">Ячейка на складе</label>
-                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку"<?=$cell_disabled ?>" />
+                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку"<?=$cell_disabled ?> />
                         </div>
                     </div>
                     <div class="form-group d-none">
+                        <?php
+                        $manager_disabled = " disabled='disabled'";
+                        ?>
                         <label for="manager_id">Менеджер</label>
-                        <select id="manager_id" name="manager_id" class="form-control" disabled="disabled">
+                        <select id="manager_id" name="manager_id" class="form-control"<?=$manager_disabled ?>>
                             <option value="">Выберите менеджера</option>
                         </select>
                     </div>
                     <div class="form-group">
+                        <?php
+                        $status_id_disabled = "";
+                        if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+                            $status_id_disabled = " disabled='disabled'";
+                        }
+                        ?>
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" required="required">
+                        <select id="status_id" name="status_id" class="form-control" required="required"<?=$status_id_disabled ?>>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from pallet_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
@@ -343,8 +379,14 @@ $utilized_status_id = 2;
                         <div class="invalid-feedback">Статус обязательно</div>
                     </div>
                     <div class="form-group">
+                        <?php
+                        $comment_disabled = "";
+                        if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+                            $comment_disabled = " disabled='disabled'";
+                        }
+                        ?>
                         <label for="comment">Комментарий</label>
-                        <textarea id="comment" name="comment" rows="4" class="form-control"><?= htmlentities($comment) ?></textarea>
+                        <textarea id="comment" name="comment" rows="4" class="form-control"<?=$comment_disabled ?>><?= htmlentities($comment) ?></textarea>
                     </div>
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
