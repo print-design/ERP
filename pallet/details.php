@@ -278,8 +278,14 @@ $utilized_status_id = 2;
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
+                            <?php
+                            $length_disabled = "";
+                            if(!IsInRole(array('storekeeper'))) {
+                                $length_disabled = " disabled='disabled'";
+                            }
+                            ?>
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину" />
+                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину"<?=$length_disabled ?>" />
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
@@ -301,8 +307,14 @@ $utilized_status_id = 2;
                             </select>
                         </div>
                         <div class="col-6 form-group">
+                            <?php
+                            $cell_disabled = "";
+                            if(!IsInRole(array('storekeeper'))) {
+                                $cell_disabled = " disabled='disabled'";
+                            }
+                            ?>
                             <label for="cell">Ячейка на складе</label>
-                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку" />
+                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку"<?=$cell_disabled ?>" />
                         </div>
                     </div>
                     <div class="form-group d-none">
