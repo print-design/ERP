@@ -7,18 +7,21 @@ if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
 }
 
 // Получение данных
-$inner_id = filter_input(INPUT_POST, 'inner_id');
-$date = filter_input(INPUT_POST, 'date');
-$supplier_id = filter_input(INPUT_POST, 'supplier_id');
-$id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
-$film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
-$width = filter_input(INPUT_POST, 'width');
-$thickness = filter_input(INPUT_POST, 'thickness');
-$length = filter_input(INPUT_POST, 'length');
-$net_weight = filter_input(INPUT_POST, 'net_weight');
-$cell = filter_input(INPUT_POST, 'cell');
-$status_id = filter_input(INPUT_POST, 'status_id');
-$comment = filter_input(INPUT_POST, 'comment');
+session_start();
+$data = $_SESSION['formdata'];
+
+$inner_id = $data['inner_id'];
+$date = $data['date'];
+$supplier_id = $data['supplier_id'];
+$id_from_supplier = $data['id_from_supplier'];
+$film_brand_id = $data['film_brand_id'];
+$width = $data['width'];
+$thickness = $data['thickness'];
+$length = $data['length'];
+$net_weight = $data['net_weight'];
+$cell = $data['cell'];
+$status_id = $data['status_id'];
+$comment = $data['comment'];
 
 $supplier = '';
 $film_brand = '';

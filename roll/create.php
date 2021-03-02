@@ -132,6 +132,106 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     }
 }
 
+// Обработка формы распечатки стикера
+if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) {
+        $supplier_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) {
+        $id_from_supplier_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) {
+        $film_brand_id = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if(intval($width) < 50 || intval($width) > 1600) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $length = filter_input(INPUT_POST, 'length');
+    if(empty($length)) {
+        $length_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $net_weight = filter_input(INPUT_POST, 'net_weight');
+    if(empty($net_weight)) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+    
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+    
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
+    }
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) {
+        $cell_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    // Выбор менеджера пока необязательный.
+    $manager_id = filter_input(INPUT_POST, 'manager_id');
+    if(empty($manager_id)) {
+        $manager_id = "NULL";
+    }
+
+    // Статус пока не обязательно.
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        $status_id = "NULL";
+    }
+    
+    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $date = filter_input(INPUT_POST, 'date');
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
+    
+    if($form_valid) {
+        session_start();
+        $_SESSION['formdata'] = $_POST;
+        
+        ?>
+        <script type="text/javascript">window.open('<?=APPLICATION ?>/pallet/sticker.php');</script>
+        <?php
+    }
+}
+
 // Получение данных
 if(empty($error_message)) {
     $inner_id = 0;
@@ -335,7 +435,7 @@ else {
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
                     <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">СОЗДАТЬ РУЛОН</button>
-                    <button type="submit" formaction="<?=APPLICATION ?>/roll/sticker.php" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                    <button type="submit" formtarget="output" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
                 </div>
             </form>
         </div>
