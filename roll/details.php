@@ -34,7 +34,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         
         // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
         $sql = "select cell, comment, "
-                . "(status_id from roll_status_history where roll_id=$id order by id desc limit 1) status_id "
+                . "(select status_id from roll_status_history where roll_id=$id order by id desc limit 1) status_id "
                 . "from roll where id=$id";
         $row = (new Fetcher($sql))->Fetch();
         
