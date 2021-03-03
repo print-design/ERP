@@ -103,7 +103,7 @@ if(!empty($status_id)) {
                         <?php
                         include '../qr/qrlib.php';
                         $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
-                        $data = filter_input(INPUT_SERVER, 'HTTP_ORIGIN').APPLICATION.'/roll/details.php?inner_id='.$inner_id;
+                        $data = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].APPLICATION.'/roll/details.php?inner_id='.$inner_id;
                         $current_date_time = date("dmYHis");
                         $filename = "../temp/$current_date_time.png";
                         QRcode::png(addslashes($data), $filename, $errorCorrectionLevel, 10, 4, true);
