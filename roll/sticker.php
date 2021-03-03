@@ -39,7 +39,7 @@ if(!empty($film_brand_id)) {
 }
 
 if(!empty($status_id)) {
-    $row = (new Fetcher("select name from pallet_status where id = $status_id"))->Fetch();
+    $row = (new Fetcher("select name from roll_status where id = $status_id"))->Fetch();
     $status = $row['name'];
 }
 ?>

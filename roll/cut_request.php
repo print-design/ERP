@@ -8,7 +8,7 @@ if(!IsInRole(array('admin', 'dev', 'technologist'))) {
 
 // Если не задано значение inner_id, перенаправляем на список
 if(empty(filter_input(INPUT_GET, 'id'))) {
-    header('Location: '.APPLICATION.'/pallet/');
+    header('Location: '.APPLICATION.'/roll/');
 }
 
 // Валидация формы

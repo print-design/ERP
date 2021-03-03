@@ -227,7 +227,7 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
         $_SESSION['formdata'] = $_POST;
         
         ?>
-        <script type="text/javascript">window.open('<?=APPLICATION ?>/pallet/sticker.php');</script>
+        <script type="text/javascript">window.open('<?=APPLICATION ?>/roll/sticker.php');</script>
         <?php
     }
 }
