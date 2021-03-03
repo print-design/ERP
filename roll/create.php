@@ -66,10 +66,26 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
         $form_valid = false;
     }
     
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on') {
+        $length = filter_input(INPUT_POST, 'length_hidden');
+        if(empty($length)) {
+            $length_valid = false;
+            $form_valid = false;
+        }
+    }
+    
     $net_weight = filter_input(INPUT_POST, 'net_weight');
     if(filter_input(INPUT_POST, 'caclulate_by_diameter') != 'on' && empty($net_weight)) {
         $net_weight_valid = ISINVALID;
         $form_valid = false;
+    }
+    
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on') {
+        $net_weight = filter_input(INPUT_POST, 'net_weight_hidden');
+        if(empty($net_weight)) {
+            $net_weight_valid = false;
+            $form_valid = false;
+        }
     }
     
     // Определяем удельный вес
@@ -375,11 +391,13 @@ if(empty($inner_id)) {
                         <div class="col-6 form-group">
                             <label for="length">Длина</label>
                             <input type="text" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" class="form-control int-only<?=$length_valid ?>" placeholder="Введите длину" required="required" />
+                            <input type="hidden" id="length_hidden" name="length_hidden" />
                             <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <label for="net_weight">Масса нетто</label>
                             <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто" required="required" />
+                            <input type="hidden" id="net_weight_hidden" name="net_weight_hidden" />
                             <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>
                         </div>
                     </div>
@@ -530,18 +548,22 @@ if(empty($inner_id)) {
                     if(shpulya == 76) {
                         var length = (0.15 * radiusotvala * radiusotvala + 11.3961 * radiusotvala - 176.4427) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
+                        $('#length_hidden').val(length.toFixed(2));
                         
                         var net_weight = (length * ud_ves * width) / 1000 / 1000;
                         $('#net_weight').val(net_weight.toFixed(2));
+                        $('#net_weight_hidden').val(net_weight.toFixed(2));
                         //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
                     }
                     
                     if(shpulya == 152) {
                         var length = (0.1524 * radiusotvala * radiusotvala + 23.1245 * radiusotvala - 228.5017) * 20 / thickness;
                         $('#length').val(length.toFixed(2));
+                        $('#length_hidden').val(length.toFixed(2));
                         
                         var net_weight = (length * ud_ves * width) / 1000 / 1000;
                         $('#net_weight').val(net_weight.toFixed(2));
+                        $('#net_weight_hidden').val(net_weight.toFixed(2));
                         //Масса нетто(4)  = (Длинна (3) * Удельный вес (5) * ширину (6))/1000/1000
                     }
                 }
