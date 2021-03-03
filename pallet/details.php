@@ -161,6 +161,42 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         
         if(empty($error_message)) {
             $sql = "update pallet set ";
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "supplier_id = $supplier_id, ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "id_from_supplier = '$id_from_supplier', ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "film_brand_id = $film_brand_id, ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "width = $width, ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "thickness = $thickness, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                $sql .= "length = $length, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist'))) {
+                $sql .= "net_weight = $net_weight, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist'))) {
+                $sql .= "rolls_number = $rolls_number, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                $sql .= "cell = '$cell', ";
+            }
+            
             $sql .= "comment = '$comment' where id=$id";
             $error_message = (new Executer($sql))->error;
         }
