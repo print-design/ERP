@@ -30,39 +30,49 @@ $invalid_message = '';
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
-    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
-    if(empty($supplier_id)) {
-        $supplier_id_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('superadmin'))) {
+        $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+        if(empty($supplier_id)) {
+            $supplier_id_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
-    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
-    if(empty($id_from_supplier)) {
-        $id_from_supplier_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('superadmin'))) {
+        $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+        if(empty($id_from_supplier)) {
+            $id_from_supplier_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
-    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
-    if(empty($film_brand_id)) {
-        $film_brand_id_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('superadmin'))) {
+        $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+        if(empty($film_brand_id)) {
+            $film_brand_id_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
-    $width = filter_input(INPUT_POST, 'width');
-    if(empty($width)) {
-        $width_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('superadmin'))) {
+        $width = filter_input(INPUT_POST, 'width');
+        if(empty($width)) {
+            $width_valid = ISINVALID;
+            $form_valid = false;
+        }
+        
+        if(intval($width) < 50 || intval($width) > 1600) {
+            $width_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
-    if(intval($width) < 50 || intval($width) > 1600) {
-        $width_valid = ISINVALID;
-        $form_valid = false;
-    }
-    
-    $thickness = filter_input(INPUT_POST, 'thickness');
-    if(empty($thickness)) {
-        $thickness_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('superadmin'))) {
+        $thickness = filter_input(INPUT_POST, 'thickness');
+        if(empty($thickness)) {
+            $thickness_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
     if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
@@ -99,10 +109,12 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    $cell = filter_input(INPUT_POST, 'cell');
-    if(empty($cell)) {
-        $cell_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+        $cell = filter_input(INPUT_POST, 'cell');
+        if(empty($cell)) {
+            $cell_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
     // Выбор менеджера пока не обязательный.
@@ -120,6 +132,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     }
     
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $id = filter_input(INPUT_POST, 'id');
     $inner_id = filter_input(INPUT_POST, 'inner_id');
     $date = filter_input(INPUT_POST, 'date');
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
@@ -130,10 +143,8 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $cell = filter_input(INPUT_POST, 'cell');
         $comment = filter_input(INPUT_POST, 'comment');
         
-        // Получаем имеющиеся данные и проверяем, совпадают ли они с новыми данными
-        $sql = "select cell, comment, "
-                . "(select status_id from roll_status_history where roll_id=$id order by id desc limit 1) status_id "
-                . "from roll where id=$id";
+        // Получаем имеющийся статус и проверяем, совпадает ли он с новым статусом
+        $sql = "select status_id from roll_status_history where roll_id=$id order by id desc limit 1";
         $row = (new Fetcher($sql))->Fetch();
         
         if(!$row || $row['status_is'] != $status_id) {
@@ -145,10 +156,41 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
         
         if(empty($error_message)) {
-            if(!$row || $row['cell'] != $cell || $row['comment'] != $comment) {
-                $comment = addslashes($comment);
-                $error_message = (new Executer("update roll set cell='$cell', comment='$comment' where id=$id"))->error;
+            $sql = "update roll set ";
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "supplier_id = $supplier_id, ";
             }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "id_from_supplier = '$id_from_supplier', ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "film_brand_id = $film_brand_id, ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "width = $width, ";
+            }
+            
+            if(IsInRole(array('superadmin'))) {
+                $sql .= "thickness = $thickness, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                $sql .= "length = $length, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist'))) {
+                $sql .= "net_weight = $net_weight, ";
+            }
+            
+            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                $sql .= "cell = '$cell', ";
+            }
+            
+            $sql .= "comment = '$comment' where id=$id";
+            $error_message = (new Executer($sql))->error;
         }
         
         if(empty($error_message)) {
