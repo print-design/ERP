@@ -16,15 +16,113 @@ define('ISINVALID', ' is-invalid');
 $form_valid = true;
 $error_message = '';
 
+$supplier_id_valid = '';
+$id_from_supplier_valid = '';
+$film_brand_id_valid = '';
+$width_valid = '';
+$thickness_valid = '';
+$length_valid = '';
+$net_weight_valid = '';
+$cell_valid = '';
 $status_id_valid = '';
+
+$invalid_message = '';
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
-    $status_id = filter_input(INPUT_POST, 'status_id');
-    if(empty($status_id)) {
-        $status_id_valid = ISINVALID;
+    $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    if(empty($supplier_id)) {
+        $supplier_id_valid = ISINVALID;
         $form_valid = false;
     }
+    
+    $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    if(empty($id_from_supplier)) {
+        $id_from_supplier_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    if(empty($film_brand_id)) {
+        $film_brand_id_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $width = filter_input(INPUT_POST, 'width');
+    if(empty($width)) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if(intval($width) < 50 || intval($width) > 1600) {
+        $width_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    $thickness = filter_input(INPUT_POST, 'thickness');
+    if(empty($thickness)) {
+        $thickness_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+        $length = filter_input(INPUT_POST, 'length');
+        if(empty($length)) {
+            $length_valid = ISINVALID;
+            $form_valid = false;
+        }
+    }
+    
+    if(IsInRole(array('dev', 'technologist'))) {
+        $net_weight = filter_input(INPUT_POST, 'net_weight');
+        if(empty($net_weight)) {
+            $net_weight_valid = ISINVALID;
+            $form_valid = false;
+        }
+        
+        // Определяем удельный вес
+        $ud_ves = null;
+        $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+        $fetcher = new Fetcher($sql);
+        if($row = $fetcher->Fetch()) {
+            $ud_ves = $row[0];
+        }
+        
+        $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+        $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+        $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+        
+        if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+            $net_weight_valid = ISINVALID;
+            $form_valid = false;
+            $invalid_message = "Неверное значение";
+        }
+    }
+    
+    $cell = filter_input(INPUT_POST, 'cell');
+    if(empty($cell)) {
+        $cell_valid = ISINVALID;
+        $form_valid = false;
+    }
+    
+    // Выбор менеджера пока не обязательный.
+    $manager_id = filter_input(INPUT_POST, 'manager_id');
+    if(empty($manager_id)) {
+        $manager_id = "NULL";
+    }
+    
+    $status_id = filter_input(INPUT_POST, 'status_id');
+    if(empty($status_id)) {
+        if(empty($cell)) {
+            $status_id_valid = ISINVALID;
+            $form_valid = false;
+        }
+    }
+    
+    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $date = filter_input(INPUT_POST, 'date');
+    $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
     
     if($form_valid) {
         $id = filter_input(INPUT_POST, 'id');
