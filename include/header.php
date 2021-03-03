@@ -48,7 +48,7 @@ function Initials() {
             </li>
             <?php
             endif;
-            if(IsInRole(array('admin', 'dev', 'technologist', 'manager'))):
+            if(IsInRole(array('admin', 'dev', 'technologist'))):
             ?>
             <li class="nav-item">
                 <a class="nav-link<?=$utilized_status ?>" href="<?=APPLICATION ?>/utilized/">Сработанная пленка</a>
