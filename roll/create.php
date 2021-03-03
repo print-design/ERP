@@ -61,13 +61,13 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
     }
     
     $length = filter_input(INPUT_POST, 'length');
-    if(empty($length)) {
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') != 'on' && empty($length)) {
         $length_valid = ISINVALID;
         $form_valid = false;
     }
     
     $net_weight = filter_input(INPUT_POST, 'net_weight');
-    if(empty($net_weight)) {
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') != 'on' && empty($net_weight)) {
         $net_weight_valid = ISINVALID;
         $form_valid = false;
     }
@@ -170,13 +170,13 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     }
     
     $length = filter_input(INPUT_POST, 'length');
-    if(empty($length)) {
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') != 'on' && empty($length)) {
         $length_valid = ISINVALID;
         $form_valid = false;
     }
     
     $net_weight = filter_input(INPUT_POST, 'net_weight');
-    if(empty($net_weight)) {
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') != 'on' && empty($net_weight)) {
         $net_weight_valid = ISINVALID;
         $form_valid = false;
     }
