@@ -66,16 +66,20 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $form_valid = false;
     }
     
-    $length = filter_input(INPUT_POST, 'length');
-    if(empty($length)) {
-        $length_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+        $length = filter_input(INPUT_POST, 'length');
+        if(empty($length)) {
+            $length_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
-    $net_weight = filter_input(INPUT_POST, 'net_weight');
-    if(empty($net_weight)) {
-        $net_weight_valid = ISINVALID;
-        $form_valid = false;
+    if(IsInRole(array('dev', 'technologist'))) {
+        $net_weight = filter_input(INPUT_POST, 'net_weight');
+        if(empty($net_weight)) {
+            $net_weight_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
     // Определяем удельный вес
@@ -114,10 +118,12 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $manager_id = "NULL";
     }
     
-    // Статус пока не обязательно.
     $status_id = filter_input(INPUT_POST, 'status_id');
     if(empty($status_id)) {
-        $status_id = "NULL";
+        if(empty($cell)) {
+            $status_id_valid = ISINVALID;
+            $form_valid = false;
+        }
     }
     
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
