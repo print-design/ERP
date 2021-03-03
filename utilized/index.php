@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+if(!IsInRole(array('admin', 'dev', 'technologist', 'manager'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -86,7 +86,7 @@ $utilized_status_roll_id = 2;
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Вес</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID поставки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID от поставщика</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кол-во рулонов</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кто заказал</th>

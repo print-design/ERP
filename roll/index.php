@@ -80,7 +80,7 @@ $total_weight = $row['total_weight'];
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Вес</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID поставки</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID от поставщика</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID рулона</th>
                         <th style="padding-left: 5px; padding-right: 5px;">№ ячейки</th>
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none">Менеджер</th>
