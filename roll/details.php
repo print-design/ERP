@@ -123,11 +123,13 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $manager_id = "NULL";
     }
     
-    $status_id = filter_input(INPUT_POST, 'status_id');
-    if(empty($status_id)) {
-        if(empty($cell)) {
-            $status_id_valid = ISINVALID;
-            $form_valid = false;
+    if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+        $status_id = filter_input(INPUT_POST, 'status_id');
+        if(empty($status_id)) {
+            if(empty($cell)) {
+                $status_id_valid = ISINVALID;
+                $form_valid = false;
+            }
         }
     }
     
@@ -146,6 +148,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         // Получаем имеющийся статус и проверяем, совпадает ли он с новым статусом
         $sql = "select status_id from roll_status_history where roll_id=$id order by id desc limit 1";
         $row = (new Fetcher($sql))->Fetch();
+        $status_id = filter_input(INPUT_POST, 'status_id');
         
         if(!$row || $row['status_is'] != $status_id) {
             $date = date('Y-m-d');
@@ -290,19 +293,36 @@ $inner_id = $row['inner_id'];
 $date = $row['date'];
 $storekeeper_id = $row['storekeeper_id'];
 $storekeeper = $row['last_name'].' '.$row['first_name'];
-$supplier_id = $row['supplier_id'];
-$id_from_supplier = $row['id_from_supplier'];
-$film_brand_id = $row['film_brand_id'];
-$width = $row['width'];
-$thickness = $row['thickness'];
-$length = $row['length'];
-$net_weight = $row['net_weight'];
-$cell = $row['cell'];
+
+$supplier_id = filter_input(INPUT_POST, 'supplier_id');
+if(null === $supplier_id) $supplier_id = $row['supplier_id'];
+
+$id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+if(null === $id_from_supplier) $id_from_supplier = $row['id_from_supplier'];
+
+$film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+if(null === $film_brand_id) $film_brand_id = $row['film_brand_id'];
+
+$width = filter_input(INPUT_POST, 'width');
+if(null === $width) $width = $row['width'];
+
+$thickness = filter_input(INPUT_POST, 'thickness');
+if(null === $thickness) $thickness = $row['thickness'];
+
+$length = filter_input(INPUT_POST, 'length');
+if(null === $length) $length = $row['length'];
+
+$net_weight = filter_input(INPUT_POST, 'net_weight');
+if(null === $net_weight) $net_weight = $row['net_weight'];
+
+$cell = filter_input(INPUT_POST, 'cell');
+if(null === $cell) $cell = $row['cell'];
 
 $status_id = filter_input(INPUT_POST, 'status_id');
-if(empty($status_id)) $status_id = $row['status_id'];
+if(null === $status_id) $status_id = $row['status_id'];
 
-$comment = $row['comment'];
+$comment = filter_input(INPUT_POST, 'comment');
+if(null === $comment) $comment = $row['comment'];
 
 // СТАТУС "СВОБОДНЫЙ" ДЛЯ РУЛОНА
 $free_status_id = 1;

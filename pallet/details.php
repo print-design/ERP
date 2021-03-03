@@ -132,11 +132,13 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $manager_id = "NULL";
     }
     
-    $status_id = filter_input(INPUT_POST, 'status_id');
-    if(empty($status_id)) {
-        if(empty($cell)) {
-            $status_id_valid = ISINVALID;
-            $form_valid = false;
+    if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+        $status_id = filter_input(INPUT_POST, 'status_id');
+        if(empty($status_id)) {
+            if(empty($cell)) {
+                $status_id_valid = ISINVALID;
+                $form_valid = false;
+            }
         }
     }
     
@@ -150,6 +152,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         // Получаем имеющийся статус данные и проверяем, совпадают ли он с новым статусом
         $sql = "select status_id from pallet_status_history where pallet_id=$id order by id desc limit 1";
         $row = (new Fetcher($sql))->Fetch();
+        $status_id = filter_input(INPUT_POST, 'status_id');
         
         if(!$row || $row['status_id'] != $status_id) {
             $date = date('Y-m-d');
