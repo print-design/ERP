@@ -232,8 +232,9 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     }
 }
 
-// Получение данных
-if(empty($error_message)) {
+// Получение ID от поставщика
+$inner_id = filter_input(INPUT_POST, 'inner_id');
+if(empty($inner_id)) {
     $inner_id = 0;
     $row = (new Fetcher("select id from new_roll_id union select inner_id from roll order by id desc limit 1"))->Fetch();
     if(!empty($row)) {
@@ -242,9 +243,6 @@ if(empty($error_message)) {
     $inner_id++;
     
     $error_message = (new Executer("insert into new_roll_id(id) value ($inner_id)"))->error;
-}
-else {
-    $inner_id = filter_input(INPUT_POST, 'inner_id');
 }
 ?>
 <!DOCTYPE html>
