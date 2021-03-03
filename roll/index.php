@@ -81,8 +81,12 @@ $total_weight = $row['total_weight'];
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Длина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 10%;">Поставщик</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID от поставщика</th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">ID рулона</th>
+                        <th style="padding-left: 5px; padding-right: 5px;">ID рулона</th>
+                        <?php
+                        if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+                        ?>
                         <th style="padding-left: 5px; padding-right: 5px;">№ ячейки</th>
+                        <?php endif; ?>
                         <th style="padding-left: 5px; padding-right: 5px;" class="d-none">Менеджер</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Статус</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 15%;">Комментарий</th>
@@ -183,7 +187,11 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id_from_supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['inner_id'] ?></td>
+                        <?php
+                        if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+                        ?>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['cell'] ?></td>
+                        <?php endif; ?>
                         <td style="padding-left: 5px; padding-right: 5px;" class="d-none"><?= $row['last_name'].' '.$row['first_name'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px; font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
                         <td style="padding-left: 5px; padding-right: 5px; white-space: pre-wrap;"><?= htmlentities($row['comment']) ?></td>
