@@ -154,12 +154,13 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $row = (new Fetcher($sql))->Fetch();
         $status_id = filter_input(INPUT_POST, 'status_id');
         
-        if(!$row || $row['status_id'] != $status_id) {
+        if((!$row || $row['status_id'] != $status_id) && !empty($status_id)) {
             $date = date('Y-m-d');
             $inner_id = filter_input(INPUT_POST, 'inner_id');
             $user_id = GetUserId();
             
-            $error_message = (new Executer("insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
+            $sql = "insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)";
+            $error_message = (new Executer($sql))->error;
         }
         
         if(empty($error_message)) {

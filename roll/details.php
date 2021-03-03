@@ -150,12 +150,13 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $row = (new Fetcher($sql))->Fetch();
         $status_id = filter_input(INPUT_POST, 'status_id');
         
-        if(!$row || $row['status_is'] != $status_id) {
+        if((!$row || $row['status_is'] != $status_id) && !empty($status_id)) {
             $date = date('Y-m-d');
             $inner_id = filter_input(INPUT_POST, 'inner_id');
             $user_id = GetUserId();
             
-            $error_message = (new Executer("insert into roll_status_history (roll_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)"))->error;
+            $sql = "insert into roll_status_history (roll_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)";
+            $error_message = (new Executer($sql))->error;
         }
         
         if(empty($error_message)) {
