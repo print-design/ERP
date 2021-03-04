@@ -77,7 +77,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('dev', 'storekeeper'))) {
+    if(IsInRole(array('storekeeper'))) {
         $length = filter_input(INPUT_POST, 'length');
         if(empty($length)) {
             $length_valid = ISINVALID;
@@ -138,7 +138,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $invalid_message = "Неверное значение";
     }
     
-    if(IsInRole(array('dev', 'storekeeper'))) {
+    if(IsInRole(array('technologist', 'storekeeper'))) {
         $cell = filter_input(INPUT_POST, 'cell');
         if(empty($cell)) {
             $cell_valid = ISINVALID;
@@ -152,7 +152,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $manager_id = "NULL";
     }
     
-    if(IsInRole(array('technologist', 'dev', 'storekeeper'))) {
+    if(IsInRole(array('technologist', 'storekeeper'))) {
         $status_id = filter_input(INPUT_POST, 'status_id');
         if(empty($status_id)) {
             if(empty($cell)) {
@@ -209,7 +209,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
                 $sql .= "thickness = $thickness, ";
             }
             
-            if(IsInRole(array('dev', 'storekeeper'))) {
+            if(IsInRole(array('storekeeper'))) {
                 $sql .= "length = $length, ";
             }
             
@@ -217,7 +217,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
                 $sql .= "net_weight = $net_weight, ";
             }
             
-            if(IsInRole(array('dev', 'storekeeper'))) {
+            if(IsInRole(array('technologist', 'storekeeper'))) {
                 $sql .= "cell = '$cell', ";
             }
             
@@ -387,15 +387,6 @@ $utilized_status_id = 2;
                     <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <input type="hidden" id="date" name="date" value="<?= $date ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
-                    <!--input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
-                    <input type="hidden" id="supplier_id" name="supplier_id" value="<?=$supplier_id ?>" />
-                    <input type="hidden" id="id_from_supplier" name="id_from_supplier" value="<?=$id_from_supplier ?>" />
-                    <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand_id ?>" />
-                    <input type="hidden" id="width" name="width" value="<?=$width ?>" />
-                    <input type="hidden" id="thickness" name="thickness" value="<?=$thickness ?>" />
-                    <input type="hidden" id="length" name="length" value="<?=$length ?>" />
-                    <input type="hidden" id="net_weight" name="net_weight" value="<?=$net_weight ?>" />
-                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" /-->
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -480,7 +471,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $length_disabled = "";
-                            if(!IsInRole(array('dev', 'storekeeper'))) {
+                            if(!IsInRole(array('storekeeper'))) {
                                 $length_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -505,7 +496,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $cell_disabled = "";
-                            if(!IsInRole(array('dev', 'storekeeper'))) {
+                            if(!IsInRole(array('technologist', 'storekeeper'))) {
                                 $cell_disabled = " disabled='disabled'";
                             }
                             ?>
