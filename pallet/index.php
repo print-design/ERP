@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+if(!IsInRole(array('technologist', 'dev', 'storekeeper', 'manager'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -83,7 +83,7 @@ $total_weight = $row['total_weight'];
                         <th style="padding-left: 5px; padding-right: 5px;">ID паллета</th>
                         <th style="padding-left: 5px; padding-right: 5px;">Кол-во рулонов</th>
                         <?php
-                        if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+                        if(IsInRole(array('technologist', 'dev', 'storekeeper'))):
                         ?>
                         <th style="padding-left: 5px; padding-right: 5px;">№ ячейки</th>
                         <?php endif; ?>
@@ -189,7 +189,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['inner_id'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['rolls_number'] ?></td>
                         <?php
-                        if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))):
+                        if(IsInRole(array('technologist', 'dev', 'storekeeper'))):
                         ?>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['cell'] ?></td>
                         <?php endif; ?>
@@ -201,7 +201,7 @@ $total_weight = $row['total_weight'];
                             <div class="film_menu">
                                 <div class="command"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
                                 <?php
-                                if(IsInRole(array('admin', 'dev', 'technologist'))):
+                                if(IsInRole(array('technologist', 'dev'))):
                                 ?>
                                 <div class="command">
                                     <form method="post">

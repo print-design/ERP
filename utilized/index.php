@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist'))) {
+if(!IsInRole(array('technologist', 'dev'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -278,7 +278,7 @@ $utilized_status_roll_id = 2;
                             <div class="film_menu">
                                 <div class="command"><a href="<?=APPLICATION ?>/<?=$row['type'] ?>/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
                                 <?php
-                                if(IsInRole(array('admin', 'dev', 'technologist'))):
+                                if(IsInRole(array('technologist', 'dev'))):
                                 ?>
                                 <div class="command">
                                     <form method="post">

@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+if(!IsInRole(array('technologist', 'dev', 'storekeeper', 'manager'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
@@ -33,7 +33,7 @@ $invalid_message = '';
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     $id = filter_input(INPUT_POST, 'id');
     
-    if(IsInRole(array('superadmin'))) {
+    if(IsInRole(array('dev'))) {
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         if(empty($supplier_id)) {
             $supplier_id_valid = ISINVALID;
@@ -41,7 +41,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('superadmin'))) {
+    if(IsInRole(array('dev'))) {
         $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
         if(empty($id_from_supplier)) {
             $id_from_supplier_valid = ISINVALID;
@@ -49,7 +49,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('superadmin'))) {
+    if(IsInRole(array('dev'))) {
         $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
         if(empty($film_brand_id)) {
             $film_brand_id_valid = ISINVALID;
@@ -57,7 +57,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('superadmin'))) {
+    if(IsInRole(array('dev'))) {
         $width = filter_input(INPUT_POST, 'width');
         if(empty($width)) {
             $width_valid = ISINVALID;
@@ -70,7 +70,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('superadmin'))) {
+    if(IsInRole(array('dev'))) {
         $thickness = filter_input(INPUT_POST, 'thickness');
         if(empty($thickness)) {
             $thickness_valid = ISINVALID;
@@ -78,7 +78,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+    if(IsInRole(array('dev', 'storekeeper'))) {
         $length = filter_input(INPUT_POST, 'length');
         if(empty($length)) {
             $length_valid = ISINVALID;
@@ -86,7 +86,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('dev', 'technologist'))) {
+    if(IsInRole(array('dev'))) {
         $net_weight = filter_input(INPUT_POST, 'net_weight');
         if(empty($net_weight)) {
             $net_weight_valid = ISINVALID;
@@ -139,7 +139,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $invalid_message = "Неверное значение";
     }
     
-    if(IsInRole(array('dev', 'technologist'))) {
+    if(IsInRole(array('dev'))) {
         $rolls_number = filter_input(INPUT_POST, 'rolls_number');
         if(empty($rolls_number)) {
             $rolls_number_valid = ISINVALID;
@@ -147,7 +147,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         }
     }
     
-    if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+    if(IsInRole(array('dev', 'storekeeper'))) {
         $cell = filter_input(INPUT_POST, 'cell');
         if(empty($cell)) {
             $cell_valid = ISINVALID;
@@ -161,7 +161,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $manager_id = "NULL";
     }
     
-    if(IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+    if(IsInRole(array('technologist', 'dev', 'storekeeper'))) {
         $status_id = filter_input(INPUT_POST, 'status_id');
         if(empty($status_id)) {
             if(empty($cell)) {
@@ -193,39 +193,39 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         
         if(empty($error_message)) {
             $sql = "update pallet set ";
-            if(IsInRole(array('superadmin'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "supplier_id = $supplier_id, ";
             }
             
-            if(IsInRole(array('superadmin'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "id_from_supplier = '$id_from_supplier', ";
             }
             
-            if(IsInRole(array('superadmin'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "film_brand_id = $film_brand_id, ";
             }
             
-            if(IsInRole(array('superadmin'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "width = $width, ";
             }
             
-            if(IsInRole(array('superadmin'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "thickness = $thickness, ";
             }
             
-            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+            if(IsInRole(array('dev', 'storekeeper'))) {
                 $sql .= "length = $length, ";
             }
             
-            if(IsInRole(array('dev', 'technologist'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "net_weight = $net_weight, ";
             }
             
-            if(IsInRole(array('dev', 'technologist'))) {
+            if(IsInRole(array('dev'))) {
                 $sql .= "rolls_number = $rolls_number, ";
             }
             
-            if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+            if(IsInRole(array('dev', 'storekeeper'))) {
                 $sql .= "cell = '$cell', ";
             }
             
@@ -496,7 +496,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $length_disabled = "";
-                            if(!IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                            if(!IsInRole(array('dev', 'storekeeper'))) {
                                 $length_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -507,7 +507,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $net_weight_disabled = '';
-                            if(!IsInRole(array('dev', 'technologist'))) {
+                            if(!IsInRole(array('dev'))) {
                                 $net_weight_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -521,7 +521,7 @@ $utilized_status_id = 2;
                             <label for="rolls_number">Количество рулонов</label>
                             <?php
                             $rolls_number_disabled = '';
-                            if(!IsInRole(array('dev', 'technologist'))) {
+                            if(!IsInRole(array('dev'))) {
                                 $rolls_number_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -540,7 +540,7 @@ $utilized_status_id = 2;
                         <div class="col-6 form-group">
                             <?php
                             $cell_disabled = "";
-                            if(!IsInRole(array('dev', 'technologist', 'storekeeper'))) {
+                            if(!IsInRole(array('dev', 'storekeeper'))) {
                                 $cell_disabled = " disabled='disabled'";
                             }
                             ?>
@@ -562,7 +562,7 @@ $utilized_status_id = 2;
                     <div class="form-group">
                         <?php
                         $status_id_disabled = "";
-                        if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper'))) {
+                        if(!IsInRole(array('technologist', 'dev', 'storekeeper'))) {
                             $status_id_disabled = " disabled='disabled'";
                         }
                         ?>
@@ -587,7 +587,7 @@ $utilized_status_id = 2;
                     <div class="form-group">
                         <?php
                         $comment_disabled = "";
-                        if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+                        if(!IsInRole(array('technologist', 'dev', 'storekeeper', 'manager'))) {
                             $comment_disabled = " disabled='disabled'";
                         }
                         ?>

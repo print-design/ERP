@@ -2,7 +2,7 @@
 include '../include/topscripts.php';
 
 // Авторизация
-if(!IsInRole(array('admin', 'dev', 'technologist', 'storekeeper', 'manager'))) {
+if(!IsInRole(array('technologist', 'dev', 'storekeeper', 'manager'))) {
     header('Location: '.APPLICATION.'/unauthorized.php');
 }
 
