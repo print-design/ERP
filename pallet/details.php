@@ -96,14 +96,26 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     
     // Проверяем правильность веса, для всех ролей
     // Определяем имеющуюся длину и ширину
-    $sql = "select length, net_weight from pallet where pallet_id=$id";
+    $sql = "select film_brand_id, thickness, length, width, net_weight from pallet where id=$id";
     $fetcher = new Fetcher($sql);
     if($row = $fetcher->Fetch()) {
+        $old_film_brand_id = $row['film_brand_id'];
+        $old_thickness = $row['thickness'];
         $old_length = $row['length'];
+        $old_width = $row['width'];
         $old_net_weight = $row['net_weight'];
+        
+        $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+        if(empty($film_brand_id)) $film_brand_id = $old_film_brand_id;
+        
+        $thickness = filter_input(INPUT_POST, 'thickness');
+        if(empty($thickness)) $thickness = $old_thickness;
         
         $length = filter_input(INPUT_POST, 'length');
         if(empty($length)) $length = $old_length;
+        
+        $width = filter_input(INPUT_POST, 'width');
+        if(empty($width)) $width = $old_width;
         
         $net_weight = filter_input(INPUT_POST, 'net_weight');
         if(empty($net_weight)) $net_weight = $old_net_weight;

@@ -30,6 +30,8 @@ $invalid_message = '';
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
+    $id = filter_input(INPUT_POST, 'id');
+    
     if(IsInRole(array('superadmin'))) {
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         if(empty($supplier_id)) {
@@ -89,24 +91,51 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
             $net_weight_valid = ISINVALID;
             $form_valid = false;
         }
+    }
+    
+    // Проверяем правильность веса, для всех ролей
+    // Определяем имеющуюся длину и ширину
+    $sql = "select film_brand_id, thickness, length, width, net_weight from roll where id=$id";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $old_film_brand_id = $row['film_brand_id'];
+        $old_thickness = $row['thickness'];
+        $old_length = $row['length'];
+        $old_width = $row['width'];
+        $old_net_weight = $row['net_weight'];
         
-        // Определяем удельный вес
-        $ud_ves = null;
-        $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
-        $fetcher = new Fetcher($sql);
-        if($row = $fetcher->Fetch()) {
-            $ud_ves = $row[0];
-        }
+        $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+        if(empty($film_brand_id)) $film_brand_id = $old_film_brand_id;
         
-        $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
-        $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
-        $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+        $thickness = filter_input(INPUT_POST, 'thickness');
+        if(empty($thickness)) $thickness = $old_thickness;
         
-        if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
-            $net_weight_valid = ISINVALID;
-            $form_valid = false;
-            $invalid_message = "Неверное значение";
-        }
+        $length = filter_input(INPUT_POST, 'length');
+        if(empty($length)) $length = $old_length;
+        
+        $width = filter_input(INPUT_POST, 'width');
+        if(empty($width)) $width = $old_width;
+        
+        $net_weight = filter_input(INPUT_POST, 'net_weight');
+        if(empty($net_weight)) $net_weight = $old_net_weight;
+    }
+        
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+        
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+        
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
     }
     
     if(IsInRole(array('dev', 'technologist', 'storekeeper'))) {
@@ -134,7 +163,6 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     }
     
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
-    $id = filter_input(INPUT_POST, 'id');
     $inner_id = filter_input(INPUT_POST, 'inner_id');
     $date = filter_input(INPUT_POST, 'date');
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
@@ -359,7 +387,7 @@ $utilized_status_id = 2;
                     <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <input type="hidden" id="date" name="date" value="<?= $date ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
-                    <input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
+                    <!--input type="hidden" id="storekeeper" name="storekeeper" value="<?= $storekeeper ?>" />
                     <input type="hidden" id="supplier_id" name="supplier_id" value="<?=$supplier_id ?>" />
                     <input type="hidden" id="id_from_supplier" name="id_from_supplier" value="<?=$id_from_supplier ?>" />
                     <input type="hidden" id="film_brand_id" name="film_brand_id" value="<?=$film_brand_id ?>" />
@@ -367,7 +395,7 @@ $utilized_status_id = 2;
                     <input type="hidden" id="thickness" name="thickness" value="<?=$thickness ?>" />
                     <input type="hidden" id="length" name="length" value="<?=$length ?>" />
                     <input type="hidden" id="net_weight" name="net_weight" value="<?=$net_weight ?>" />
-                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" />
+                    <input type="hidden" id="cell" name="cell" value="<?=$cell ?>" /-->
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>
@@ -377,7 +405,7 @@ $utilized_status_id = 2;
                         $supplier_id_disabled = " disabled='disabled'";
                         ?>
                         <label for="supplier_id">Поставщик</label>
-                        <select id="supplier_id" name="supplier_id" class="form-control"<?=$supplier_id_disabled ?>>
+                        <select id="supplier_id" name="supplier_id" class="form-control<?=$supplier_id_valid ?>"<?=$supplier_id_disabled ?>>
                             <option value="">Выберите поставщика</option>
                             <?php
                             $suppliers = (new Grabber("select id, name from supplier order by name"))->result;
@@ -390,20 +418,22 @@ $utilized_status_id = 2;
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Поставщик обязательно</div>
                     </div>
                     <div class="form-group">
                         <?php
                         $id_from_supplier_disabled = " disabled='disabled'";
                         ?>
                         <label for="id_from_supplier">ID рулона от поставщика</label>
-                        <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= $id_from_supplier ?>" class="form-control" placeholder="Введите ID"<?=$id_from_supplier_disabled ?> />
+                        <input type="text" id="id_from_supplier" name="id_from_supplier" value="<?= $id_from_supplier ?>" class="form-control<?=$id_from_supplier_valid ?>" placeholder="Введите ID"<?=$id_from_supplier_disabled ?> />
+                        <div class="invalid-feedback">ID паллета от поставщика обязательно</div>
                     </div>
                     <div class="form-group">
                         <?php
                         $film_brand_id_disabled = " disabled='disabled'";
                         ?>
                         <label for="film_brand_id">Марка пленки</label>
-                        <select id="film_brand_id" name="film_brand_id" class="form-control"<?=$film_brand_id_disabled ?>>
+                        <select id="film_brand_id" name="film_brand_id" class="form-control<?=$film_brand_id_valid ?>"<?=$film_brand_id_disabled ?>>
                             <option value="">Выберите марку</option>
                             <?php
                             $film_brands = (new Grabber("select id, name from film_brand where supplier_id = $supplier_id"))->result;
@@ -416,6 +446,7 @@ $utilized_status_id = 2;
                             }
                             ?>
                         </select>
+                        <div class="invalid-feedback">Марка пленки обязательно</div>
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
@@ -423,14 +454,15 @@ $utilized_status_id = 2;
                             $width_disabled = " disabled='disabled'";
                             ?>
                             <label for="width">Ширина</label>
-                            <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only" placeholder="Введите ширину"<?=$width_disabled ?> />
+                            <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only<?=$width_valid ?>" placeholder="Введите ширину"<?=$width_disabled ?> />
+                            <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
                         <div class="col-6 form-group">
                             <?php
                             $thickness_disabled = " disabled='disabled'";
                             ?>
                             <label for="thickness">Толщина</label>
-                            <select id="thickness" name="thickness" class="form-control"<?=$thickness_disabled ?>>
+                            <select id="thickness" name="thickness" class="form-control<?=$thickness_valid ?>"<?=$thickness_disabled ?>>
                                 <option value="">Выберите толщину</option>
                                 <?php
                                 $film_brand_variations = (new Grabber("select thickness from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
@@ -441,6 +473,7 @@ $utilized_status_id = 2;
                                 }
                                 ?>
                             </select>
+                            <div class="invalid-feedback">Толщина обязательно</div>
                         </div>
                     </div>
                     <div class="row">
@@ -452,7 +485,8 @@ $utilized_status_id = 2;
                             }
                             ?>
                             <label for="length">Длина</label>
-                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only" placeholder="Введите длину"<?=$length_disabled ?>" />
+                            <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only<?=$length_valid ?>" placeholder="Введите длину"<?=$length_disabled ?>" />
+                            <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
                             <?php
@@ -462,7 +496,8 @@ $utilized_status_id = 2;
                             }
                             ?>
                             <label for="net_weight">Масса нетто</label>
-                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only" placeholder="Введите массу нетто"<?=$net_weight_disabled ?> />
+                            <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто"<?=$net_weight_disabled ?> />
+                            <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>
                         </div>
                     </div>
                     <div class="row">
@@ -475,7 +510,8 @@ $utilized_status_id = 2;
                             }
                             ?>
                             <label for="cell">Ячейка на складе</label>
-                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control" placeholder="Введите ячейку"<?=$cell_disabled ?>" />
+                            <input type="text" id="cell" name="cell" value="<?= $cell ?>" class="form-control<?=$cell_valid ?>" placeholder="Введите ячейку"<?=$cell_disabled ?>" />
+                            <div class="invalid-feedback">Ячейка на складе обязательно</div>
                         </div>
                     </div>
                     <div class="form-group d-none">
@@ -495,7 +531,7 @@ $utilized_status_id = 2;
                         }
                         ?>
                         <label for="status_id">Статус</label>
-                        <select id="status_id" name="status_id" class="form-control" required="required"<?=$status_id_disabled ?>>
+                        <select id="status_id" name="status_id" class="form-control<?=$status_id_valid ?>" required="required"<?=$status_id_disabled ?>>
                             <?php
                             $statuses = (new Grabber("select s.id, s.name from roll_status s order by s.name"))->result;
                             foreach ($statuses as $status) {
