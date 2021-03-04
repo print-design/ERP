@@ -31,6 +31,8 @@ $invalid_message = '';
 
 // Обработка отправки формы
 if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
+    $id = filter_input(INPUT_POST, 'id');
+    
     if(IsInRole(array('superadmin'))) {
         $supplier_id = filter_input(INPUT_POST, 'supplier_id');
         if(empty($supplier_id)) {
@@ -90,24 +92,39 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
             $net_weight_valid = ISINVALID;
             $form_valid = false;
         }
+    }
+    
+    // Проверяем правильность веса, для всех ролей
+    // Определяем имеющуюся длину и ширину
+    $sql = "select length, net_weight from pallet where pallet_id=$id";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $old_length = $row['length'];
+        $old_net_weight = $row['net_weight'];
         
-        // Определяем удельный вес
-        $ud_ves = null;
-        $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
-        $fetcher = new Fetcher($sql);
-        if($row = $fetcher->Fetch()) {
-            $ud_ves = $row[0];
-        }
+        $length = filter_input(INPUT_POST, 'length');
+        if(empty($length)) $length = $old_length;
         
-        $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
-        $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
-        $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
-        
-        if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
-            $net_weight_valid = ISINVALID;
-            $form_valid = false;
-            $invalid_message = "Неверное значение";
-        }
+        $net_weight = filter_input(INPUT_POST, 'net_weight');
+        if(empty($net_weight)) $net_weight = $old_net_weight;
+    }
+    
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+    
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+    
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
     }
     
     if(IsInRole(array('dev', 'technologist'))) {
@@ -143,7 +160,6 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
     }
     
     $comment = addslashes(filter_input(INPUT_POST, 'comment'));
-    $id = filter_input(INPUT_POST, 'id');
     $inner_id = filter_input(INPUT_POST, 'inner_id');
     $date = filter_input(INPUT_POST, 'date');
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
