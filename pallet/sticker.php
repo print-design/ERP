@@ -83,7 +83,7 @@ if(!empty($status_id)) {
                                         ?>
                                     </td>
                                 </tr>
-                                <tr><td colspan="2"><strong><strong>Марка пленки</strong><br/><?=$film_brand ?></strong></td></tr>
+                                <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
                                 <tr>
                                     <td><strong>Ширина</strong><br/><?=$width ?></td>
                                     <td><strong>Толщина</strong><br/><?=$thickness ?></td>

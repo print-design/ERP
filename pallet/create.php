@@ -141,25 +141,31 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
 
 // Обработка формы распечатки стикера
 if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
+    $formdata = array();
+    
     $supplier_id = filter_input(INPUT_POST, 'supplier_id');
+    $formdata['supplier_id'] = $supplier_id;
     if(empty($supplier_id)) {
         $supplier_id_valid = ISINVALID;
         $form_valid = false;
     }
     
     $id_from_supplier = filter_input(INPUT_POST, 'id_from_supplier');
+    $formdata['id_from_supplier'] = $id_from_supplier;
     if(empty($id_from_supplier)) {
         $id_from_supplier_valid = ISINVALID;
         $form_valid = false;
     }
     
     $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
+    $formdata['film_brand_id'] = $film_brand_id;
     if(empty($film_brand_id)) {
         $film_brand_id_valid = ISINVALID;
         $form_valid = false;
     }
     
     $width = filter_input(INPUT_POST, 'width');
+    $formdata['width'] = $width;
     if(empty($width)) {
         $width_valid = ISINVALID;
         $form_valid = false;
@@ -171,18 +177,21 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     }
     
     $thickness = filter_input(INPUT_POST, 'thickness');
+    $formdata['thickness'] = $thickness;
     if(empty($thickness)) {
         $thickness_valid = ISINVALID;
         $form_valid = false;
     }
     
     $length = filter_input(INPUT_POST, 'length');
+    $formdata['length'] = $length;
     if(empty($length)) {
         $length_valid = ISINVALID;
         $form_valid = false;
     }
     
     $net_weight = filter_input(INPUT_POST, 'net_weight');
+    $formdata['net_weight'] = $net_weight;
     if(empty($net_weight)) {
         $net_weight_valid = ISINVALID;
         $form_valid = false;
@@ -207,12 +216,14 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     }
     
     $rolls_number = filter_input(INPUT_POST, 'rolls_number');
+    $formdata['rolls_number'] = $rolls_number;
     if(empty($rolls_number)) {
         $rolls_number_valid = ISINVALID;
         $form_valid = false;
     }
     
     $cell = filter_input(INPUT_POST, 'cell');
+    $formdata['cell'] = $cell;
     if(empty($cell)) {
         $cell_valid = ISINVALID;
         $form_valid = false;
@@ -220,24 +231,34 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     
     // Выбор менеджера пока не обязательный.
     $manager_id = filter_input(INPUT_POST, 'manager_id');
+    $formdata['manager_id'] = $manager_id;
     if(empty($manager_id)) {
         $manager_id = "NULL";
     }
     
     // Статус пока не обязательно.
     $status_id = filter_input(INPUT_POST, 'status_id');
+    $formdata['status_id'] = $status_id;
     if(empty($status_id)) {
         $status_id = "NULL";
     }
     
-    $comment = addslashes(filter_input(INPUT_POST, 'comment'));
+    $comment = filter_input(INPUT_POST, 'comment');
+    $formdata['comment'] = $comment;
+    $comment = addslashes($comment);
+    
     $inner_id = filter_input(INPUT_POST, 'inner_id');
+    $formdata['inner_id'] = $inner_id;
+    
     $date = filter_input(INPUT_POST, 'date');
+    $formdata['date'] = $date;
+    
     $storekeeper_id = filter_input(INPUT_POST, 'storekeeper_id');
+    $formdata['storekeeper_id'] = $storekeeper_id;
     
     if($form_valid) {
         session_start();
-        $_SESSION['formdata'] = $_POST;
+        $_SESSION['formdata'] = $formdata;
         
         ?>
         <script type="text/javascript">window.open('<?=APPLICATION ?>/pallet/sticker.php');</script>
