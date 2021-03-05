@@ -20,7 +20,9 @@ $length_valid = '';
 $net_weight_valid = '';
 $cell_valid = '';
 $status_id_valid = '';
+$diameter_valid = '';
 
+$invalid_diameter_message = '';
 $invalid_message = '';
 
 // Обработка отправки формы
@@ -85,6 +87,20 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
         if(empty($net_weight)) {
             $net_weight_valid = false;
             $form_valid = false;
+        }
+    }
+    
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on') {
+        // Валидация диаметра
+        $diameter = filter_input(INPUT_POST, 'diameter');
+        if(empty($diameter)) {
+            $diameter_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else if(intval($diameter) < 20 || intval($diameter) > 500) {
+            $diameter_valid = ISINVALID;
+            $form_valid = false;
+            $invalid_diameter_message = "От 20 до 500";
         }
     }
     
@@ -219,8 +235,22 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
         $net_weight = filter_input(INPUT_POST, 'net_weight_hidden');
         $formdata['net_weight'] = $net_weight;
         if(empty($net_weight)) {
-            $net_weight_valid = false;
+            $net_weight_valid = ISINVALID;
             $form_valid = false;
+        }
+    }
+    
+    if(filter_input(INPUT_POST, 'caclulate_by_diameter') == 'on') {
+        // Валидация диаметра
+        $diameter = filter_input(INPUT_POST, 'diameter');
+        if(empty($diameter)) {
+            $diameter_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else if(intval($diameter) < 20 || intval($diameter) > 500) {
+            $diameter_valid = ISINVALID;
+            $form_valid = false;
+            $invalid_diameter_message = "От 20 до 500";
         }
     }
     
@@ -422,7 +452,8 @@ if(empty($inner_id)) {
                         </div>
                         <div class="col-6 form-group">
                             <label for="diameter">Расчет по радиусу (от вала)</label>
-                            <input type="text" id="diameter" name="diameter" class="form-control int-only" value="<?= filter_input(INPUT_POST, 'diameter') ?>" />
+                            <input type="text" id="diameter" name="diameter" class="form-control int-only<?=$diameter_valid ?>" value="<?= filter_input(INPUT_POST, 'diameter') ?>" />
+                            <div class="invalid-feedback"><?= empty($invalid_diameter_message) ? "Радиус обязательно" : $invalid_diameter_message ?></div>
                         </div>
                     </div>
                     <div class="row">
@@ -630,6 +661,10 @@ if(empty($inner_id)) {
             <?php
             endif;
             ?>
+                
+            if($('.is-invalid').first() != null) {
+                $('.is-invalid').first().focus();
+            }
         </script>
    </body>
 </html>
