@@ -352,15 +352,6 @@ $total_weight = $row['total_weight'];
                 if($(e.target).closest($('.film_menu')).length || $(e.target).closest($('.film_menu_trigger')).length) return;
                 $('.film_menu').slideUp();
             });
-            
-            // Прокрутка на прежнее место после отправки формы
-            $(window).on("scroll", function(){
-                $('input[name="scroll"]').val($(window).scrollTop());
-            });
-            
-            <?php if(!empty($_REQUEST['scroll'])): ?>
-                window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
-            <?php endif; ?>
         </script>
     </body>
 </html>

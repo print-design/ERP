@@ -306,6 +306,7 @@ if(empty($inner_id)) {
                     <input type="hidden" id="inner_id" name="inner_id" value="<?=$inner_id ?>" />
                     <input type="hidden" id="date" name="date" value="<?= date("Y-m-d") ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= GetUserId() ?>" />
+                    <input type="hidden" id="scroll" name="scroll" />
                     <div class="form-group">
                         <label for="supplier_id">Поставщик</label>
                         <select id="supplier_id" name="supplier_id" class="form-control" required="required">

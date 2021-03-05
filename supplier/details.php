@@ -282,15 +282,6 @@ $name = htmlentities($row['name']);
                 frm.hide();
                 frm.next('.add-variation-button').show();
             });
-            
-            // Прокрутка на прежнее место после отправки формы
-            $(window).on("scroll", function(){
-                $('input[name="scroll"]').val($(window).scrollTop());
-            });
-            
-            <?php if(!empty($_REQUEST['scroll'])): ?>
-                window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
-            <?php endif; ?>
         </script>
     </body>
 </html>

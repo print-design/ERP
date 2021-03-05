@@ -402,6 +402,7 @@ $utilized_status_id = 2;
                     <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <input type="hidden" id="date" name="date" value="<?= $date ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
+                    <input type="hidden" id="scroll" name="scroll" />
                     <div class="form-group">
                         <label for="storekeeper">Принят кладовщиком</label>
                         <p id="storekeeper"><?=$storekeeper ?></p>

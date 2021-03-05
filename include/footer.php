@@ -92,4 +92,13 @@
         
         setInterval(AutoLogout, 1000, end_date);
     <?php endif; ?>
+        
+    // Прокрутка на прежнее место после отправки формы
+    $(window).on("scroll", function(){
+        $('input[name="scroll"]').val($(window).scrollTop());
+    });
+    
+    <?php if(!empty($_REQUEST['scroll'])): ?>
+        window.scrollTo(0, <?php echo intval($_REQUEST['scroll']); ?>);
+    <?php endif; ?>
 </script>
