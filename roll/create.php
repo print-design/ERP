@@ -400,12 +400,12 @@ if(empty($inner_id)) {
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
-                            <label for="width" id="label_width">Ширина</label>
+                            <label for="width" id="label_width">Ширина, мм</label>
                             <input type="text" id="width" name="width" value="<?= filter_input(INPUT_POST, 'width') ?>" class="form-control int-only<?=$width_valid ?>" placeholder="Введите ширину" required="required" />
                             <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="thickness" id="label_thickness">Толщина</label>
+                            <label for="thickness" id="label_thickness">Толщина, мкм</label>
                             <select id="thickness" name="thickness" class="form-control" required="required">
                                 <option value="">Выберите толщину</option>
                                 <?php
@@ -451,20 +451,20 @@ if(empty($inner_id)) {
                             </select>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="diameter">Расчет по радиусу (от вала)</label>
+                            <label for="diameter">Расчет по радиусу (от вала), мм</label>
                             <input type="text" id="diameter" name="diameter" class="form-control int-only<?=$diameter_valid ?>" value="<?= filter_input(INPUT_POST, 'diameter') ?>" />
                             <div class="invalid-feedback"><?= empty($invalid_diameter_message) ? "Радиус обязательно" : $invalid_diameter_message ?></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 form-group">
-                            <label for="length">Длина</label>
+                            <label for="length">Длина, м</label>
                             <input type="text" id="length" name="length" value="<?= filter_input(INPUT_POST, 'length') ?>" class="form-control int-only<?=$length_valid ?>" placeholder="Введите длину" required="required" />
                             <input type="hidden" id="length_hidden" name="length_hidden" />
                             <div class="invalid-feedback">Длина обязательно</div>
                         </div>
                         <div class="col-6 form-group">
-                            <label for="net_weight">Масса нетто</label>
+                            <label for="net_weight">Масса нетто, кг</label>
                             <input type="text" id="net_weight" name="net_weight" value="<?= filter_input(INPUT_POST, 'net_weight') ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто" required="required" />
                             <input type="hidden" id="net_weight_hidden" name="net_weight_hidden" />
                             <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>

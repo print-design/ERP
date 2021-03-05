@@ -477,7 +477,7 @@ $utilized_status_id = 2;
                             <?php
                             $width_disabled = " disabled='disabled'";
                             ?>
-                            <label for="width">Ширина</label>
+                            <label for="width">Ширина, мм</label>
                             <input type="text" id="width" name="width" value="<?= $width ?>" class="form-control int-only<?=$width_valid ?>" placeholder="Введите ширину"<?=$width_disabled ?> />
                             <div class="invalid-feedback">От 50 до 1600</div>
                         </div>
@@ -485,7 +485,7 @@ $utilized_status_id = 2;
                             <?php
                             $thickness_disabled = " disabled='disabled'";
                             ?>
-                            <label for="thickness">Толщина</label>
+                            <label for="thickness">Толщина, мкм</label>
                             <select id="thickness" name="thickness" class="form-control<?=$thickness_valid ?>"<?=$thickness_disabled ?>>
                                 <option value="">Выберите толщину</option>
                                 <?php
@@ -508,7 +508,7 @@ $utilized_status_id = 2;
                                 $length_disabled = " disabled='disabled'";
                             }
                             ?>
-                            <label for="length">Длина</label>
+                            <label for="length">Длина, м</label>
                             <input type="text" id="length" name="length" value="<?= $length ?>" class="form-control int-only<?=$length_valid ?>" placeholder="Введите длину"<?=$length_disabled ?>" />
                             <div class="invalid-feedback">Длина обязательно</div>
                         </div>
@@ -519,7 +519,7 @@ $utilized_status_id = 2;
                                 $net_weight_disabled = " disabled='disabled'";
                             }
                             ?>
-                            <label for="net_weight">Масса нетто</label>
+                            <label for="net_weight">Масса нетто, кг</label>
                             <input type="text" id="net_weight" name="net_weight" value="<?= $net_weight ?>" class="form-control int-only<?=$net_weight_valid ?>" placeholder="Введите массу нетто"<?=$net_weight_disabled ?> />
                             <div class="invalid-feedback"><?= empty($invalid_message) ? "Масса нетто обязательно" : $invalid_message ?></div>
                         </div>
