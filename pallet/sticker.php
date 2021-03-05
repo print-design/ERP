@@ -1,11 +1,6 @@
 <?php
 include '../include/topscripts.php';
 
-// Авторизация
-if(!IsInRole(array('technologist', 'dev', 'storekeeper', 'manager'))) {
-    header('Location: '.APPLICATION.'/unauthorized.php');
-}
-
 // Получение данных
 session_start();
 $data = $_SESSION['formdata'];
