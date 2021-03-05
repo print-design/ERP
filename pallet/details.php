@@ -289,19 +289,61 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     $formdata['thickness'] = $thickness;
     
     $length = filter_input(INPUT_POST, 'length');
-    if(empty($length)) $length = $row['length'];
+    if(empty($length)) {
+        if(IsInRole(array('technologist', 'storekeeper'))) {
+            $length_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else $length = $row['length'];
+    }
     $formdata['length'] = $length;
     
     $net_weight = filter_input(INPUT_POST, 'net_weight');
-    if(empty($net_weight)) $net_weight = $row['net_weight'];
+    if(empty($net_weight)) {
+        if(IsInRole(array('technologist'))) {
+            $net_weight_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else $net_weight = $row['net_weight'];
+    }
     $formdata['net_weight'] = $net_weight;
     
+    // Определяем удельный вес
+    $ud_ves = null;
+    $sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+    $fetcher = new Fetcher($sql);
+    if($row = $fetcher->Fetch()) {
+        $ud_ves = $row[0];
+    }
+    
+    $weight_result = floatval($ud_ves) * floatval($length) * floatval($width) / 1000.0 / 1000.0;
+    $weight_result_high = $weight_result + ($weight_result * 15.0 / 100.0);
+    $weight_result_low = $weight_result - ($weight_result * 15.0 / 100.0);
+    
+    if($net_weight < $weight_result_low || $net_weight > $weight_result_high) {
+        $net_weight_valid = ISINVALID;
+        $form_valid = false;
+        $invalid_message = "Неверное значение";
+    }
+    
     $rolls_number = filter_input(INPUT_POST, 'rolls_number');
-    if(empty($rolls_number)) $rolls_number = $row['rolls_number'];
+    if(empty($rolls_number)) {
+        if(IsInRole(array('technologist'))) {
+            $rolls_number_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else $rolls_number = $row['rolls_number'];
+    }
     $formdata['rolls_number'] = $rolls_number;
     
     $cell = filter_input(INPUT_POST, 'cell');
-    if(empty($cell)) $cell = $row['cell'];
+    if(empty($cell)) {
+        if(IsInRole(array('technologist', 'storekeeper'))) {
+            $cell_valid = ISINVALID;
+            $form_valid = false;
+        }
+        else $cell = $row['cell'];
+    }
     $formdata['cell'] = $cell;
     
     $status_id = filter_input(INPUT_POST, 'status_id');
@@ -312,11 +354,13 @@ if(null !== filter_input(INPUT_POST, 'sticker-submit')) {
     if(empty($comment)) $comment = $row['comment'];
     $formdata['comment'] = $comment;
     
-    session_start();
-    $_SESSION['formdata'] = $formdata;
-    ?>
-    <script type="text/javascript">window.open('<?=APPLICATION ?>/pallet/sticker.php');</script>
-    <?php
+    if($form_valid) {
+        session_start();
+        $_SESSION['formdata'] = $formdata;
+        ?>
+        <script type="text/javascript">window.open('<?=APPLICATION ?>/pallet/sticker.php');</script>
+        <?php
+    }
 }
 
 // Получение данных
