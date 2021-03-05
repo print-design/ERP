@@ -228,7 +228,7 @@ $utilized_status_roll_id = 2;
                             . "left join user u on r.storekeeper_id = u.id "
                             . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
                             . "$where_roll "
-                            . "order by id desc limit $pager_skip, $pager_take";
+                            . "order by date desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
