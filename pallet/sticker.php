@@ -123,8 +123,9 @@ if(!empty($status_id)) {
                 </tr>
             </table>
         </div>
-        <script>
-            var css = '@page { size: landscape; margin: 8mm; }',
+        <!--script>
+            // Автопечать пока убираем, так как отнимает много ресурсов
+            /*var css = '@page { size: landscape; margin: 8mm; }',
                     head = document.head || document.getElementsByTagName('head')[0],
                     style = document.createElement('style');
             
@@ -139,7 +140,7 @@ if(!empty($status_id)) {
             
             head.appendChild(style);
             
-            window.print();
-        </script>
+            window.print();*/
+        </script-->
     </body>
 </html>
