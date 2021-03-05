@@ -642,5 +642,10 @@ $utilized_status_id = 2;
         <?php
         include '../include/footer.php';
         ?>
+        <script>
+            if($('.is-invalid').first() != null) {
+                $('.is-invalid').first().focus();
+            }
+        </script>
     </body>
 </html>

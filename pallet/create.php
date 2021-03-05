@@ -535,6 +535,10 @@ if(empty($inner_id)) {
                     $('#net_weight').prop('disabled', false);
                 }
             });
+            
+            if($('.is-invalid').first() != null) {
+                $('.is-invalid').first().focus();
+            }
         </script>
     </body>
 </html>
