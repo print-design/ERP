@@ -82,11 +82,11 @@ $comment = $row['comment'];
                     <td style="vertical-align: top; padding-left: 50px;">
                         <?php
                         include '../qr/qrlib.php';
-                        $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
+                        $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
                         $data = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].APPLICATION.'/pallet/pallet.php?id='.$id;
                         $current_date_time = date("dmYHis");
                         $filename = "../temp/$current_date_time.png";
-                        QRcode::png(htmlspecialchars($data), $filename, $errorCorrectionLevel, 5, 2, true);
+                        QRcode::png(addslashes($data), $filename, $errorCorrectionLevel, 10, 4, true);
                         echo "<img src='$filename' />";
             
                         // Удаление всех файлов, кроме текущего (чтобы диск не переполнился).
