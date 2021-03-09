@@ -227,7 +227,7 @@ $utilized_status_roll_id = 2;
                             . "left join supplier s on r.supplier_id = s.id "
                             . "left join user u on r.storekeeper_id = u.id "
                             . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
-                            . "$where_roll";
+                            . "$where_roll order by timestamp desc";
                     
                     $fetcher = new Fetcher($sql);
                     
