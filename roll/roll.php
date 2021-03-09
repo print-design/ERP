@@ -173,7 +173,7 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $row = (new Fetcher($sql))->Fetch();
         $status_id = filter_input(INPUT_POST, 'status_id');
         
-        if((!$row || $row['status_is'] != $status_id) && !empty($status_id)) {
+        if((!$row || $row['status_id'] != $status_id) && !empty($status_id)) {
             $date = date('Y-m-d');
             $user_id = GetUserId();
             

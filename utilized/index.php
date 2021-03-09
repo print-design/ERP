@@ -207,9 +207,9 @@ $utilized_status_roll_id = 2;
                         $where_roll = " where $where_roll";
                     }
                     
-                    $sql = "select 'pallet' type, p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
+                    $sql = "select 'pallet' type, p.id id, psh.date date, psh.id history_id, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
                             . "s.name supplier, p.id_from_supplier id_from_supplier, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
-                            . "psh.status_id status_id, psh.date status_date, p.comment comment, "
+                            . "psh.status_id status_id, p.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=p.thickness limit 1) density "
                             . "from pallet p "
                             . "left join film_brand fb on p.film_brand_id = fb.id "
@@ -218,9 +218,9 @@ $utilized_status_roll_id = 2;
                             . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
                             . "$where_pallet "
                             . "union "
-                            . "select 'roll' type, r.id id, rsh.date date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
+                            . "select 'roll' type, r.id id, rsh.date date, rsh.id history_id, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
                             . "s.name supplier, r.id_from_supplier id_from_supplier, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
-                            . "rsh.status_id status_id, rsh.date status_date, r.comment comment, "
+                            . "rsh.status_id status_id, r.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
                             . "from roll r "
                             . "left join film_brand fb on r.film_brand_id = fb.id "
@@ -228,7 +228,7 @@ $utilized_status_roll_id = 2;
                             . "left join user u on r.storekeeper_id = u.id "
                             . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
                             . "$where_roll "
-                            . "order by status_date desc limit $pager_skip, $pager_take";
+                            . "order by date desc, history_id desc limit $pager_skip, $pager_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
