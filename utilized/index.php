@@ -208,7 +208,7 @@ $utilized_status_roll_id = 2;
                     }
                     
                     $sql = "select 'pallet' type, p.id id, psh.date date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
-                            . "s.name supplier, p.id_from_supplier id_from_supplier, p.inner_id inner_id, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
+                            . "s.name supplier, p.id_from_supplier id_from_supplier, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "psh.status_id status_id, p.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=p.thickness limit 1) density "
                             . "from pallet p "
@@ -219,7 +219,7 @@ $utilized_status_roll_id = 2;
                             . "$where_pallet "
                             . "union "
                             . "select 'roll' type, r.id id, rsh.date date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
-                            . "s.name supplier, r.id_from_supplier id_from_supplier, r.inner_id inner_id, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
+                            . "s.name supplier, r.id_from_supplier id_from_supplier, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "rsh.status_id status_id, r.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
                             . "from roll r "
@@ -258,7 +258,7 @@ $utilized_status_roll_id = 2;
                     }
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
-                        <td style="padding-left: 5px; padding-right: 5px;" class="d-none"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" data-inner-id="<?=$row['inner_id'] ?>" class="form-check chkFilm" /></td>
+                        <td style="padding-left: 5px; padding-right: 5px;" class="d-none"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkFilm" /></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format("d.m.Y") ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['film_brand'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['thickness'] ?> мкм</td>
@@ -268,7 +268,7 @@ $utilized_status_roll_id = 2;
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['length'] ?> м</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['id_from_supplier'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['inner_id'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?=$row['id'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['rolls_number'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['last_name'].' '.$row['first_name'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px; font-size: 10px; line-height: 14px; font-weight: 600;<?=$colour_style ?>"><?= mb_strtoupper($status) ?></td>
@@ -276,7 +276,7 @@ $utilized_status_roll_id = 2;
                         <td style="padding-left: 5px; padding-right: 5px; position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
-                                <div class="command"><a href="<?=APPLICATION ?>/<?=$row['type'] ?>/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command"><a href="<?=APPLICATION ?>/<?=$row['type'] ?>/<?=$row['type'] ?>.php?id=<?=$row['id'] ?>">Просмотреть детали</a></div>
                                 <?php
                                 if(IsInRole(array('technologist', 'dev'))):
                                 ?>
@@ -400,18 +400,10 @@ $utilized_status_roll_id = 2;
             $('.chkPallet').change(function(){
                 if($(this).is(':checked')) {
                     $('.chkPallet').not($(this)).prop('checked', false);
-                    $('#btn-cut-request').removeClass('disabled');
-                    $('#btn-cut-request').attr('href', 'cut_request.php?inner_id=' + $(this).attr('data-inner-id'));
-                    $('#btn-reserve-request').removeClass('disabled');
-                    $('#btn-reserve-request').attr('href', 'reserve_request.php?inner_id=' + $(this).attr('data-inner-id'));
                     $('tr.selected').removeClass('selected');
                     $(this).closest('tr').addClass('selected');
                 }
                 else {
-                    $('#btn-cut-request').addClass('disabled');
-                    $('#btn-cut-request').removeAttr('href');
-                    $('#btn-reserve-request').addClass('disabled');
-                    $('#btn-reserve-request').removeAttr('href');
                     $(this).closest('tr').removeClass('selected');
                 }
             });

@@ -15,7 +15,8 @@ $sql = "select p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_i
         . "p.comment "
         . "from pallet p "
         . "left join user u on p.storekeeper_id = u.id "
-        . "left join supplier s on p.supplier_id = s.id left join film_brand fb on p.film_brand_id = fb.id "
+        . "left join supplier s on p.supplier_id = s.id "
+        . "left join film_brand fb on p.film_brand_id = fb.id "
         . "where p.id=$id";
 
 $row = (new Fetcher($sql))->Fetch();
