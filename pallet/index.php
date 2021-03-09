@@ -186,7 +186,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['length'] ?> м</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id_from_supplier'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['inner_id'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['rolls_number'] ?></td>
                         <?php
                         if(IsInRole(array('technologist', 'dev', 'storekeeper'))):
@@ -199,7 +199,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px; position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
-                                <div class="command"><a href="<?=APPLICATION ?>/pallet/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command"><a href="<?=APPLICATION ?>/pallet/pallet.php?id=<?=$row['id'] ?>">Просмотреть детали</a></div>
                                 <?php
                                 if(IsInRole(array('technologist', 'dev'))):
                                 ?>

@@ -131,10 +131,9 @@ if(null !== filter_input(INPUT_POST, 'create-pallet-submit')) {
             $sql = "insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($pallet_id, '$date', $status_id, $user_id)";
             $executer = new Executer($sql);
             $error_message = $executer->error;
-            $insert_id = $executer->insert_id;
             
             if(empty($error_message)) {
-                header('Location: '.APPLICATION."/pallet/print.php?id=$insert_id");
+                header('Location: '.APPLICATION."/pallet/print.php?id=$pallet_id");
             }
         }
     }

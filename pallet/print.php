@@ -11,7 +11,7 @@ if(empty($id)) {
 $sql = "select p.date, p.storekeeper_id, u.last_name, u.first_name, p.supplier_id, s.name supplier, p.id_from_supplier, "
         . "p.film_brand_id, fb.name film_brand, p.width, p.thickness, p.length, "
         . "p.net_weight, p.rolls_number, p.cell, "
-        . "(select ps.name from pallet_status_history psh left join pallet_status ps on psh.pallet_status_id = ps.id where psh.pallet_id = p.id order by psh.id desc limit 0, 1) status, "
+        . "(select ps.name from pallet_status_history psh left join pallet_status ps on psh.status_id = ps.id where psh.pallet_id = p.id order by psh.id desc limit 0, 1) status, "
         . "p.comment "
         . "from pallet p "
         . "left join user u on p.storekeeper_id = u.id "
@@ -42,9 +42,15 @@ $comment = $row['comment'];
         <?php
         include '../include/head.php';
         ?>
+        <style>
+            @media print{@page {size: landscape}}
+        </style>
     </head>
     <body class="print">
         <div style="margin-left: 20px;">
+            <div class="backlink d-print-none" style="margin-bottom: 56px;">
+                <a href="<?=APPLICATION ?>/pallet/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
+            </div>
             <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Паллет №<?=$id ?> от <?=$date ?></h1>
             <table>
                 <tr>
