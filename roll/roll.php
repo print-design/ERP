@@ -226,13 +226,12 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
 }
 
 // Получение данных
-$inner_id = filter_input(INPUT_GET, 'inner_id');
 $sql = "select r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, r.film_brand_id, r.width, r.thickness, r.length, "
         . "r.net_weight, r.cell, "
         . "(select rsh.status_id from roll_status_history rsh where rsh.roll_id = r.id order by rsh.id desc limit 0, 1) status_id, "
         . "r.comment "
         . "from roll r inner join user u on r.storekeeper_id = u.id "
-        . "where r.inner_id=$inner_id";
+        . "where r.id=$id";
 
 $row = (new Fetcher($sql))->Fetch();
 $date = $row['date'];
@@ -295,12 +294,11 @@ $utilized_status_id = 2;
             <div class="backlink" style="margin-bottom: 56px;">
                 <a href="<?=APPLICATION ?>/roll/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
             </div>
-            <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о рулоне № <?=$inner_id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
+            <h1 style="font-size: 24px; line-height: 32px; fon24pxt-weight: 600; margin-bottom: 20px;">Информация о рулоне № <?=$id ?> от <?= (DateTime::createFromFormat('Y-m-d', $date))->format('d.m.Y') ?></h1>
             <h2 style="font-size: 24px; line-height: 32px; font-weight: 600; margin-bottom: 20px;">ID <?=$id_from_supplier ?></h2>
             <form method="post">
                 <div style="width: 423px;">
                     <input type="hidden" id="id" name="id" value="<?=$id ?>" />
-                    <input type="hidden" id="inner_id" name="inner_id" value="<?= filter_input(INPUT_GET, 'inner_id') ?>" />
                     <input type="hidden" id="date" name="date" value="<?= $date ?>" />
                     <input type="hidden" id="storekeeper_id" name="storekeeper_id" value="<?= $storekeeper_id ?>" />
                     <input type="hidden" id="scroll" name="scroll" />

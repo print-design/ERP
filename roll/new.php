@@ -158,7 +158,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
             $error_message = $executer->error;
             
             if(empty($error_message)) {
-                header('Location: '.APPLICATION."/roll/print.php$roll_id");
+                header('Location: '.APPLICATION."/roll/print.php?id=$roll_id");
             }
         }
     }

@@ -9,7 +9,7 @@ if(empty($id)) {
 }
 
 // Получение данных
-$sql = "select r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, r.id_from_supplier, "
+$sql = "select r.date, r.storekeeper_id, u.last_name, u.first_name, r.supplier_id, s.name supplier, r.id_from_supplier, "
         . "r.film_brand_id, fb.name film_brand, r.width, r.thickness, r.length, "
         . "r.net_weight, r.cell, "
         . "(select rs.name status from roll_status_history rsh left join roll_status rs on rsh.status_id = rs.id where rsh.roll_id = r.id order by rsh.id desc limit 0, 1) status, "
@@ -25,6 +25,7 @@ $date = $row['date'];
 $storekeeper_id = $row['storekeeper_id'];
 $storekeeper = $row['last_name'].' '.$row['first_name'];
 $supplier_id = $row['supplier_id'];
+$supplier = $row['supplier'];
 $id_from_supplier = $row['id_from_supplier'];
 $film_brand_id = $row['film_brand_id'];
 $film_brand = $row['film_brand'];
@@ -33,8 +34,8 @@ $thickness = $row['thickness'];
 $length = $row['length'];
 $net_weight = $row['net_weight'];
 $cell = $row['cell'];
-$status = $data['status'];
-$comment = $data['comment'];
+$status = $row['status'];
+$comment = $row['comment'];
 ?>
 <!DOCTYPE html>
 <html>
