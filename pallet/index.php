@@ -150,7 +150,7 @@ $total_weight = $row['total_weight'];
                     }
                     
                     $sql = "select p.id, p.date, fb.name film_brand, p.width, p.thickness, p.net_weight, p.length, "
-                            . "s.name supplier, p.id_from_supplier, p.inner_id, p.rolls_number, p.cell, u.first_name, u.last_name, "
+                            . "s.name supplier, p.id_from_supplier, p.rolls_number, p.cell, u.first_name, u.last_name, "
                             . "psh.status_id status_id, p.comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=p.thickness limit 1) density "
                             . "from pallet p "
@@ -326,18 +326,10 @@ $total_weight = $row['total_weight'];
             $('.chkPallet').change(function(){
                 if($(this).is(':checked')) {
                     $('.chkPallet').not($(this)).prop('checked', false);
-                    $('#btn-cut-request').removeClass('disabled');
-                    $('#btn-cut-request').attr('href', 'cut_request.php?id=' + $(this).attr('data-id'));
-                    $('#btn-reserve-request').removeClass('disabled');
-                    $('#btn-reserve-request').attr('href', 'reserve_request.php?inner_id=' + $(this).attr('data-inner-id'));
                     $('tr.selected').removeClass('selected');
                     $(this).closest('tr').addClass('selected');
                 }
                 else {
-                    $('#btn-cut-request').addClass('disabled');
-                    $('#btn-cut-request').removeAttr('href');
-                    $('#btn-reserve-request').addClass('disabled');
-                    $('#btn-reserve-request').removeAttr('href');
                     $(this).closest('tr').removeClass('selected');
                 }
             });

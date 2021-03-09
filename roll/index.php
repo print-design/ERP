@@ -64,7 +64,7 @@ $total_weight = $row['total_weight'];
                     </table>
                 </div>
                 <div class="p-1">
-                    <a href="create.php" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; width: 200px; text-align: left;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый ролик</a>
+                    <a href="new.php" class="btn btn-outline-dark" style="padding-top: 14px; padding-bottom: 14px; padding-left: 30px; width: 200px; text-align: left;"><i class="fas fa-plus" style="font-size: 10px; margin-right: 18px;"></i>Новый ролик</a>
                     <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
@@ -150,7 +150,7 @@ $total_weight = $row['total_weight'];
                     }
                     
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
-                            . "s.name supplier, r.id_from_supplier, r.inner_id, r.cell, u.first_name, u.last_name, "
+                            . "s.name supplier, r.id_from_supplier, r.cell, u.first_name, u.last_name, "
                             . "rsh.status_id status_id, r.comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
                             . "from roll r "
@@ -186,7 +186,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['length'] ?> м</td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['supplier'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id_from_supplier'] ?></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['inner_id'] ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['id'] ?></td>
                         <?php
                         if(IsInRole(array('technologist', 'dev', 'storekeeper'))):
                         ?>
@@ -198,7 +198,7 @@ $total_weight = $row['total_weight'];
                         <td style="padding-left: 5px; padding-right: 5px; position: relative;">
                             <a class="black film_menu_trigger" href="javascript: void(0);"><i class="fas fa-ellipsis-h"></i></a>
                             <div class="film_menu">
-                                <div class="command"><a href="<?=APPLICATION ?>/roll/details.php?inner_id=<?=$row['inner_id'] ?>">Просмотреть детали</a></div>
+                                <div class="command"><a href="<?=APPLICATION ?>/roll/roll.php?id=<?=$row['id'] ?>">Просмотреть детали</a></div>
                                 <?php
                                 if(IsInRole(array('technologist', 'dev'))):
                                 ?>
