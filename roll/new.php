@@ -353,8 +353,7 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
                     </div>
                 </div>
                 <div class="form-inline" style="margin-top: 30px;">
-                    <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">СОЗДАТЬ РУЛОН</button>
-                    <button type="submit" id="sticker-submit" name="sticker-submit" class="btn btn-outline-dark" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px;">Распечатать<br />стикер</button>
+                    <button type="submit" id="create-roll-submit" name="create-roll-submit" class="btn btn-dark" style="padding-left: 80px; padding-right: 80px; margin-right: 62px; padding-top: 14px; padding-bottom: 14px;">РАСПЕЧАТАТЬ СТИКЕР</button>
                 </div>
             </form>
         </div>
