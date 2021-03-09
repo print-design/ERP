@@ -50,7 +50,7 @@ $comment = $row['comment'];
     <body class="print">
         <div style="margin-left: 20px;">
             <div class="backlink d-print-none" style="margin-bottom: 56px;">
-                <a href="<?=APPLICATION ?>/pallet/"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
+                <a href="<?=APPLICATION ?>/pallet/pallet.php?id=<?=$id ?>"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
             </div>
             <h1 style="font-size: 26px; margin-top: 10px; margin-bottom: 30px;">Паллет №<?=$id ?> от <?=$date ?></h1>
             <table>
