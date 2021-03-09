@@ -183,10 +183,9 @@ if(null !== filter_input(INPUT_POST, 'change-status-submit')) {
         $status_id = filter_input(INPUT_POST, 'status_id');
         
         if((!$row || $row['status_id'] != $status_id) && !empty($status_id)) {
-            $date = date('Y-m-d');
             $user_id = GetUserId();
             
-            $sql = "insert into pallet_status_history (pallet_id, date, status_id, user_id) values ($id, '$date', $status_id, $user_id)";
+            $sql = "insert into pallet_status_history (pallet_id, status_id, user_id) values ($id, $status_id, $user_id)";
             $error_message = (new Executer($sql))->error;
         }
         

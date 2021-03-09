@@ -207,7 +207,7 @@ $utilized_status_roll_id = 2;
                         $where_roll = " where $where_roll";
                     }
                     
-                    $sql = "select 'pallet' type, p.id id, psh.date date, psh.id history_id, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
+                    $sql = "select 'pallet' type, p.id id, psh.date timestamp, DATE_FORMAT(psh.date, '%d.%m.%Y') date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
                             . "s.name supplier, p.id_from_supplier id_from_supplier, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "psh.status_id status_id, p.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=p.thickness limit 1) density "
@@ -218,7 +218,7 @@ $utilized_status_roll_id = 2;
                             . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
                             . "$where_pallet "
                             . "union "
-                            . "select 'roll' type, r.id id, rsh.date date, rsh.id history_id, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
+                            . "select 'roll' type, r.id id, rsh.date timestamp, DATE_FORMAT(rsh.date, '%d.%m.%Y') date, fb.name film_brand, r.width width, r.thickness thickness, r.net_weight net_weight, r.length length, "
                             . "s.name supplier, r.id_from_supplier id_from_supplier, '-' rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "rsh.status_id status_id, r.comment comment, "
                             . "(select weight from film_brand_variation where film_brand_id=fb.id and thickness=r.thickness limit 1) density "
@@ -227,8 +227,8 @@ $utilized_status_roll_id = 2;
                             . "left join supplier s on r.supplier_id = s.id "
                             . "left join user u on r.storekeeper_id = u.id "
                             . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
-                            . "$where_roll "
-                            . "order by date desc, history_id desc limit $pager_skip, $pager_take";
+                            . "$where_roll";
+                    
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
@@ -259,7 +259,7 @@ $utilized_status_roll_id = 2;
                     ?>
                     <tr style="border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <td style="padding-left: 5px; padding-right: 5px;" class="d-none"><input type="checkbox" id="chk<?=$row['id'] ?>" name="chk<?=$row['id'] ?>" class="form-check chkFilm" /></td>
-                        <td style="padding-left: 5px; padding-right: 5px;"><?= empty($row['date']) ? '' : date_create_from_format('Y-m-d', $row['date'])->format("d.m.Y") ?></td>
+                        <td style="padding-left: 5px; padding-right: 5px;"><?= $row['date'] /*empty($row['date']) ? '' : date_create_from_format('Y-m-d H:M:S', $row['date'])->format("d.m.Y")*/ ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['film_brand'] ?></td>
                         <td style="padding-left: 5px; padding-right: 5px;"><?=$row['thickness'] ?> мкм</td>
                         <td style="padding-left: 5px; padding-right: 5px;" class="text-nowrap"><?= round($row['density'], 2) ?> г/м<sup>2</sup></td>
