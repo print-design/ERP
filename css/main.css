@@ -1,3 +1,8 @@
+html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+}
+
 a:not(.btn):link, a:not(.btn):visited {
     color: #228AD6;
     text-decoration: none;
@@ -224,6 +229,11 @@ table.table tr td button {
 
 table tr.selected {
     background-color: rgba(34, 170, 214, 0.2);
+}
+
+#content_table tr td, #content_table tr th {
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 /*Элементы страниц*/

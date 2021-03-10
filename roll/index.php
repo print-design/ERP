@@ -68,11 +68,11 @@ $total_weight = $row['total_weight'];
                     <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
-            <table class="table">
+            <table class="table" id="content_table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th class="d-none" style="padding-left: 5px; padding-right: 5px;"></th>
-                        <th style="padding-left: 5px; padding-right: 5px; width: 6%;">Дата<br />создания</th>
+                        <th style="padding-left: 5px; padding-right: 5px; width: 8%;">Дата<br />создания</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 16%;">Марка пленки</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Толщина</th>
                         <th style="padding-left: 5px; padding-right: 5px; width: 4%;">Плотность</th>
