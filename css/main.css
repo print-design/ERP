@@ -231,10 +231,10 @@ table tr.selected {
     background-color: rgba(34, 170, 214, 0.2);
 }
 
-#content_table tr td, #content_table tr th {
+/*#content_table tr td, #content_table tr th {
     word-wrap: break-word;
     word-break: break-all;
-}
+}*/
 
 /*Элементы страниц*/
 .backlink {

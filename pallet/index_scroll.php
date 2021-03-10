@@ -71,7 +71,7 @@ $row_number = 0;
                     <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
-            <table class="table" id="data_table">
+            <table class="table" id="content_table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th class="d-none" style="padding-left: 5px; padding-right: 6px; width: 20%;"></th>
@@ -227,6 +227,7 @@ $row_number = 0;
                     ?>
                 </tbody>
             </table>
+            <div id="table_bottom"></div>
         </div>
         <div class="modal fade" id="filterModal">
             <div class="modal-dialog">
@@ -351,13 +352,8 @@ $row_number = 0;
             // Увеличение данных при прокрутке
             var row_number = <?=$row_number ?>;
             
-            $('#data_table').scroll(function() {
-                alert('APPEND');
-                if($('#data_table').scrollTop() + $('#data_table').height() == $('data_table').height()) {
-                    /*for(var i = 0; i <= 50; i++) {
-                        Append next value in your array to bottom
-                    }*/
-                }
+            $(window).scroll(function(){
+                alert($("#table_bottom").top());
             });
         </script>
     </body>

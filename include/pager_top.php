@@ -12,6 +12,6 @@ if($pager_page < 1) {
     $pager_page = 1;
 }
 
-$pager_take = 30;
+$pager_take = 50;
 $pager_skip = $pager_take * ($pager_page - 1);
 ?>
