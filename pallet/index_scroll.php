@@ -26,6 +26,7 @@ $total_weight = $row['total_weight'];
 // ПРОКРУТКА
 $scroll_skip = 0;
 $scroll_take = 22;
+$row_number = 0;
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,7 +71,7 @@ $scroll_take = 22;
                     <button class="btn btn-outline-dark disabled d-none" data-toggle="modal" data-target="#filterModal" data-text="Фильтр"><img src="../images/icons/filter.svg" style="margin-right: 20px;" />Фильтр</button>
                 </div>
             </div>
-            <table class="table">
+            <table class="table" id="data_table">
                 <thead>
                     <tr style="border-top: 1px solid #dee2e6; border-left: 1px solid #dee2e6; border-right: 1px solid #dee2e6;">
                         <th class="d-none" style="padding-left: 5px; padding-right: 6px; width: 20%;"></th>
@@ -166,6 +167,8 @@ $scroll_take = 22;
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
+                        
+                    $row_number++;
 
                     $status = '';
                     if(!empty($statuses1[$row['status_id']]['name'])) {
@@ -343,6 +346,18 @@ $scroll_take = 22;
             $(document).click(function(e) {
                 if($(e.target).closest($('.film_menu')).length || $(e.target).closest($('.film_menu_trigger')).length) return;
                 $('.film_menu').slideUp();
+            });
+            
+            // Увеличение данных при прокрутке
+            var row_number = <?=$row_number ?>;
+            
+            $('#data_table').scroll(function() {
+                alert('APPEND');
+                if($('#data_table').scrollTop() + $('#data_table').height() == $('data_table').height()) {
+                    /*for(var i = 0; i <= 50; i++) {
+                        Append next value in your array to bottom
+                    }*/
+                }
             });
         </script>
     </body>
