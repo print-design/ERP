@@ -37,17 +37,7 @@ $phone = $row['phone'];
             ?>
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <div class="d-flex justify-content-between">
-                        <div class="p-1">
-                            <h1>Мои настройки</h1>
-                        </div>
-                        <div class="p-1">
-                            <div class="btn-group">
-                                <a href="<?=APPLICATION ?>/personal/edit.php" class="btn btn-outline-dark"><i class="fas fa-pencil-alt"></i>&nbsp;Редактировать</a>
-                                <a href="<?=APPLICATION ?>/personal/password.php" class="btn btn-outline-dark"><i class="fas fa-key"></i>&nbsp;Сменить пароль</a>
-                            </div>
-                        </div>
-                    </div>
+                    <h1>Мои настройки</h1>
                     <table class="table table-bordered">
                         <tr>
                             <th>Имя</th>
