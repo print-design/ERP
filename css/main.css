@@ -92,11 +92,6 @@ li#nav-user a.dropdown-toggle::after {
     display: none;
 }
 
-.container-fluid {
-    padding-left: 45px;
-    padding-right: 95px;
-}
-
 .container-fluid.header {
     padding-left: 45px;
     padding-right: 15px;
