@@ -36,6 +36,14 @@ $rolls_number = $row['rolls_number'];
 $cell = $row['cell'];
 $status = $row['status'];
 $comment = $row['comment'];
+
+// Определяем удельный вес
+$ud_ves = null;
+$sql = "select weight from film_brand_variation where film_brand_id=$film_brand_id and thickness=$thickness";
+$fetcher = new Fetcher($sql);
+if($row = $fetcher->Fetch()) {
+    $ud_ves = $row[0];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -63,12 +71,12 @@ $comment = $row['comment'];
                                 <tr><td colspan="2"><strong>Кладовщик</strong><br /><?=$storekeeper ?></td></tr>
                                 <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
                                 <tr>
-                                    <td><strong>Ширина</strong><br/><?=$width ?></td>
-                                    <td><strong>Толщина</strong><br/><?=$thickness ?></td>
+                                    <td><strong>Ширина</strong><br/><?=$width ?> мм</td>
+                                    <td><strong>Толщина</strong><br/><?=$thickness ?> мкм <?=$ud_ves ?> г/м<sup>2</sup></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Длина</strong><br/><?=$length ?></td>
-                                    <td><strong>Масса нетто</strong><br/><?=$net_weight ?></td>
+                                    <td><strong>Длина</strong><br/><?=$length ?> м</td>
+                                    <td><strong>Масса нетто</strong><br/><?=$net_weight ?> кг</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Количество рулонов</strong><br/><?=$rolls_number ?></td>
