@@ -24,6 +24,8 @@ $row = (new Fetcher("select sum(p.net_weight) total_weight from pallet p left jo
 $total_weight = $row['total_weight'];
 
 // ПРОКРУТКА
+$scroll_skip = 0;
+$scroll_take = 22;
 ?>
 <!DOCTYPE html>
 <html>
@@ -160,7 +162,7 @@ $total_weight = $row['total_weight'];
                             . "left join user u on p.storekeeper_id = u.id "
                             . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
                             . "$where "
-                            . "order by p.id desc";
+                            . "order by p.id desc limit $scroll_skip, $scroll_take";
                     $fetcher = new Fetcher($sql);
                     
                     while ($row = $fetcher->Fetch()):
