@@ -245,12 +245,13 @@ if(null !== filter_input(INPUT_POST, 'create-roll-submit')) {
                                 <?php
                                 if(null !== filter_input(INPUT_POST, 'film_brand_id')) {
                                     $film_brand_id = filter_input(INPUT_POST, 'film_brand_id');
-                                    $film_brand_variations = (new Grabber("select thickness from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
+                                    $film_brand_variations = (new Grabber("select thickness, weight from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
                                     foreach ($film_brand_variations as $film_brand_variation) {
                                         $thickness = $film_brand_variation['thickness'];
+                                        $weight = $film_brand_variation['weight'];
                                         $selected = '';
                                         if(filter_input(INPUT_POST, 'thickness') == $film_brand_variation['thickness']) $selected = " selected='selected'";
-                                        echo "<option value='$thickness'$selected>$thickness</option>";
+                                        echo "<option value='$thickness'$selected>$thickness мкм $weight г/м<sup>2</sup></option>";
                                     }
                                 }
                                 ?>

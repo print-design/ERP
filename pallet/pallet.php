@@ -386,11 +386,12 @@ $utilized_status_id = 2;
                             <select id="thickness" name="thickness" class="form-control<?=$thickness_valid ?>"<?=$thickness_disabled ?>>
                                 <option value="">Выберите толщину</option>
                                 <?php
-                                $film_brand_variations = (new Grabber("select thickness from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
+                                $film_brand_variations = (new Grabber("select thickness, weight from film_brand_variation where film_brand_id = $film_brand_id order by thickness"))->result;
                                 foreach ($film_brand_variations as $film_brand_variation) {
+                                    $weight = $film_brand_variation['weight'];
                                     $selected = '';
                                     if($thickness == $film_brand_variation['thickness']) $selected = " selected='selected'";
-                                    echo "<option value='$thickness'$selected>$thickness</option>";
+                                    echo "<option value='$thickness'$selected>$thickness мкм $weight г/м<sup>2</sup></option>";
                                 }
                                 ?>
                             </select>
