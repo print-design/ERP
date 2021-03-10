@@ -149,6 +149,19 @@ $total_weight = $row['total_weight'];
                         $where = "where $where";
                     }
                     
+                    $sql = "select count(r.id) "
+                            . "from roll r "
+                            . "left join film_brand fb on r.film_brand_id = fb.id "
+                            . "left join supplier s on r.supplier_id = s.id "
+                            . "left join user u on r.storekeeper_id = u.id "
+                            . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
+                            . $where;
+                    $fetcher = new Fetcher($sql);
+                    
+                    if($row = $fetcher->Fetch()) {
+                        $pager_total_count = $row[0];
+                    }
+                    
                     $sql = "select r.id, r.date, fb.name film_brand, r.width, r.thickness, r.net_weight, r.length, "
                             . "s.name supplier, r.id_from_supplier, r.cell, u.first_name, u.last_name, "
                             . "rsh.status_id status_id, r.comment, "

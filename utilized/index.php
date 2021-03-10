@@ -207,6 +207,27 @@ $utilized_status_roll_id = 2;
                         $where_roll = " where $where_roll";
                     }
                     
+                    $sql = "select (select count(p.id) total_count "
+                            . "from pallet p "
+                            . "left join film_brand fb on p.film_brand_id = fb.id "
+                            . "left join supplier s on p.supplier_id = s.id "
+                            . "left join user u on p.storekeeper_id = u.id "
+                            . "left join (select * from pallet_status_history where id in (select max(id) from pallet_status_history group by pallet_id)) psh on psh.pallet_id = p.id "
+                            . "$where_pallet)"
+                            . "+"
+                            . "(select count(r.id) total_count "
+                            . "from roll r "
+                            . "left join film_brand fb on r.film_brand_id = fb.id "
+                            . "left join supplier s on r.supplier_id = s.id "
+                            . "left join user u on r.storekeeper_id = u.id "
+                            . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
+                            . "$where_roll)";
+                    
+                    $fetcher = new Fetcher($sql);
+                    if($row = $fetcher->Fetch()) {
+                        $pager_total_count = $row[0];
+                    }
+                    
                     $sql = "select 'pallet' type, p.id id, psh.date timestamp, DATE_FORMAT(psh.date, '%d.%m.%Y') date, fb.name film_brand, p.width width, p.thickness thickness, p.net_weight net_weight, p.length length, "
                             . "s.name supplier, p.id_from_supplier id_from_supplier, p.rolls_number rolls_number, u.first_name first_name, u.last_name last_name, "
                             . "psh.status_id status_id, p.comment comment, "
@@ -227,7 +248,7 @@ $utilized_status_roll_id = 2;
                             . "left join supplier s on r.supplier_id = s.id "
                             . "left join user u on r.storekeeper_id = u.id "
                             . "left join (select * from roll_status_history where id in (select max(id) from roll_status_history group by roll_id)) rsh on rsh.roll_id = r.id "
-                            . "$where_roll order by timestamp desc";
+                            . "$where_roll order by timestamp desc limit $pager_skip, $pager_take";
                     
                     $fetcher = new Fetcher($sql);
                     
