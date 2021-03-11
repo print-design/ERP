@@ -64,7 +64,7 @@ if($row = $fetcher->Fetch()) {
             <table>
                 <tr>
                     <td>
-                        <table class="table table-bordered" style="width: 400px;">
+                        <table class="table table-bordered print" style="width: 400px;">
                             <tbody>
                                 <tr><td colspan="2"><strong>Поставщик</strong><br/><?=$supplier ?></td></tr>
                                 <tr><td colspan="2"><strong>ID от поставщика</strong><br/><?=$id_from_supplier ?></td></tr>

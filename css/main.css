@@ -231,10 +231,12 @@ table tr.selected {
     background-color: rgba(34, 170, 214, 0.2);
 }
 
-/*#content_table tr td, #content_table tr th {
-    word-wrap: break-word;
-    word-break: break-all;
-}*/
+/* Печать стикера */
+table.print tr td, table.print tr th {
+    font-size: 16px;
+    line-height: 30px;
+    white-space: nowrap;
+}
 
 /*Элементы страниц*/
 .backlink {

@@ -64,33 +64,38 @@ if($row = $fetcher->Fetch()) {
             <table>
                 <tr>
                     <td>
-                        <table class="table table-bordered" style="width: 400px;">
+                        <table class="table table-bordered print" style="width: 400px;">
                             <tbody>
-                                <tr><td colspan="2"><strong>Поставщик</strong><br /><?=$supplier ?></td></tr>
-                                <tr><td colspan="2"><strong>ID от поставщика</strong><br/><?=$id_from_supplier ?></td></tr>
-                                <tr><td colspan="2"><strong>Кладовщик</strong><br /><?=$storekeeper ?></td></tr>
-                                <tr><td colspan="2"><strong>Марка пленки</strong><br/><?=$film_brand ?></td></tr>
                                 <tr>
-                                    <td><strong>Ширина</strong><br/><?=$width ?> мм</td>
-                                    <td><strong>Толщина</strong><br/><?=$thickness ?> мкм <?=$ud_ves ?> г/м<sup>2</sup></td>
+                                    <td><strong>Поставщик</strong><br /><?=$supplier ?></td>
+                                    <td><strong>Ширина</strong><br /><?=$width ?> мм</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Длина</strong><br/><?=$length ?> м</td>
-                                    <td><strong>Масса нетто</strong><br/><?=$net_weight ?> кг</td>
+                                    <td><strong>ID от поставщика</strong><br /><?=$id_from_supplier ?></td>
+                                    <td><strong>Толщина, уд.вес</strong><br /><?=$thickness ?> мкм <?=$ud_ves ?> г/м<sup>2</sup></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Количество рулонов</strong><br/><?=$rolls_number ?></td>
-                                    <td><strong>Ячейка на складе</strong><br/><?=$cell ?></td>
+                                    <td><strong>Кладовщик</strong><br /><?=$storekeeper ?></td>
+                                    <td><strong>Длина</strong><br /><?=$length ?> м</td>
                                 </tr>
-                                <tr><td colspan="2"><strong>Статус</strong><br/><?=$status ?></td></tr>
-                                <tr><td colspan="2"><strong>Комментарий</strong><br/><?= $comment ?></td></tr>
+                                <tr>
+                                    <td><strong>Марка пленки</strong><br /><?=$film_brand ?></td>
+                                    <td><strong>Масса нетто</strong><br /><?=$net_weight ?> кг</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Статус</strong><br /><?=$status ?></td>
+                                    <td><strong>Ячейка на складе</strong><br /><?=$cell ?></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><strong>Комментарий</strong><br /><?= $comment ?></td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>
                     <td style="vertical-align: top; padding-left: 50px;">
                         <?php
                         include '../qr/qrlib.php';
-                        $errorCorrectionLevel = 'M'; // 'L','M','Q','H'
+                        $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
                         $data = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].APPLICATION.'/pallet/pallet.php?id='.$id;
                         $current_date_time = date("dmYHis");
                         $filename = "../temp/$current_date_time.png";
