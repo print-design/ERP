@@ -81,7 +81,7 @@ if($row = $fetcher->Fetch()) {
                                 </tr>
                                 <tr>
                                     <td><strong>Статус</strong><br /><?=$status ?></td>
-                                    <td><strong>Ячейка на складе</strong><br /><?=$cell ?></td>
+                                    <td><strong>Количество рулонов</strong><br /><?=$rolls_number ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2"><strong>Комментарий</strong><br /><?= $comment ?></td>
