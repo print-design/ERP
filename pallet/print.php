@@ -57,7 +57,11 @@ if($row = $fetcher->Fetch()) {
     </head>
     <body class="print">
         <div style="margin-left: 30px;">
-            <div style="margin-bottom: 20px; margin-top: 30px;"><a href="<?=APPLICATION ?>/pallet/pallet.php?id=<?=$id ?>"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a></div>
+            <div style="margin-bottom: 20px; margin-top: 30px;">
+                <a href="<?=APPLICATION ?>/pallet/pallet.php?id=<?=$id ?>"><i class="fas fa-chevron-left"></i>&nbsp;Назад</a>
+                <div style="display: inline; margin-left: 400px; font-size: 24px; font-weight: bold; font-style: italic; color: gray;">ООО &laquo;Принт-дизайн&raquo;</div>
+                
+            </div>
             <table>
                 <tr>
                     <td>
