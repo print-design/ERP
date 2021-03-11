@@ -94,7 +94,7 @@ if($row = $fetcher->Fetch()) {
                         </table>
                     </td>
                     <td style="vertical-align: top; padding-left: 50px;">
-                        <h1 style="font-size: 26px;">Паллет №<?=$id ?> от <?=$date ?></h1>
+                        <h1 style="font-size: 32px;">Паллет №<?=$id ?> от <?=$date ?></h1>
                         <?php
                         include '../qr/qrlib.php';
                         $errorCorrectionLevel = 'L'; // 'L','M','Q','H'
