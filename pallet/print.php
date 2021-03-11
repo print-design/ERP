@@ -88,7 +88,7 @@ if($row = $fetcher->Fetch()) {
                                     <td>Количество рулонов<br /><strong><?=$rolls_number ?></strong></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">Комментарий<br /><strong><?= $comment ?></strong></td>
+                                    <td colspan="2" style="white-space: normal;">Комментарий<br /><strong><?= $comment ?></strong></td>
                                 </tr>
                             </tbody>
                         </table>

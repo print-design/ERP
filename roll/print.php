@@ -87,7 +87,7 @@ if($row = $fetcher->Fetch()) {
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">Комментарий<br /><strong><?= $comment ?></strong></td>
+                                    <td colspan="2" style="white-space: normal;">Комментарий<br /><strong><?= $comment ?></strong></td>
                                 </tr>
                             </tbody>
                         </table>
