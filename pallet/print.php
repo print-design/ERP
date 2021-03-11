@@ -64,27 +64,27 @@ if($row = $fetcher->Fetch()) {
                         <table class="table table-bordered print" style="width: 400px;">
                             <tbody>
                                 <tr>
-                                    <td><strong>Поставщик</strong><br /><?=$supplier ?></td>
-                                    <td><strong>Ширина</strong><br /><?=$width ?> мм</td>
+                                    <td>Поставщик<br /><strong><?=$supplier ?></strong></td>
+                                    <td>Ширина<br /><strong><?=$width ?> мм</strong></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>ID от поставщика</strong><br /><?=$id_from_supplier ?></td>
-                                    <td><strong>Толщина, уд.вес</strong><br /><?=$thickness ?> мкм <?=$ud_ves ?> г/м<sup>2</sup></td>
+                                    <td>ID от поставщика<br /><strong><?=$id_from_supplier ?></strong></td>
+                                    <td>Толщина, уд.вес<br /><strong><?=$thickness ?> мкм <?=$ud_ves ?> г/м<sup>2</sup></strong></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Кладовщик</strong><br /><?=$storekeeper ?></td>
-                                    <td><strong>Длина</strong><br /><?=$length ?> м</td>
+                                    <td>Кладовщик<br /><strong><?=$storekeeper ?></strong></td>
+                                    <td>Длина<br /><strong><?=$length ?> м</strong></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Марка пленки</strong><br /><?=$film_brand ?></td>
-                                    <td><strong>Масса нетто</strong><br /><?=$net_weight ?> кг</td>
+                                    <td>Марка пленки<br /><strong><?=$film_brand ?></strong></td>
+                                    <td>Масса нетто<br /><strong><?=$net_weight ?> кг</strong></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Статус</strong><br /><?=$status ?></td>
-                                    <td><strong>Количество рулонов</strong><br /><?=$rolls_number ?></td>
+                                    <td>Статус<br /><strong><?=$status ?></strong></td>
+                                    <td>Количество рулонов<br /><strong><?=$rolls_number ?></strong></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><strong>Комментарий</strong><br /><?= $comment ?></td>
+                                    <td colspan="2">Комментарий<br /><strong><?= $comment ?></strong></td>
                                 </tr>
                             </tbody>
                         </table>
