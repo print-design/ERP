@@ -233,7 +233,7 @@ table tr.selected {
 
 /* Печать стикера */
 table.print tr td, table.print tr th {
-    font-size: 16px;
+    font-size: 22px;
     line-height: 30px;
     white-space: nowrap;
 }
