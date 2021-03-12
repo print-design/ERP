@@ -55,6 +55,10 @@ function Initials() {
             </li>
             <?php
             endif;
+            
+            if(mb_stristr($_SERVER['REQUEST_URI'], "pr-diz-test.ru/erp")) {
+                echo "<li style='font-weight: bold; font-size: large; margin-left: 50px;'>ТЕСТОВАЯ</li>";
+            }
             ?>
         </ul>
         <?php
